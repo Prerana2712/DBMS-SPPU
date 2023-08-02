@@ -1,0 +1,130 @@
+--Theory Assignment  03
+drop table student;
+drop table log;
+
+--creating student table and inserting records in it
+create table student(rno int ,sub1 int,sub2 int,sub3 int,per int,grade varchar(15));
+insert into student (rno,sub1,sub2,sub3) values(1,75,85,94);
+insert into student (rno,sub1,sub2,sub3) values(2,85,74,75);
+insert into student (rno,sub1,sub2,sub3) values(3,92,85,83);
+
+--display student table
+select * from student;
+
+--creating log table to store before and after updation data
+create table log(rno int ,old_sub1 int,new_sub1 int,old_sub2 int,new_sub2 int,old_sub3 int, new_sub3 int );
+
+--procedure: to calculate percentage and grade in student database based on marks
+create or replace procedure percentage(rno in int,m1 in int,m2 in int,m3 in int,per out float,grade out varchar)
+is
+begin
+    per:=(((m1+m2+m3)/300)*100);
+    if(per>=75)
+    then grade:='First Class';
+    elsif(per>=50 and per<75)
+    then grade:='Second Class';
+    elsif(per>=35 and per<50)
+    then grade:='Pass';
+    else
+    grade:='Fail';
+    end if;
+end;
+
+--trigger is called if marks are updated in student database. 
+create or replace trigger updation
+after update on student
+for each row
+begin
+if (:old.sub1 != :new.sub1)
+ then dbms_output.put_line(' Marks of sub1 are changed from -'||' '||:old.sub1||' to '||:new.sub1);
+
+elsif (:old.sub2 != :new.sub2)
+ then dbms_output.put_line('Marks of sub2 are changed from -'||' '||:old.sub2||' to '||:new.sub2);
+
+elsif(:old.sub3 != :new.sub3)
+ then dbms_output.put_line('Marks of sub3 are changed from -'||' '||:old.sub3||' to '||:new.sub3);
+
+end if;
+ insert into log values (:old.rno,:old.sub1,:new.sub1,:old.sub2,:new.sub2,:old.sub3,:new.sub3);
+end;
+
+update student set sub1=40 where rno=3;
+update student set sub2=96 where rno=2;
+update student set sub3=92 where rno=1;
+
+--display log table
+select * from log;
+
+--to update percentage and grade in student database.
+declare
+cursor c_cur is select * from student;
+v_cur c_cur%rowtype;
+i int;
+begin
+    open c_cur;
+    dbms_output.put_line('Rno  | Subject1 | Subject2 | Subject3 | Percent                                     | Grade       ');
+    dbms_output.put_line('............................................................................................................................');
+
+    for i in 1..3 loop
+        fetch c_cur into v_cur;
+        exit when c_cur%notfound;
+        percentage(v_cur.rno,v_cur.sub1,v_cur.sub2,v_cur.sub3,v_cur.per,v_cur.grade);
+        update student set per=v_cur.per,grade=v_cur.grade where rno=v_cur.rno;
+        dbms_output.put_line(v_cur.rno||'    |  '||v_cur.sub1||'      |  '||v_cur.sub2||'      |  '||v_cur.sub3||'      |  '||v_cur.per||'  | '||v_cur.grade);
+        
+    end loop;
+    dbms_output.put_line('...........................................................................................................................');
+    close c_cur;
+end;
+
+*********************************************************************************OUTPUT*************************************************************************************************
+Table dropped.
+
+Table dropped.
+
+Table created.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+Result Set 2
+RNO	SUB1	SUB2	SUB3	PER	GRADE
+1	75	85	94	 - 	 - 
+2	85	74	75	 - 	 - 
+3	92	85	83	 - 	 - 
+Download CSV
+3 rows selected.
+
+Table created.
+
+Procedure created.
+
+Trigger created.
+
+1 row(s) updated.
+ Marks of sub1 are changed from - 92 to 40
+
+1 row(s) updated.
+Marks of sub2 are changed from - 74 to 96
+
+1 row(s) updated.
+Marks of sub3 are changed from - 94 to 92
+
+RNO	OLD_SUB1	NEW_SUB1	OLD_SUB2	NEW_SUB2	OLD_SUB3	NEW_SUB3
+1	75	75	85	85	94	92
+3	92	40	85	85	83	83
+2	85	85	74	96	75	75
+Download CSV
+3 rows selected.
+
+Statement processed.
+Rno  | Subject1 | Subject2 | Subject3 | Percent                                     | Grade       
+.............................................................................................................................................................
+1    |  75      |  85      |  92      |  84  | First Class
+2    |  85      |  96      |  75      |  85.33333333333333333333333333333333333333  | First Class
+3    |  40      |  85      |  83      |  69.33333333333333333333333333333333333333  | Second Class
+...............................................................................................................................................................
+

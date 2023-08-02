@@ -1,0 +1,376 @@
+//Name -Prerana Gajare  	Roll no-SI41  	Class-SEIT
+
+//To show databases
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| customer           |
+| emp                |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+9 rows in set (0.08 sec)
+
+//Creating database named sale
+
+mysql> create database sale;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| customer           |
+| emp                |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sale               |
+| student            |
+| sys                |
++--------------------+
+10 rows in set (0.01 sec)
+
+//Use sale database
+
+mysql> use sale;
+Database changed
+mysql> select database();
++------------+
+| database() |
++------------+
+| sale       |
++------------+
+1 row in set (0.00 sec)
+
+//Creating table name product
+
+mysql> create table product(pid int,name varchar(20),doj date,unitcost int,quantity int);
+Query OK, 0 rows affected (0.02 sec)
+
+//Inserting values in the table product
+
+mysql> insert into product values(1,"Mouse","2021-02-14",100,1),(1,"Mouse","2021-03-19",200,2),(1,"Mouse","2021-05-22",300,2),(2,"Keyboard","2021-02-25",50,2),(2,"Keyboard","2022-03-17",100,1),(1,"Mouse","2022-06-22",500,1);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+//Display all rows and coloumn of table
+
+mysql> select * from product;
++------+----------+------------+----------+----------+
+| pid  | name     | doj        | unitcost | quantity |
++------+----------+------------+----------+----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |
++------+----------+------------+----------+----------+
+6 rows in set (0.01 sec)
+
+//Alter table to add a coloumn name total cost
+
+mysql> alter table product
+    -> add totalcost int;
+Query OK, 6 rows affected (0.09 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+//Updating product table
+
+mysql> update product
+    -> set totalcost=unitcost*quantity;//Calculating the value of totalcost
+Query OK, 6 rows affected (0.01 sec)
+Rows matched: 6  Changed: 6  Warnings: 0
+
+//Display all rows and coloumn of table
+
+mysql> select * from product;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
++------+----------+------------+----------+----------+-----------+
+6 rows in set (0.00 sec)
+
+//To display id,name and totalsale of the product who belongs to the year 2021 and group by pid having totalsale value greater than 500
+
+mysql> select pid,name,sum(totalcost) totalsale from product
+    -> where extract(year from doj)="2021"
+    -> group by pid having sum(totalcost)>500;
++------+-------+-----------+
+| pid  | name  | totalsale |
++------+-------+-----------+
+|    1 | Mouse |      1100 |
++------+-------+-----------+
+1 row in set (0.01 sec)
+
+//To display minimum totalcost out of all products totalcost
+
+mysql> select min(totalcost) from product;
++----------------+
+| min(totalcost) |
++----------------+
+|            100 |
++----------------+
+1 row in set (0.01 sec)
+
+//To display maximum totalcost out of all products totalcost
+
+mysql> select max(totalcost) from product;
++----------------+
+| max(totalcost) |
++----------------+
+|            600 |
++----------------+
+1 row in set (0.00 sec)
+
+//To display sum of all products totalcost
+
+mysql> select sum(totalcost) from product;
++----------------+
+| sum(totalcost) |
++----------------+
+|           1800 |
++----------------+
+1 row in set (0.00 sec)
+
+//To display average of all products totalcost
+
+mysql> select avg(totalcost) from product;
++----------------+
+| avg(totalcost) |
++----------------+
+|       300.0000 |
++----------------+
+1 row in set (0.00 sec)
+
+//Inserting records in product table
+
+mysql> insert into product(pid,name,doj,unitcost,quantity) values(3,"Cpu","2022-05-04",400,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product(pid,doj,unitcost,quantity) values(3,"2022-07-12",300,2);
+Query OK, 1 row affected (0.00 sec)
+
+//Updating product table
+
+mysql> update product
+    -> set totalcost=unitcost*quantity//Calculating the value of totalcost where pid is 3
+    -> where pid=3;
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 04
+
+//Display all rows and coloumn of table
+
+mysql> select * from product;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
+|    3 | Cpu      | 2022-05-04 |      400 |        1 |       400 |
+|    3 | NULL     | 2022-07-12 |      300 |        2 |       600 |
++------+----------+------------+----------+----------+-----------+
+8 rows in set (0.00 sec)
+
+//To display the count of number of records present in a table
+
+mysql> select count(*) from product;
++----------+
+| count(*) |
++----------+
+|        8 |
++----------+
+1 row in set (0.00 sec)
+
+//To display the count of number of records present in a table where name is not null
+
+mysql> select count(name) from product;
++-------------+
+| count(name) |
++-------------+
+|           7 |
++-------------+
+1 row in set (0.00 sec)
+
+//To display the count of number of records present in a table where name is not null and unique 
+
+mysql> select count(distinct name) from product;
++----------------------+
+| count(distinct name) |
++----------------------+
+|                    3 |
++----------------------+
+1 row in set (0.01 sec)
+
+//To display pid,name,totalcost and year( using extract function) from the product table
+
+mysql> select pid,name,extract(Year from doj)year,totalcost from product;
++------+----------+------+-----------+
+| pid  | name     | year | totalcost |
++------+----------+------+-----------+
+|    1 | Mouse    | 2021 |       100 |
+|    1 | Mouse    | 2021 |       400 |
+|    1 | Mouse    | 2021 |       600 |
+|    2 | Keyboard | 2021 |       100 |
+|    2 | Keyboard | 2022 |       100 |
+|    1 | Mouse    | 2022 |       500 |
+|    3 | Cpu      | 2022 |       400 |
+|    3 | NULL     | 2022 |       600 |
++------+----------+------+-----------+
+8 rows in set (0.00 sec)
+
+//To display count of each products sale record group wise by product name
+
+mysql> select name,count(*) from product group by name;
++----------+----------+
+| name     | count(*) |
++----------+----------+
+| Mouse    |        4 |
+| Keyboard |        2 |
+| Cpu      |        1 |
+| NULL     |        1 |
++----------+----------+
+4 rows in set (0.00 sec)
+
+//To display count of each products sale record where doj year =2022 (using extract function),group wise by product name 
+
+mysql> select name,count(*) from product where extract(Year from doj)="2022" group by name;
++----------+----------+
+| name     | count(*) |
++----------+----------+
+| Keyboard |        1 |
+| Mouse    |        1 |
+| Cpu      |        1 |
+| NULL     |        1 |
++----------+----------+
+4 rows in set (0.00 sec)
+
+//To display count of each products sale record group wise by product name having average of totalcost  greater than 200
+
+mysql> select name,count(*) from product group by name having avg(totalcost)>200;
++-------+----------+
+| name  | count(*) |
++-------+----------+
+| Mouse |        4 |
+| Cpu   |        1 |
+| NULL  |        1 |
++-------+----------+
+3 rows in set (0.00 sec)
+
+//To display all the records of product table(where totalcost is in descending order (big to small))
+
+mysql> select * from product order by totalcost desc;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    3 | NULL     | 2022-07-12 |      300 |        2 |       600 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    3 | Cpu      | 2022-05-04 |      400 |        1 |       400 |
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
++------+----------+------------+----------+----------+-----------+
+8 rows in set (0.01 sec)
+
+//To display the first record of product table (offset of table)
+
+mysql> select * from product order by totalcost desc limit 1;
++------+-------+------------+----------+----------+-----------+
+| pid  | name  | doj        | unitcost | quantity | totalcost |
++------+-------+------------+----------+----------+-----------+
+|    1 | Mouse | 2021-05-22 |      300 |        2 |       600 |
++------+-------+------------+----------+----------+-----------+
+1 row in set (0.01 sec)
+
+//To display the next three records and skipping the first record of product table 
+
+mysql> select * from product order by totalcost desc limit 1,3;
++------+-------+------------+----------+----------+-----------+
+| pid  | name  | doj        | unitcost | quantity | totalcost |
++------+-------+------------+----------+----------+-----------+
+|    3 | NULL  | 2022-07-12 |      300 |        2 |       600 |
+|    1 | Mouse | 2022-06-22 |      500 |        1 |       500 |
+|    1 | Mouse | 2021-03-19 |      200 |        2 |       400 |
++------+-------+------------+----------+----------+-----------+
+3 rows in set (0.00 sec)
+
+//Display date by changing format using str_to date function 
+
+mysql> select str_to_date ("12-07-2022","%d-%m-%Y");
++---------------------------------------+
+| str_to_date ("12-07-2022","%d-%m-%Y") |
++---------------------------------------+
+| 2022-07-12                            |
++---------------------------------------+
+1 row in set (0.00 sec)
+
+//To display the absolute of the given value 
+
+mysql> select abs(-15);
++----------+
+| abs(-15) |
++----------+
+|       15 |
++----------+
+1 row in set (0.01 sec)
+
+//To display the squareroot of the given value 
+
+mysql> select sqrt(64);
++----------+
+| sqrt(64) |
++----------+
+|        8 |
++----------+
+1 row in set (0.01 sec)
+
+//To display the raise to power of the given value 
+
+mysql> select power(6,2);
++------------+
+| power(6,2) |
++------------+
+|         36 |
++------------+
+1 row in set (0.00 sec)
+
+//To display the round up of the given value 
+
+mysql> select ceil(13.6);
++------------+
+| ceil(13.6) |
++------------+
+|         14 |
++------------+
+1 row in set (0.00 sec)
+
+//To display the round down of the given value 
+
+mysql> select floor(14.2);
++-------------+
+| floor(14.2) |
++-------------+
+|          14 |
++-------------+
+1 row in set (0.01 sec)

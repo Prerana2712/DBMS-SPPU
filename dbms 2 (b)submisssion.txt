@@ -1,0 +1,215 @@
+//Name -Prerana Gajare                        Roll no-SI41                         Class-SEIT 
+
+
+2 b) Boolean operators and pattern matching
+
+// Create table name employee 
+mysql> create table employee(eid int primary key,ename varchar(10),doj date,toj time,city varchar(10),salary int); 
+Query OK, 0 rows affected (0.02 sec) 
+ 
+// describing table employee 
+mysql> desc employee; 
++--------+-------------+------+-----+---------+-------+ 
+| Field  | Type        | Null | Key | Default | Extra | 
++--------+-------------+------+-----+---------+-------+ 
+| eid    | int         | NO   | PRI | NULL    |       | 
+| ename  | varchar(10) | YES  |     | NULL    |       | 
+| doj    | date        | YES  |     | NULL    |       | 
+| toj    | time        | YES  |     | NULL    |       | 
+| city   | varchar(10) | YES  |     | NULL    |       | 
+| salary | int         | YES  |     | NULL    |       | 
++--------+-------------+------+-----+---------+-------+ 
+6 rows in set (0.00 sec) 
+ 
+// Inserting data into the table employee
+mysql> insert into employee values(101,"Abhi",'2021-01-27','08:15:32',"pune",10000); 
+Query OK, 1 row affected (0.01 sec) 
+ 
+// Inserting data into the table employee
+mysql> insert into employee values(102,"Bhim",'2021-06-15','09:05:10',"nagpur",15000),(103,"Caira",'2021-09-
+04','08:30:20',"pune",20000),(104,"Dev",'2021-12-
+22','09:15:30',"mumbai",50000),(105,"Esha",'2022-01-17','08:42:25',"pune",10000); 
+Query OK, 4 rows affected (0.00 sec) 
+Records: 4  Duplicates: 0  Warnings: 0 
+ 
+//Display all the records
+mysql> select * from employee; 
++-----+-------+------------+----------+--------+--------+ 
+| eid | ename | doj        | toj      | city   | salary | 
++-----+-------+------------+----------+--------+--------+ 
+| 101 | Abhi  | 2021-01-27 | 08:15:32 | pune   |  10000 | 
+| 102 | Bhim  | 2021-06-15 | 09:05:10 | nagpur |  15000 | 
+| 103 | Caira | 2021-09-04 | 08:30:20 | pune   |  20000 | 
+| 104 | Dev   | 2021-12-22 | 09:15:30 | mumbai |  50000 | 
+| 105 | Esha  | 2022-01-17 | 08:42:25 | pune   |  10000 | 
++-----+-------+------------+----------+--------+--------+ 
+5 rows in set (0.00 sec) 
+
+//Logical and  operator 
+mysql> select eid,ename,city,salary from employee 
+    -> where city="pune" && salary=10000; 
++-----+-------+------+--------+ 
+| eid | ename | city | salary | 
++-----+-------+------+--------+ 
+| 101 | Abhi  | pune |  10000 | 
+| 105 | Esha  | pune |  10000 | 
++-----+-------+------+--------+ 
+2	rows in set, 1 warning (0.01 sec) 
+ 
+//Logical or operator 
+ 
+mysql> select eid,ename,city,salary from employee 
+    -> where city="pune" or salary=10000; 
++-----+-------+------+--------+ 
+| eid | ename | city | salary | 
++-----+-------+------+--------+ 
+| 101 | Abhi  | pune |  10000 | 
+| 103 | Caira | pune |  20000 | 
+| 105 | Esha  | pune |  10000 | 
++-----+-------+------+--------+ 
+3	rows in set (0.00 sec) 
+ 
+//Logical not operator 
+ 
+mysql> select * from employee 
+    -> where not salary>15000; 
++-----+-------+------------+----------+--------+--------+ 
+| eid | ename | doj        | toj      | city   | salary | 
++-----+-------+------------+----------+--------+--------+ 
+| 101 | Abhi  | 2021-01-27 | 08:15:32 | pune   |  10000 | 
+| 102 | Bhim  | 2021-06-15 | 09:05:10 | nagpur |  15000 | 
+| 105 | Esha  | 2022-01-17 | 08:42:25 | pune   |  10000 | +-----+-------+------------+----------+--------+--------+ 
+3 rows in set (0.00 sec) 
+ 
+// Inserting data into the table employee
+mysql> insert into employee values(106,"Fara",'2022-02-1','08:15:32',"pune",10000); 
+Query OK, 1 row affected (0.00 sec) 
+ 
+//Logical multiple and operator 
+ 
+mysql> select eid,ename,city,salary from employee 
+    ->  where city="pune" and toj="08:15:32" and salary=10000; 
++-----+-------+------+--------+ 
+| eid | ename | city | salary | 
++-----+-------+------+--------+ 
+| 101 | Abhi  | pune |  10000 | 
+| 106 | Fara  | pune |  10000 | 
++-----+-------+------+--------+ 
+2 rows in set (0.01 sec) 
+ 
+//Logical and - or comparision operator 
+ 
+mysql> select eid,ename,city,salary from employee 
+    -> where city="pune" or city="mumbai" and salary>15000; 
++-----+-------+--------+--------+ 
+| eid | ename | city   | salary | 
++-----+-------+--------+--------+ 
+| 101 | Abhi  | pune   |  10000 | | 103 | Caira | pune   |  20000 | 
+| 104 | Dev   | mumbai |  50000 | 
+| 105 | Esha  | pune   |  10000 | 
+| 106 | Fara  | pune   |  10000 | 
++-----+-------+--------+--------+ 
+5 rows in set (0.00 sec) 
+ 
+//Logical not -and comparision operator 
+ 
+mysql>  select eid,ename,city,salary from employee 
+    -> where not city="pune" and salary=15000; 
++-----+-------+--------+--------+ 
+| eid | ename | city   | salary | 
++-----+-------+--------+--------+ 
+| 102 | Bhim  | nagpur |  15000 | 
++-----+-------+--------+--------+ 
+1 row in set (0.00 sec) 
+
+//Logical not -and comparision operator 
+mysql> select eid,ename,city,salary from employee
+    -> where city="pune" and not salary=15000;
++-----+-------+------+--------+
+| eid | ename | city | salary |
++-----+-------+------+--------+
+| 101 | Abhi  | pune |  10000 |
+| 103 | Caira | pune |  20000 |
+| 105 | Esha  | pune |  10000 |
+| 106 | Fara  | pune |  10000 |
++-----+-------+------+--------+
+4 rows in set (0.00 sec)
+
+//Logical multiple not -and comparision operator 
+mysql> select eid,ename,city,salary from employee
+    -> where not city="pune" and not city="nagpur" and not salary=15000;
++-----+-------+--------+--------+
+| eid | ename | city   | salary |
++-----+-------+--------+--------+
+| 104 | Dev   | mumbai |  50000 |
++-----+-------+--------+--------+
+1 row in set (0.00 sec)
+
+// Inserting data into the table employee
+mysql> insert into employee values(107,"Aaru",'2022-02-2','08:45:32',"mumbai",13000);
+ Query OK, 1 row affected (0.00 sec) 
+
+//Pattern Matching  
+ 
+mysql> select * from employee 
+    -> where ename like 'a%'; 
++-----+-------+------------+----------+--------+--------+ 
+| eid | ename | doj        | toj      | city   | salary | 
++-----+-------+------------+----------+--------+--------+ 
+| 101 | Abhi  | 2021-01-27 | 08:15:32 | pune   |  10000 | 
+| 107 | Aaru  | 2022-02-02 | 08:45:32 | mumbai |  13000 | 
++-----+-------+------------+----------+--------+--------+ 
+2 rows in set (0.00 sec) 
+ 
+mysql> select * from employee 
+    -> where ename like '__i%'; 
++-----+-------+------------+----------+--------+--------+ 
+| eid | ename | doj        | toj      | city   | salary | 
++-----+-------+------------+----------+--------+--------+ 
+| 102 | Bhim  | 2021-06-15 | 09:05:10 | nagpur |  15000 | 
+| 103 | Caira | 2021-09-04 | 08:30:20 | pune   |  20000 | 
++-----+-------+------------+----------+--------+--------+ 
+2 rows in set (0.00 sec) 
+ 
+//In operator 
+ 
+mysql> select * from employee 
+    -> where ename in ('abhi','bhim','ram'); 
++-----+-------+------------+----------+--------+--------+ 
+| eid | ename | doj        | toj      | city   | salary | +-----+-------+------------+----------+--------+--------+ 
+| 101 | Abhi  | 2021-01-27 | 08:15:32 | pune   |  10000 | 
+| 102 | Bhim  | 2021-06-15 | 09:05:10 | nagpur |  15000 | 
++-----+-------+------------+----------+--------+--------+ 
+2 rows in set (0.00 sec) 
+ 
+//Not in operator 
+ 
+mysql> select * from employee 
+    -> where ename not in ('abhi','bhim','ram'); 
++-----+-------+------------+----------+--------+--------+ 
+| eid | ename | doj        | toj      | city   | salary | 
++-----+-------+------------+----------+--------+--------+ 
+| 103 | Caira | 2021-09-04 | 08:30:20 | pune   |  20000 | 
+| 104 | Dev   | 2021-12-22 | 09:15:30 | mumbai |  50000 | 
+| 105 | Esha  | 2022-01-17 | 08:42:25 | pune   |  10000 | 
+| 106 | Fara  | 2022-02-01 | 08:15:32 | pune   |  10000 | 
+| 107 | Aaru  | 2022-02-02 | 08:45:32 | mumbai |  13000 | 
++-----+-------+------------+----------+--------+--------+ 
+5 rows in set (0.00 sec) 
+ 
+//Between operator 
+ 
+mysql> select * from employee 
+    -> where salary between 10000 and 20000; 
++-----+-------+------------+----------+--------+--------+ 
+| eid | ename | doj        | toj      | city   | salary | 
++-----+-------+------------+----------+--------+--------+ 
+| 101 | Abhi  | 2021-01-27 | 08:15:32 | pune   |  10000 | 
+| 102 | Bhim  | 2021-06-15 | 09:05:10 | nagpur |  15000 | 
+| 103 | Caira | 2021-09-04 | 08:30:20 | pune   |  20000 | 
+| 105 | Esha  | 2022-01-17 | 08:42:25 | pune   |  10000 | 
+| 106 | Fara  | 2022-02-01 | 08:15:32 | pune   |  10000 | 
+| 107 | Aaru  | 2022-02-02 | 08:45:32 | mumbai |  13000 | 
++-----+-------+------------+----------+--------+--------+ 
+6 rows in set (0.01 sec) 
+ 

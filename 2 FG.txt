@@ -1,0 +1,704 @@
+//Name -Prerana Gajare  	Roll no-SI41  	Class-SEIT
+
+2 f,g ) Correlated subquery and subquery,Group by, order by, having, limit
+
+SOURCE CODE :-
+
+ //To show databases
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| customer           |
+| emp                |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sale               |
+| student            |
+| sys                |
++--------------------+
+10 rows in set (0.14 sec)
+
+//Using employee database
+mysql> use employee;
+Database changed
+
+//Showing the database in use
+mysql> select database();
++------------+
+| database() |
++------------+
+| employee   |
++------------+
+1 row in set (0.00 sec)
+
+//Creating a table name emp
+mysql> create table emp(eid int primary key,name varchar(10),doj date,city varchar(10),salary int);
+Query OK, 0 rows affected (0.05 sec)
+
+//Describing the table
+mysql> desc emp;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| eid    | int         | NO   | PRI | NULL    |       |
+| name   | varchar(10) | YES  |     | NULL    |       |
+| doj    | date        | YES  |     | NULL    |       |
+| city   | varchar(10) | YES  |     | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.02 sec)
+
+//Inserting values in emp table
+mysql> insert into emp values(1,"Shruti","2021-01-01","pune",40000),(2,"Tinu","2020-01-01","mumbai",50000),(3,"Vishwa","2021-06-21","mumbai",30000),(4,"Riya","2022-01-01","banglore",80000),(5,"Khushi","2020-05-21","mumbai",45000),(6,"Parth","2021-09-21","banglore",30000),(7,"Minal","2011-09-02","pune",100000);
+Query OK, 7 rows affected (0.02 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> insert into emp(eid,doj,city,salary) values(8,"2022-02-11","pune",30000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into emp values(9,"Mina","2022-02-06","pune",100000),(10,"Veena","2022-02-16","pune",80000);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+//Display all rows and coloumns of the table
+mysql> select * from emp;
++-----+--------+------------+----------+--------+
+| eid | name   | doj        | city     | salary |
++-----+--------+------------+----------+--------+
+|   1 | Shruti | 2021-01-01 | pune     |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai   |  50000 |
+|   3 | Vishwa | 2021-06-21 | mumbai   |  30000 |
+|   4 | Riya   | 2022-01-01 | banglore |  80000 |
+|   5 | Khushi | 2020-05-21 | mumbai   |  45000 |
+|   6 | Parth  | 2021-09-21 | banglore |  30000 |
+|   7 | Minal  | 2011-09-02 | pune     | 100000 |
+|   8 | NULL   | 2022-02-11 | pune     |  30000 |
+|   9 | Mina   | 2022-02-06 | pune     | 100000 |
+|  10 | Veena  | 2022-02-16 | pune     |  80000 |
++-----+--------+------------+----------+--------+
+10 rows in set (0.01 sec)
+
+//ORDER BY
+//To display the amount of salary of employees in descending order
+mysql> select salary from emp order by salary desc ;
++--------+
+| salary |
++--------+
+| 100000 |
+| 100000 |
+|  80000 |
+|  80000 |
+|  50000 |
+|  45000 |
+|  40000 |
+|  30000 |
+|  30000 |
+|  30000 |
++--------+
+10 rows in set (0.00 sec)
+
+//SUBQUERY
+//To display all of the records where salary is equal to maximum salary from emp table
+mysql> select * from emp where salary=(select max(salary) from emp);
++-----+-------+------------+------+--------+
+| eid | name  | doj        | city | salary |
++-----+-------+------------+------+--------+
+|   7 | Minal | 2011-09-02 | pune | 100000 |
+|   9 | Mina  | 2022-02-06 | pune | 100000 |
++-----+-------+------------+------+--------+
+2 rows in set (0.01 sec)
+
+//SUBQUERY,ORDER BY,LIMIT
+//To display all of the records where salary is maximum (or isequal to first record of  salary arranged in descending order(big to small) )from emp table
+mysql> select * from emp where salary=(select salary from emp order by salary desc limit 1);
++-----+-------+------------+------+--------+
+| eid | name  | doj        | city | salary |
++-----+-------+------------+------+--------+
+|   7 | Minal | 2011-09-02 | pune | 100000 |
+|   9 | Mina  | 2022-02-06 | pune | 100000 |
++-----+-------+------------+------+--------+
+2 rows in set (0.01 sec)
+
+//SUBQUERY,ORDER BY,LIMIT
+//To display the records of the employees having second highest salary( using order by descending and limit)
+mysql> select * from emp where salary=(select salary from emp order by salary desc limit 2,1);
++-----+-------+------------+----------+--------+
+| eid | name  | doj        | city     | salary |
++-----+-------+------------+----------+--------+
+|   4 | Riya  | 2022-01-01 | banglore |  80000 |
+|  10 | Veena | 2022-02-16 | pune     |  80000 |
++-----+-------+------------+----------+--------+
+2 rows in set (0.00 sec)
+
+//ORDER BY
+//To display the amount of salary of employees in descending order without repetation (using distinct)
+mysql> select distinct salary from emp order by salary desc ;
++--------+
+| salary |
++--------+
+| 100000 |
+|  80000 |
+|  50000 |
+|  45000 |
+|  40000 |
+|  30000 |
++--------+
+6 rows in set (0.01 sec)
+
+//ORDER BY AND LIMIT
+//To display first salary amount which is obtained when the coloumn is arranged in distinct and descending order
+mysql> select distinct salary from emp order by salary desc limit 1;
++--------+
+| salary |
++--------+
+| 100000 |
++--------+
+1 row in set (0.00 sec)
+
+//SUBQUERY,ORDER BY,LIMIT
+//To display the records of the employees having second highest salary( using distinct,order by descending ,limit)
+mysql> select * from emp where salary=(select distinct salary from emp order by salary desc limit 1,1);
++-----+-------+------------+----------+--------+
+| eid | name  | doj        | city     | salary |
++-----+-------+------------+----------+--------+
+|   4 | Riya  | 2022-01-01 | banglore |  80000 |
+|  10 | Veena | 2022-02-16 | pune     |  80000 |
++-----+-------+------------+----------+--------+
+2 rows in set (0.00 sec)
+
+//To display all the rows and coloumn of emp table
+
+mysql> select * from emp;
++-----+--------+------------+----------+--------+
+| eid | name   | doj        | city     | salary |
++-----+--------+------------+----------+--------+
+|   1 | Shruti | 2021-01-01 | pune     |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai   |  50000 |
+|   3 | Vishwa | 2021-06-21 | mumbai   |  30000 |
+|   4 | Riya   | 2022-01-01 | banglore |  80000 |
+|   5 | Khushi | 2020-05-21 | mumbai   |  45000 |
+|   6 | Parth  | 2021-09-21 | banglore |  30000 |
+|   7 | Minal  | 2011-09-02 | pune     | 100000 |
+|   8 | NULL   | 2022-02-11 | pune     |  30000 |
+|   9 | Mina   | 2022-02-06 | pune     | 100000 |
+|  10 | Veena  | 2022-02-16 | pune     |  80000 |
++-----+--------+------------+----------+--------+
+10 rows in set (0.01 sec)
+
+// NESTED SUBQUERY
+//To display the records of second highest salary(by checking if the salary is equal to maximum salary but not equal to initial max salary(100000))
+mysql> select * from emp where salary=(select max(salary) from emp where salary <> (select max(salary) from emp));
++-----+-------+------------+----------+--------+
+| eid | name  | doj        | city     | salary |
++-----+-------+------------+----------+--------+
+|   4 | Riya  | 2022-01-01 | banglore |  80000 |
+|  10 | Veena | 2022-02-16 | pune     |  80000 |
++-----+-------+------------+----------+--------+
+2 rows in set (0.01 sec)
+
+//GROUP BY ,HAVING
+//To display the city and number of employee working in city having count of number of employee in a city greater than 3 ,grouping by city
+mysql> select city,count(*) no_of_emp from emp group by city having count(city)>3;
++------+-----------+
+| city | no_of_emp |
++------+-----------+
+| pune |         5 |
++------+-----------+
+1 row in set (0.01 sec)
+
+//GROUP BY ,HAVING
+//To display the city having count of number of employee in a city greater than 3 ,grouping by city
+mysql> select city from emp group by city having count(city)>3;
++------+
+| city |
++------+
+| pune |
++------+
+1 row in set (0.00 sec)
+
+//SUBQUERY,GROUP BY ,HAVING
+//To  details of employees working in city having count of number of employee in a city greater than 3; 
+mysql> select * from emp where city=(select city from emp group by city having count(city)>3);
++-----+--------+------------+------+--------+
+| eid | name   | doj        | city | salary |
++-----+--------+------------+------+--------+
+|   1 | Shruti | 2021-01-01 | pune |  40000 |
+|   7 | Minal  | 2011-09-02 | pune | 100000 |
+|   8 | NULL   | 2022-02-11 | pune |  30000 |
+|   9 | Mina   | 2022-02-06 | pune | 100000 |
+|  10 | Veena  | 2022-02-16 | pune |  80000 |
++-----+--------+------------+------+--------+
+5 rows in set (0.01 sec)
+
+//Inserting a record in emp table
+mysql> insert into emp values(11,"Zara","2022-01-15","mumbai",50000);
+Query OK, 1 row affected (0.00 sec)
+
+//SUBQUERY,GROUP BY ,HAVING
+//As the inner query returns more than one values i.e. pune,mumbai and the '=' is only used for exact match this query returns an error
+mysql> select * from emp where city= (select city from emp group by city having count(city)>3);
+ERROR 1242 (21000): Subquery returns more than 1 row
+
+//To display details of employees working in cities(pune,mumbai) having count of number of employee in a city greater than 3; 
+mysql> select * from emp where city in (select city from emp group by city having count(city)>3);
++-----+--------+------------+--------+--------+
+| eid | name   | doj        | city   | salary |
++-----+--------+------------+--------+--------+
+|   1 | Shruti | 2021-01-01 | pune   |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai |  50000 |
+|   3 | Vishwa | 2021-06-21 | mumbai |  30000 |
+|   5 | Khushi | 2020-05-21 | mumbai |  45000 |
+|   7 | Minal  | 2011-09-02 | pune   | 100000 |
+|   8 | NULL   | 2022-02-11 | pune   |  30000 |
+|   9 | Mina   | 2022-02-06 | pune   | 100000 |
+|  10 | Veena  | 2022-02-16 | pune   |  80000 |
+|  11 | Zara   | 2022-01-15 | mumbai |  50000 |
++-----+--------+------------+--------+--------+
+9 rows in set (0.01 sec)
+
+//Creating table name proj
+mysql> create table proj(pid int,proj_name varchar(10),eid int);
+Query OK, 0 rows affected (0.02 sec)
+
+//Describing the table proj
+mysql> desc proj;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| pid       | int         | YES  |     | NULL    |       |
+| proj_name | varchar(10) | YES  |     | NULL    |       |
+| eid       | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+//Inserting the records in proj table
+mysql> insert into proj values(101,"Cloud",1),(102,"Robotics",2);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+//To display all the rows and coloumns of proj table
+mysql> select * from proj;
++------+-----------+------+
+| pid  | proj_name | eid  |
++------+-----------+------+
+|  101 | Cloud     |    1 |
+|  102 | Robotics  |    2 |
++------+-----------+------+
+2 rows in set (0.00 sec)
+
+//To display all the rows and coloumns of emp table
+mysql> select * from emp;
++-----+--------+------------+----------+--------+
+| eid | name   | doj        | city     | salary |
++-----+--------+------------+----------+--------+
+|   1 | Shruti | 2021-01-01 | pune     |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai   |  50000 |
+|   3 | Vishwa | 2021-06-21 | mumbai   |  30000 |
+|   4 | Riya   | 2022-01-01 | banglore |  80000 |
+|   5 | Khushi | 2020-05-21 | mumbai   |  45000 |
+|   6 | Parth  | 2021-09-21 | banglore |  30000 |
+|   7 | Minal  | 2011-09-02 | pune     | 100000 |
+|   8 | NULL   | 2022-02-11 | pune     |  30000 |
+|   9 | Mina   | 2022-02-06 | pune     | 100000 |
+|  10 | Veena  | 2022-02-16 | pune     |  80000 |
+|  11 | Zara   | 2022-01-15 | mumbai   |  50000 |
++-----+--------+------------+----------+--------+
+11 rows in set (0.00 sec)
+
+//CORRELATED QUERY 
+//To display details of emp working on project (emp,proj)
+mysql> select * from emp where eid in (select eid from proj);
++-----+--------+------------+--------+--------+
+| eid | name   | doj        | city   | salary |
++-----+--------+------------+--------+--------+
+|   1 | Shruti | 2021-01-01 | pune   |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai |  50000 |
++-----+--------+------------+--------+--------+
+2 rows in set (0.00 sec)
+
+//To display details of emp working on project (emp,proj)
+mysql> select * from emp where eid in (1,2);
++-----+--------+------------+--------+--------+
+| eid | name   | doj        | city   | salary |
++-----+--------+------------+--------+--------+
+|   1 | Shruti | 2021-01-01 | pune   |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai |  50000 |
++-----+--------+------------+--------+--------+
+2 rows in set (0.01 sec)
+
+//To display details of emp working on project (emp,proj),(Correlated query)
+mysql> select * from emp where eid in (select eid from proj where emp.eid=proj.eid);
++-----+--------+------------+--------+--------+
+| eid | name   | doj        | city   | salary |
++-----+--------+------------+--------+--------+
+|   1 | Shruti | 2021-01-01 | pune   |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai |  50000 |
++-----+--------+------------+--------+--------+
+2 rows in set (0.00 sec)
+
+//To display details of emp working on project (emp,proj),(Correlated query)
+mysql> select * from emp where exists (select 'test' from proj where proj.eid=emp.eid);
++-----+--------+------------+--------+--------+
+| eid | name   | doj        | city   | salary |
++-----+--------+------------+--------+--------+
+|   1 | Shruti | 2021-01-01 | pune   |  40000 |
+|   2 | Tinu   | 2020-01-01 | mumbai |  50000 |
++-----+--------+------------+--------+--------+
+2 rows in set (0.00 sec)
+
+//To display details of emp not working on project (emp,proj),(Correlated query)
+mysql> select * from emp where not exists (select 'test' from proj where proj.eid=emp.eid);
++-----+--------+------------+----------+--------+
+| eid | name   | doj        | city     | salary |
++-----+--------+------------+----------+--------+
+|   3 | Vishwa | 2021-06-21 | mumbai   |  30000 |
+|   4 | Riya   | 2022-01-01 | banglore |  80000 |
+|   5 | Khushi | 2020-05-21 | mumbai   |  45000 |
+|   6 | Parth  | 2021-09-21 | banglore |  30000 |
+|   7 | Minal  | 2011-09-02 | pune     | 100000 |
+|   8 | NULL   | 2022-02-11 | pune     |  30000 |
+|   9 | Mina   | 2022-02-06 | pune     | 100000 |
+|  10 | Veena  | 2022-02-16 | pune     |  80000 |
+|  11 | Zara   | 2022-01-15 | mumbai   |  50000 |
++-----+--------+------------+----------+--------+
+9 rows in set (0.01 sec)
+
+
+//Creating a table of acc_mstr
+mysql> create table acc_mstr(acc_no int unique,curbal int,brno int);
+Query OK, 0 rows affected (0.02 sec)
+
+//Inserting records in acc_mstr table
+mysql> insert into acc_mstr values(1,2000,1),(2,3000,1),(3,7000,2),(4,8000,3),(5,2000,3),(6,9000,4),(7,6000,3);
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+//To display all of the rows and coloumn of acc_mstr table
+mysql> select * from acc_mstr;
++--------+--------+------+
+| acc_no | curbal | brno |
++--------+--------+------+
+|      1 |   2000 |    1 |
+|      2 |   3000 |    1 |
+|      3 |   7000 |    2 |
+|      4 |   8000 |    3 |
+|      5 |   2000 |    3 |
+|      6 |   9000 |    4 |
+|      7 |   6000 |    3 |
++--------+--------+------+
+7 rows in set (0.00 sec)
+
+//To display customer details if curbal is greater than average of curbal of a branch
+mysql> select * from acc_mstr a where curbal > (select avg(curbal) from acc_mstr where a.brno=brno);
++--------+--------+------+
+| acc_no | curbal | brno |
++--------+--------+------+
+|      2 |   3000 |    1 |
+|      4 |   8000 |    3 |
+|      7 |   6000 |    3 |
++--------+--------+------+
+3 rows in set (0.00 sec)
+
+//Create the table name cust_mstr
+mysql> create table cust_mstr(cust_no int unique,fname varchar(10),lname varchar(10));
+Query OK, 0 rows affected (0.04 sec)
+
+//Create the table name fd_cust_dtls
+mysql> create table fd_cust_dtls(cust_no int,fd_no int);
+Query OK, 0 rows affected (0.01 sec)
+
+//Create the table name fd_dtls
+mysql> create table fd_dtls(fd_no int unique,st_date date,end_date date,amt int);
+Query OK, 0 rows affected (0.02 sec)
+
+//Describing table cust_mstr
+mysql> desc cust_mstr;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cust_no | int         | YES  | UNI | NULL    |       |
+| fname   | varchar(10) | YES  |     | NULL    |       |
+| lname   | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+//Describing table fd_cust_dtls
+mysql> desc fd_cust_dtls;
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| cust_no | int  | YES  |     | NULL    |       |
+| fd_no   | int  | YES  |     | NULL    |       |
++---------+------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+//Describing table fd_dtls
+mysql> desc fd_dtls;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| fd_no    | int  | YES  | UNI | NULL    |       |
+| st_date  | date | YES  |     | NULL    |       |
+| end_date | date | YES  |     | NULL    |       |
+| amt      | int  | YES  |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+//Inserting records into cust_mstr table 
+mysql> insert into cust_mstr values(1,"Preeti","Pawar"),(2,"Maitri","Patel"),(3,"Dev","Shah");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//To display all rows and coloumns of cust_mstr table 
+mysql> select * from cust_mstr;
++---------+--------+-------+
+| cust_no | fname  | lname |
++---------+--------+-------+
+|       1 | Preeti | Pawar |
+|       2 | Maitri | Patel |
+|       3 | Dev    | Shah  |
++---------+--------+-------+
+3 rows in set (0.00 sec)
+
+//Inserting records into fd_cust_dtls table 
+mysql> insert into fd_cust_dtls values(1,101),(2,102),(3,103);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//To display all rows and coloumns of fd_cust_dtls table 
+mysql> select * from fd_cust_dtls;
++---------+-------+
+| cust_no | fd_no |
++---------+-------+
+|       1 |   101 |
+|       2 |   102 |
+|       3 |   103 |
++---------+-------+
+3 rows in set (0.00 sec)
+
+//Inserting records into fd_dtls table 
+mysql> insert into fd_dtls values(101,"2022-02-01","2022-02-28",3000),(102,"2022-02-01","2022-05-12",9000),(103,"2021-03-17","2022-01-28",15000);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//To display all rows and coloumns of fd_dtls table 
+mysql> select * from fd_dtls;
++-------+------------+------------+-------+
+| fd_no | st_date    | end_date   | amt   |
++-------+------------+------------+-------+
+|   101 | 2022-02-01 | 2022-02-28 |  3000 |
+|   102 | 2022-02-01 | 2022-05-12 |  9000 |
+|   103 | 2021-03-17 | 2022-01-28 | 15000 |
++-------+------------+------------+-------+
+3 rows in set (0.00 sec)
+
+//To display details of customers with fd amount greater than 5000 
+mysql> select * from cust_mstr where cust_no in (select cust_no from fd_cust_dtls t where fd_no in (select fd_no from fd_dtls where amt>5000));
++---------+--------+-------+
+| cust_no | fname  | lname |
++---------+--------+-------+
+|       2 | Maitri | Patel |
+|       3 | Dev    | Shah  |
++---------+--------+-------+
+2 rows in set (0.00 sec)
+
+
+//To display details of customers with fd amount greater than 5000 and FD duration is greater than 60 days
+mysql> select * from cust_mstr where cust_no in (select cust_no from fd_cust_dtls t where fd_no in (select fd_no from fd_dtls where amt>5000 and datediff(end_date,st_date)>60));
++---------+--------+-------+
+| cust_no | fname  | lname |
++---------+--------+-------+
+|       2 | Maitri | Patel |
+|       3 | Dev    | Shah  |
++---------+--------+-------+
+2 rows in set (0.01 sec)
+
+// Group by, order by, having, limit
+
+//Creating table name product
+
+mysql> create table product(pid int,name varchar(20),doj date,unitcost int,quantity int);
+Query OK, 0 rows affected (0.02 sec)
+
+//Inserting values in the table product
+
+mysql> insert into product values(1,"Mouse","2021-02-14",100,1),(1,"Mouse","2021-03-19",200,2),(1,"Mouse","2021-05-22",300,2),(2,"Keyboard","2021-02-25",50,2),(2,"Keyboard","2022-03-17",100,1),(1,"Mouse","2022-06-22",500,1);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+//Display all rows and coloumn of table
+
+mysql> select * from product;
++------+----------+------------+----------+----------+
+| pid  | name     | doj        | unitcost | quantity |
++------+----------+------------+----------+----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |
++------+----------+------------+----------+----------+
+6 rows in set (0.01 sec)
+
+//Alter table to add a coloumn name total cost
+
+mysql> alter table product
+    -> add totalcost int;
+Query OK, 6 rows affected (0.09 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+//Updating product table
+
+mysql> update product
+    -> set totalcost=unitcost*quantity;//Calculating the value of totalcost
+Query OK, 6 rows affected (0.01 sec)
+Rows matched: 6  Changed: 6  Warnings: 0
+
+//Display all rows and coloumn of table
+
+mysql> select * from product;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
++------+----------+------------+----------+----------+-----------+
+6 rows in set (0.00 sec)
+
+//GROUP BY
+//To display id,name and totalsale of the product who belongs to the year 2021 and group by pid having totalsale value greater than 500
+
+mysql> select pid,name,sum(totalcost) totalsale from product
+    -> where extract(year from doj)="2021"
+    -> group by pid having sum(totalcost)>500;
++------+-------+-----------+
+| pid  | name  | totalsale |
++------+-------+-----------+
+|    1 | Mouse |      1100 |
++------+-------+-----------+
+1 row in set (0.01 sec)
+
+//Inserting records in product table
+
+mysql> insert into product(pid,name,doj,unitcost,quantity) values(3,"Cpu","2022-05-04",400,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into product(pid,doj,unitcost,quantity) values(3,"2022-07-12",300,2);
+Query OK, 1 row affected (0.00 sec)
+
+//Updating product table
+
+mysql> update product
+    -> set totalcost=unitcost*quantity//Calculating the value of totalcost where pid is 3
+    -> where pid=3;
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 04
+
+//Display all rows and coloumn of table
+
+mysql> select * from product;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
+|    3 | Cpu      | 2022-05-04 |      400 |        1 |       400 |
+|    3 | NULL     | 2022-07-12 |      300 |        2 |       600 |
++------+----------+------------+----------+----------+-----------+
+8 rows in set (0.00 sec)
+
+//GROUP BY
+//To display count of each products sale record group wise by product name
+
+mysql> select name,count(*) from product group by name;
++----------+----------+
+| name     | count(*) |
++----------+----------+
+| Mouse    |        4 |
+| Keyboard |        2 |
+| Cpu      |        1 |
+| NULL     |        1 |
++----------+----------+
+4 rows in set (0.00 sec)
+
+//GROUP BY
+//To display count of each products sale record where doj year =2022 (using extract function),group wise by product name 
+
+mysql> select name,count(*) from product where extract(Year from doj)="2022" group by name;
++----------+----------+
+| name     | count(*) |
++----------+----------+
+| Keyboard |        1 |
+| Mouse    |        1 |
+| Cpu      |        1 |
+| NULL     |        1 |
++----------+----------+
+4 rows in set (0.00 sec)
+
+//GROUP BY,HAVING
+//To display count of each products sale record group wise by product name having average of totalcost  greater than 200
+
+mysql> select name,count(*) from product group by name having avg(totalcost)>200;
++-------+----------+
+| name  | count(*) |
++-------+----------+
+| Mouse |        4 |
+| Cpu   |        1 |
+| NULL  |        1 |
++-------+----------+
+3 rows in set (0.00 sec)
+
+//ORDER BY
+//To display all the records of product table(where totalcost is in descending order (big to small))
+
+mysql> select * from product order by totalcost desc;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    3 | NULL     | 2022-07-12 |      300 |        2 |       600 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    3 | Cpu      | 2022-05-04 |      400 |        1 |       400 |
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
++------+----------+------------+----------+----------+-----------+
+8 rows in set (0.01 sec)
+
+//ORDER BY,LIMIT
+//To display the first record of product table (offset of table)
+
+mysql> select * from product order by totalcost desc limit 1;
++------+-------+------------+----------+----------+-----------+
+| pid  | name  | doj        | unitcost | quantity | totalcost |
++------+-------+------------+----------+----------+-----------+
+|    1 | Mouse | 2021-05-22 |      300 |        2 |       600 |
++------+-------+------------+----------+----------+-----------+
+1 row in set (0.01 sec)
+
+//ORDER BY,LIMIT
+//To display the next three records and skipping the first record of product table 
+
+mysql> select * from product order by totalcost desc limit 1,3;
++------+-------+------------+----------+----------+-----------+
+| pid  | name  | doj        | unitcost | quantity | totalcost |
++------+-------+------------+----------+----------+-----------+
+|    3 | NULL  | 2022-07-12 |      300 |        2 |       600 |
+|    1 | Mouse | 2022-06-22 |      500 |        1 |       500 |
+|    1 | Mouse | 2021-03-19 |      200 |        2 |       400 |
++------+-------+------------+----------+----------+-----------+
+3 rows in set (0.00 sec)

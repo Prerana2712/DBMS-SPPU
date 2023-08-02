@@ -1,0 +1,502 @@
+set serveroutput on;
+create table student(rollno int ,sub1 int,sub2 int,sub3 int,perct int);
+ insert into student (rollno,sub1,sub2,sub3) values(1,75,85,94);
+ insert into student (rollno,sub1,sub2,sub3) values(2,85,74,75);
+ insert into student (rollno,sub1,sub2,sub3) values(3,92,85,83);
+ select * from student;
+ 
+ declare
+ rno student.rollno %type;
+ vm1 int;
+ vm2 int;
+ vm3 int;
+ per int;
+ i int;
+ begin
+ 
+ for i in 1..3 loop
+ 
+ select rollno,sub1,sub2,sub3  into rno,vm1,vm2,vm3 from student where rollno=i;
+ per:=(vm1+vm2+vm3)/3;
+ update student set perct=per where rollno=i;
+ 
+ 
+ end loop;
+ 
+ for i in 1..3 loop
+ 
+ select rollno,sub1,sub2,sub3,perct  into rno,vm1,vm2,vm3,per from student where rollno=i;
+ dbms_ouput.put_line(rno||' '||vm1||' '||vm2||' '||vm3||' '||per);
+ 
+ end loop;
+ 
+ end;
+ 
+******************************************************************************************************************************************
+student table with cursor
+
+create table student(roll_no int,sub1 int,sub2 int,sub3 int,perct float,grade varchar(20));
+insert into student (roll_no,sub1,sub2,sub3) values(1,95,93,92);
+insert into student (roll_no,sub1,sub2,sub3) values(2,88,90,92);
+insert into student (roll_no,sub1,sub2,sub3) values(3,90,85,95);
+select *from student;
+--drop table student;
+declare
+--rno student.roll_no%type;
+--vm1 int;
+--vm2 int;
+--vm3 int;
+cursor c_stud is select * from student;//defining cursor
+v1 c_stud%rowtype;
+per float;
+vgrade varchar(20);
+i int;
+begin
+    open c_stud;
+    for i in 1..3 loop
+        fetch c_stud into v1;//v1 record is a record type of variable
+        per:=(((v1.sub1+v1.sub2+v1.sub3)/300)*100);
+        if(per>=75)
+        then vgrade:='First Class';
+        elsif(per>=50 and per<75)
+        then vgrade:='Second Class';
+        elsif(per>=35 and per<50)
+        then vgrade:='Pass';
+        else
+        vgrade:='Fail';
+        end if;
+        update student set perct=per,grade=vgrade where roll_no=i;
+    end loop;
+    close c_stud;
+    open c_stud;
+    for i in 1..3 loop
+         select roll_no,perct,grade into v1.roll_no,per,vgrade from student where roll_no=i;
+         dbms_output.put_line(v1.roll_no||' '||per||' '||vgrade);
+    end loop;
+end;
+
+
+******************************************************************************************************************************************
+
+out[put
+
+Table created.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+Result Set 3
+ROLL_NO	SUB1	SUB2	SUB3	PERCT	GRADE
+1	95	93	92	 - 	 - 
+2	88	90	92	 - 	 - 
+3	90	85	95	 - 	 - 
+Download CSV
+3 rows selected.
+
+Statement processed.
+1 93.333333333333333333333333333333333333 First Class
+2 90 First Class
+3 90 First Class
+
+
+
+******************************************************************************************************************************************
+
+Anonmous block student table
+
+create table student(roll_no int,sub1 int,sub2 int,sub3 int,perct float,grade varchar(20));
+insert into student (roll_no,sub1,sub2,sub3) values(1,95,93,92);
+insert into student (roll_no,sub1,sub2,sub3) values(2,88,90,92);
+insert into student (roll_no,sub1,sub2,sub3) values(3,90,85,95);
+select *from student;
+declare
+rno student.roll_no%type;
+vm1 int;
+vm2 int;
+vm3 int;
+per float;
+vgrade varchar(20);
+i int;
+begin
+    for i in 1..3 loop
+        select roll_no,sub1,sub2,sub3 into rno,vm1,vm2,vm3 from student where roll_no=i;
+        per:=(((vm1+vm2+vm3)/300)*100);
+        if(per>=75)
+        then vgrade:='First Class';
+        elsif(per>=50 and per<75)
+        then vgrade:='Second Class';
+        elsif(per>=35 and per<50)
+        then vgrade:='Pass';
+        else
+        vgrade:='Fail';
+        end if;
+        update student set perct=per,grade=vgrade where roll_no=i;
+    end loop;
+    for i in 1..3 loop
+         select roll_no,perct,grade into rno,per,vgrade from student where roll_no=i;
+         dbms_output.put_line(rno||' '||per||' '||vgrade);
+    end loop;
+end;
+
+******************************************************************************************************************************************
+
+output
+
+Table dropped.
+
+Table created.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+Result Set 4
+ROLL_NO	SUB1	SUB2	SUB3	PERCT	GRADE
+1	95	93	92	 - 	 - 
+2	88	90	92	 - 	 - 
+3	90	85	95	 - 	 - 
+Download CSV
+3 rows selected.
+
+Statement processed.
+1 93.333333333333333333333333333333333333 First Class
+2 90 First Class
+3 90 First Class
+
+/////////////////////////////////Anonmous block employee 
+drop table employee_1;
+create table employee_1(emp_id int, emp_name varchar(10),salary float, grade varchar(20));
+insert into employee_1(emp_id,emp_name,salary,grade) values (1,'Abhi',15000,'A');
+insert into employee_1(emp_id,emp_name,salary,grade) values (2,'Bhim',15000,'B');
+insert into employee_1(emp_id,emp_name,salary,grade) values (3,'Caira',15000,'C');
+select * from employee_1;
+
+declare
+    eid employee_1.emp_id%type;
+    vname varchar(20);
+    v_grade varchar(20);
+    i int;
+     v_sal float;
+     
+begin
+    
+    for i in 1..3 loop
+      
+        select emp_id,emp_name,salary,grade into eid,vname,v_sal,v_grade from employee_1 where emp_id = i;
+        
+        if (v_grade = 'A')
+            then v_sal:=(v_sal+(v_sal*0.3));
+        elsif (v_grade = 'B')
+            then v_sal:=(v_sal+ (v_sal*0.2));
+         
+        elsif (v_grade = 'C')
+            then v_sal:=(v_sal+ (v_sal*0.1));
+           
+        else
+            v_sal := v_sal;
+ end if;
+	 update employee_1 set salary=v_sal where emp_id=i;
+        
+  
+    end loop;
+ 
+    for i in 1..3 loop
+        select emp_id,emp_name,salary,grade into eid,vname,v_sal,v_grade from employee_1 where emp_id = i;
+	    dbms_output.put_line(eid||' '||vname||'   '||v_sal||'  '||v_grade);
+	
+    end loop;
+    
+   
+end;
+ ....................................................output..................................................
+Table dropped.
+
+Table created.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+Result Set 6
+EMP_ID	EMP_NAME	SALARY	GRADE
+1	Abhi	15000	A
+2	Bhim	15000	B
+3	Caira	15000	C
+Download CSV
+3 rows selected.
+
+Statement processed.
+1 Abhi   19500  A
+2 Bhim   18000  B
+3 Caira   16500  C
+
+////////////////////// employee with cursor salary increments
+create table employee_1(emp_id int, emp_name varchar(10),salary float, grade varchar(20));
+insert into employee_1(emp_id,emp_name,salary,grade) values (1,'Abhi',15000,'A');
+insert into employee_1(emp_id,emp_name,salary,grade) values (2,'Bhim',15000,'B');
+insert into employee_1(emp_id,emp_name,salary,grade) values (3,'Caira',15000,'C');
+select * from employee_1;
+
+declare
+    cursor c_cur is select * from  employee_1;
+    v_rec c_cur%rowtype;
+     v_sal float;
+     
+begin
+    open c_cur;
+    for i in 1..3 loop
+        fetch c_cur into v_rec;
+
+        --select emp_id,emp_name,salary,grade into v_eid,v_name,v_sal,v_grade from employee_1 where emp_id = counter;
+        
+        if (v_rec.grade = 'A')
+            then v_sal:=(v_rec.salary+(v_rec.salary*0.3));
+        elsif (v_rec.grade = 'B')
+            then v_sal:=(v_rec.salary+ (v_rec.salary*0.2));
+         
+        elsif (v_rec.grade = 'C')
+            then v_sal:=(v_rec.salary+ (v_rec.salary*0.1));
+           
+        else
+            v_sal := v_rec.salary;
+ end if;
+	 update employee_1 set salary=v_sal where emp_id=v_rec.emp_id;
+        
+    exit when c_cur%notfound;
+    end loop;
+    close c_cur;
+  open c_cur;
+    for i in 1..3 loop
+	 fetch c_cur into v_rec;
+	  dbms_output.put_line(v_rec.emp_id||' '||v_rec.emp_name||'   '||v_rec.salary||'  '||v_rec.grade);
+	 exit when c_cur%notfound;
+    end loop;
+    
+   
+end;
+ 
+****************************************************output******************************************************************
+Table created.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+Result Set 1
+EMP_ID	EMP_NAME	SALARY	GRADE
+1	Abhi	15000	A
+2	Bhim	15000	B
+3	Caira	15000	C
+Download CSV
+3 rows selected.
+
+Statement processed.
+1 Abhi   19500  A
+2 Bhim   18000  B
+3 Caira   16500  C
+ 
+........................................................................................triggers..............................................
+create table student(roll_no int,sub1 int,sub2 int,sub3 int,perct float,grade varchar(20));
+insert into student (roll_no,sub1,sub2,sub3) values(1,95,93,92);
+insert into student (roll_no,sub1,sub2,sub3) values(2,88,90,92);
+insert into student (roll_no,sub1,sub2,sub3) values(3,90,85,95);
+select *from student;
+
+create or replace trigger test
+before update or insert on student
+for each row
+begin
+dbms_output.put_line('Change is performed on the table'||' '||:old.sub1||' '||'value change to '||' '||:new.sub1);
+end test;
+
+update student set sub1=78 where roll_no=4 ;
+insert into student (roll_no,sub1,sub2,sub3) values(4,92,83,55);
+drop table student;
+create table student(roll_no int,name varchar(20));
+insert into student (roll_no,name) values(1,'Abhi');
+insert into student (roll_no,name) values(2,'Bhim');
+insert into student (roll_no,name) values(3,'Caira');
+select * from student;
+
+create table log(update_date date,opr varchar(10),old_name varchar(10),new_name varchar(10));
+
+
+create or replace trigger test
+after update or insert or delete on student
+for each row
+declare 
+opr varchar(10);
+begin
+if inserting then
+opr:='insert';
+dbms_output.put_line('Insert operation is performed on');
+elsif updating then
+opr:='update';
+dbms_output.put_line('update operation is performed on');
+elsif deleting then
+opr:='delete';
+dbms_output.put_line('delete operation is performed on');
+end if;
+insert into log values(sysdate,opr,:old.name,:new.name);
+
+
+end test;
+select * from log;
+
+update student set name='Fara' where roll_no=2;
+insert into student (roll_no,name) values(6,'jai');
+
+
+
+////////////////////////////////
+student table using procedure
+
+create table student(roll_no int,sub1 int,sub2 int,sub3 int,perct float,grade varchar(20));
+insert into student (roll_no,sub1,sub2,sub3) values(1,95,93,92);
+insert into student (roll_no,sub1,sub2,sub3) values(2,88,90,92);
+insert into student (roll_no,sub1,sub2,sub3) values(3,90,85,95);
+select *from student;
+--drop table student;
+
+create or replace procedure per(rno in int,p1 in int,p2 in int,p3 in int, p4 out float)
+is
+begin
+    p4:=(p1+p2+p3)/3
+    update student set perct=p4 where rno=roll_no;
+   
+    
+end;
+
+declare
+rno student.roll_no%type;
+--vm1 int;
+--vm2 int;
+--vm3 int;
+cursor c_stud is select * from student;--//defining cursor
+v1 c_stud%rowtype;
+per float;
+vgrade varchar(20);
+i int;
+begin
+    open c_stud;
+    for i in 1..3 loop
+        fetch c_stud into v1;--//v1 record is a record type of variable
+        per(v1.roll_no,v1.sub1,v1.sub2,v1.sub3,v1.perct);
+       -- update student set perct=v_stud.p4 where v_stud.roll_no=roll_no;
+        dbms_output.put_line(v1.roll_no||'  '||v1.perct);
+    end loop;
+    close c_stud;
+end;
+//////////////////////////////
+-- in out inout
+--define create 
+create or replace procedure addition(a in int ,b out int)--in: input to ,out: to catch result to store result if not given cant write b=a+1
+is
+begin
+    b:=a+1;
+end;
+
+--caller block anonmous block
+declare
+a int;
+z int;
+begin
+    a:=10;
+    addition(a,z);
+    dbms_output.put_line('changed value:'||' '||z);
+end;
+////////////////////////////////////////////////
+create table employee_1(emp_id int, emp_name varchar(10),salary float, grade varchar(20));
+insert into employee_1(emp_id,emp_name,salary,grade) values (1,'Abhi',15000,'A');
+insert into employee_1(emp_id,emp_name,salary,grade) values (2,'Bhim',15000,'B');
+insert into employee_1(emp_id,emp_name,salary,grade) values (3,'Caira',15000,'C');
+select * from employee_1;
+--drop table student;
+create or replace procedure emp(emp_id in int,emp_name in varchar,salary in float,grade out varchar)
+is
+begin
+    if (grade = 'A')
+            then sal:=(salary+(salary*0.3));
+        elsif (v_regrade = 'B')
+            then v_sal:=(salary+ (salary*0.2));
+         
+        elsif (v_rec.grade = 'C')
+            then v_sal:=(salary+ (salary*0.1));
+           
+        else
+            v_sal := v_rec.salary;
+ end if;
+end;
+declare
+cursor c_cur is select * from student;
+v_cur c_cur%rowtype;
+i int;
+begin
+    open c_cur;
+    for i in 1..100 loop
+        fetch c_cur into v_cur;
+        exit when c_cur%notfound;
+        perct(v_cur.rno,v_cur.sub1,v_cur.sub2,v_cur.sub3,v_cur.per,v_cur.grade);
+        update student set per=v_cur.per,grade=v_cur.grade where rno=v_cur.rno;
+        dbms_output.put_line(v_cur.rno||'   '||v_cur.per||' '||v_cur.grade);
+        
+    end loop;
+    close c_cur;
+end;
+
+/////////////////////////
+drop table student;
+create table student(rno int ,sub1 int,sub2 int,sub3 int,per int,grade varchar(15));
+insert into student (rno,sub1,sub2,sub3) values(1,75,85,94);
+insert into student (rno,sub1,sub2,sub3) values(2,85,74,75);
+insert into student (rno,sub1,sub2,sub3) values(3,92,85,83);
+select * from student;
+
+create or replace procedure percentage(rno in int,m1 in int,m2 in int,m3 in int,per out float,grade out varchar)
+is
+begin
+    per:=(((m1+m2+m3)/300)*100);
+    if(per>=75)
+    then grade:='First Class';
+    elsif(per>=50 and per<75)
+    then grade:='Second Class';
+    elsif(per>=35 and per<50)
+    then grade:='Pass';
+    else
+    grade:='Fail';
+    end if;
+end;
+declare
+cursor c_cur is select * from student;
+v_cur c_cur%rowtype;
+i int;
+begin
+    open c_cur;
+    dbms_output.put_line('Rno  | Subject1 | Subject2 | Subject3 | Percent                                     | Grade       ');
+    dbms_output.put_line('................................................................................................');
+
+    for i in 1..3 loop
+        fetch c_cur into v_cur;
+        exit when c_cur%notfound;
+        percentage(v_cur.rno,v_cur.sub1,v_cur.sub2,v_cur.sub3,v_cur.per,v_cur.grade);
+        update student set per=v_cur.per,grade=v_cur.grade where rno=v_cur.rno;
+        dbms_output.put_line(v_cur.rno||'    |  '||v_cur.sub1||'      |  '||v_cur.sub2||'      |  '||v_cur.sub3||'      |  '||v_cur.per||'  | '||v_cur.grade);
+        
+    end loop;
+    dbms_output.put_line('.................................................................................................');
+    close c_cur;
+end;
+create table log(rno int ,old_sub1 int,new_sub1 int,old_sub2 int,new_sub2 int,old_sub3 int, new_sub3 int );
+
+create or replace trigger updation
+
+

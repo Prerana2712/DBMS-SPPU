@@ -1,0 +1,120 @@
+///Student table using Anonmous block
+
+create table student(roll_no int, m1 int, m2 int, m3 int, percentage float, grade varchar(20));
+insert into student(roll_no, m1, m2, m3) values (1,85,75,94);
+insert into student(roll_no, m1, m2, m3) values (2,70,82,75);
+insert into student(roll_no, m1, m2, m3) values (3,84,89,95);
+select * from student;
+
+
+declare
+    v_roll int;
+    v_m1 int;
+    v_m2 int;
+    v_m3 int;
+    v_per float;
+    v_grade varchar(20);
+    i int;
+    counter int;
+
+begin
+    for counter in 1..3 loop
+        select roll_no,m1,m2,m3 into v_roll,v_m1,v_m2,v_m3 from student where roll_no = counter;
+        v_per := (((v_m1 + v_m2 + v_m3)/300) * 100);
+        if (v_per > 75)
+            then v_grade := 'First class';
+        elsif (v_per > 50 and v_per < 75)
+            then v_grade := 'Second class';
+        elsif (v_per > 35 and v_per < 50)
+            then v_grade := 'Pass';
+        else
+            v_grade := 'Failed';
+        end if;
+        update student set percentage = v_per, grade = v_grade where roll_no = counter;
+    end loop;
+
+
+dbms_output.put_line('Roll no  | M1 | M2 | M3    | Percent                                     |      Class');
+dbms_output.put_line('.......................................................................................');
+
+for i in 1..3 loop
+    select roll_no, m1, m2, m3, percentage, grade into v_roll, v_m1, v_m2, v_m3, v_per, v_grade from student where roll_no = i;
+    dbms_output.put_line(v_roll||'        | '||v_m1||' | '||v_m2||' | '||v_m3||'    | '||v_per||'     | '||v_grade);
+end loop;
+dbms_output.put_line('........................................................................................');
+
+end;
+
+
+****************************************************************OUTPUT****************************************************************
+
+Table created.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+1 row(s) inserted.
+
+Result Set 17
+ROLL_NO	M1	M2	M3	PERCENTAGE	GRADE
+1	85	75	94	 - 	 - 
+2	70	82	75	 - 	 - 
+3	84	89	95	 - 	 - 
+Download CSV
+3 rows selected.
+
+Statement processed.
+Roll no  | M1 | M2 | M3    | Percent                                     |      Class
+.......................................................................................
+1        | 85 | 75 | 94    | 84.666666666666666666666666666666666667     | First class
+2        | 70 | 82 | 75    | 75.666666666666666666666666666666666667     | First class
+3        | 84 | 89 | 95    | 89.333333333333333333333333333333333333     | First class
+........................................................................................
+
+
+******************************************************************************************************************************************
+--drop table employee_1;
+create table employee_1(emp_id int, emp_name varchar(10),salary float, grade varchar(20));
+insert into employee_1(emp_id,emp_name,salary,grade) values (1,'Abhi',15000,'A');
+insert into employee_1(emp_id,emp_name,salary,grade) values (2,'Bhim',15000,'B');
+insert into employee_1(emp_id,emp_name,salary,grade) values (3,'Caira',15000,'C');
+insert into employee_1(emp_id,emp_name,salary,grade) values (4,'Dev',15000,'D');
+select * from employee_1;
+
+
+declare
+    v_eid int;
+    v_name varchar(20);
+    v_sal float;
+    v_grade varchar(20);
+    i int;
+    counter int;
+
+begin
+    for counter in 1..3 loop
+        select emp_id,emp_name,salary,grade into v_eid,v_name,v_sal,v_grade from employee_1 where emp_id= counter;
+        
+        if (v_grade = 'A')
+            then v_sal:=(v_sal+((v_sal*30)/ 100));
+        elsif (v_grade = 'B')
+            then v_sal:=(v_sal+ ((v_sal*20)/ 100));
+        elsif (v_grade = 'C')
+            then v_sal:=(v_sal+ ((v_sal*10)/ 100));
+        else
+            v_sal := v_sal;
+        end if;
+        update student set salary = v_sal where emp_id = counter;
+    end loop;
+
+
+dbms_output.put_line('Emp_id  | Name | Salary | Grade   |');
+dbms_output.put_line('.......................................................................................');
+
+for i in 1..3 loop
+    select emp_id,emp_name,salary,grade into v_eid,v_name,v_sal,v_grade from student where emp_id = i;
+    dbms_output.put_line(v_eid||'        | '||v_name||' | '||v_sal||' | '||v_grade);
+end loop;
+dbms_output.put_line('........................................................................................');
+
+end;

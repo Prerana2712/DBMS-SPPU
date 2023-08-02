@@ -1,0 +1,902 @@
+//Name -Prerana Gajare Roll no-SI41 Class-SEIT 
+2 h) Join- natural join, join, left join, right join, self-join, joining multiple tables
+
+SOURCE CODE :-
+
+//To check the foreign key in each of the below tables
+mysql> set foreign_key_checks=1;
+Query OK, 0 rows affected (0.01 sec)
+
+//To create a table name emp containing employee id and name
+mysql> create table emp(eid int primary key,name varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+//To create the table name proj containing project id,employee id working on the project and project name
+mysql> create table proj(pid int primary key,eid int,name varchar(10),foreign key(eid) references emp(eid)) engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+//To describe table emp
+mysql> desc emp;
++-------+-------------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| eid | int | NO | PRI | NULL | |
+| name | varchar(10) | YES | | NULL | |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.03 sec)
+
+//To describe table proj
+mysql> desc proj;
++-------+-------------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| pid | int | NO | PRI | NULL | |
+| eid | int | YES | MUL | NULL | |
+| name | varchar(10) | YES | | NULL | |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+//To insert values in emp table
+mysql> insert into emp values(1,"Riya"),(2,"Kishan"),(3,"Pooja");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3 Duplicates: 0 Warnings: 0
+
+mysql> insert into emp values(4,"Ram");
+Query OK, 1 row affected (0.01 sec)
+
+//To insert values in proj table
+mysql> insert into proj values(1,1,"erp"),(2,1,"web"),(3,2,"ml"),(4,3,"ai");
+Query OK, 4 rows affected (0.01 sec)
+Records: 4 Duplicates: 0 Warnings: 0
+
+mysql> insert into proj(pid,name) values(5,"java");
+Query OK, 1 row affected (0.01 sec)
+
+//To display all the rows and coloumn of emp table
+mysql> select * from emp;
++-----+--------+
+| eid | name |
++-----+--------+
+| 1 | Riya |
+| 2 | Kishan |
+| 3 | Pooja |
+| 4 | Ram |
++-----+--------+
+4 rows in set (0.00 sec)
+
+//To display all the rows and coloumn of proj table
+mysql> select * from proj;
++-----+------+------+
+| pid | eid | name |
++-----+------+------+
+| 1 | 1 | erp |
+| 2 | 1 | web |
+| 3 | 2 | ml |
+| 4 | 3 | ai |
+| 5 | NULL | java |
++-----+------+------+
+5 rows in set (0.00 sec)
+
+//To display cross product of two tables(emp and proj)
+mysql> select * from emp,proj;
++-----+--------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+--------+-----+------+------+
+| 4 | Ram | 1 | 1 | erp |
+| 3 | Pooja | 1 | 1 | erp |
+| 2 | Kishan | 1 | 1 | erp |
+| 1 | Riya | 1 | 1 | erp |
+| 4 | Ram | 2 | 1 | web |
+| 3 | Pooja | 2 | 1 | web |
+| 2 | Kishan | 2 | 1 | web |
+| 1 | Riya | 2 | 1 | web |
+| 4 | Ram | 3 | 2 | ml |
+| 3 | Pooja | 3 | 2 | ml |
+| 2 | Kishan | 3 | 2 | ml |
+| 1 | Riya | 3 | 2 | ml |
+| 4 | Ram | 4 | 3 | ai |
+| 3 | Pooja | 4 | 3 | ai |
+| 2 | Kishan | 4 | 3 | ai |
+| 1 | Riya | 4 | 3 | ai |
+| 4 | Ram | 5 | NULL | java |
+| 3 | Pooja | 5 | NULL | java |
+| 2 | Kishan | 5 | NULL | java |
+| 1 | Riya | 5 | NULL | java |
++-----+--------+-----+------+------+
+20 rows in set (0.01 sec)
+
+//To display data from both the table where common attribute(eid) have matching values for both the tables
+mysql> select * from emp,proj
+ -> where emp.eid=proj.eid;
++-----+--------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+--------+-----+------+------+
+| 1 | Riya | 1 | 1 | erp |
+| 1 | Riya | 2 | 1 | web |
+| 2 | Kishan | 3 | 2 | ml |
+| 3 | Pooja | 4 | 3 | ai |
++-----+--------+-----+------+------+
+4 rows in set (0.00 sec)
+
+
+//To display cross product of two tables(emp and proj) using join
+mysql> select * from emp join proj;
++-----+--------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+--------+-----+------+------+
+| 4 | Ram | 1 | 1 | erp |
+| 3 | Pooja | 1 | 1 | erp |
+| 2 | Kishan | 1 | 1 | erp |
+| 1 | Riya | 1 | 1 | erp |
+| 4 | Ram | 2 | 1 | web |
+| 3 | Pooja | 2 | 1 | web |
+| 2 | Kishan | 2 | 1 | web |
+| 1 | Riya | 2 | 1 | web |
+| 4 | Ram | 3 | 2 | ml |
+| 3 | Pooja | 3 | 2 | ml |
+| 2 | Kishan | 3 | 2 | ml |
+| 1 | Riya | 3 | 2 | ml |
+| 4 | Ram | 4 | 3 | ai |
+| 3 | Pooja | 4 | 3 | ai |
+| 2 | Kishan | 4 | 3 | ai |
+| 1 | Riya | 4 | 3 | ai |
+| 4 | Ram | 5 | NULL | java |
+| 3 | Pooja | 5 | NULL | java |
+| 2 | Kishan | 5 | NULL | java |
+| 1 | Riya | 5 | NULL | java |
++-----+--------+-----+------+------+
+20 rows in set (0.00 sec)
+
+//To display employee eid,name and project name after takinng cross product of two tables(emp and proj) using join
+mysql> select emp.eid,emp.name,proj.name from emp join proj;
++-----+--------+------+
+| eid | name | name |
++-----+--------+------+
+| 4 | Ram | erp |
+| 3 | Pooja | erp |
+| 2 | Kishan | erp |
+| 1 | Riya | erp |
+| 4 | Ram | web |
+| 3 | Pooja | web |
+| 2 | Kishan | web |
+| 1 | Riya | web |
+| 4 | Ram | ml |
+| 3 | Pooja | ml |
+| 2 | Kishan | ml |
+| 1 | Riya | ml |
+| 4 | Ram | ai |
+| 3 | Pooja | ai |
+| 2 | Kishan | ai |
+| 1 | Riya | ai |
+| 4 | Ram | java |
+| 3 | Pooja | java |
+| 2 | Kishan | java |
+| 1 | Riya | java |
++-----+--------+------+
+20 rows in set (0.00 sec)
+
+//To display all the records after takinng cross product of two tables(emp and proj) using join on the basis that they have common attribute(eid) having matching values for both the tables
+mysql> select * from emp join proj
+ -> on emp.eid=proj.eid;
++-----+--------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+--------+-----+------+------+
+| 1 | Riya | 1 | 1 | erp |
+| 1 | Riya | 2 | 1 | web |
+| 2 | Kishan | 3 | 2 | ml |
+| 3 | Pooja | 4 | 3 | ai |
++-----+--------+-----+------+------+
+4 rows in set (0.00 sec)
+
+//To display employee eid,name and project name after takinng cross product of two tables(emp and proj) using join on the basis that they have common attribute(eid) having matching values for both the tables
+mysql> select emp.eid,emp.name,proj.name from emp join proj
+ -> on emp.eid=proj.eid;
++-----+--------+------+
+| eid | name | name |
++-----+--------+------+
+| 1 | Riya | erp |
+| 1 | Riya | web |
+| 2 | Kishan | ml |
+| 3 | Pooja | ai |
++-----+--------+------+
+4 rows in set (0.00 sec)
+
+//To display join of two tables(emp and proj) on the basis that they havecommon attribute(eid) having matching values for both the tables and where employee table eid is equal to1
+mysql> select * from emp join proj
+ -> on emp.eid=proj.eid
+ -> where emp.eid=1;
++-----+------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+------+-----+------+------+
+| 1 | Riya | 1 | 1 | erp |
+| 1 | Riya | 2 | 1 | web |
++-----+------+-----+------+------+
+2 rows in set (0.00 sec)
+
+//To display inner join/join of two tables(emp and proj) on the basis that they have common attribute(eid) having matching values for both the tables
+mysql> select * from emp inner join proj
+ -> on emp.eid=proj.eid;
++-----+--------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+--------+-----+------+------+
+| 1 | Riya | 1 | 1 | erp |
+| 1 | Riya | 2 | 1 | web |
+| 2 | Kishan | 3 | 2 | ml |
+| 3 | Pooja | 4 | 3 | ai |
++-----+--------+-----+------+------+
+4 rows in set (0.00 sec)
+
+//To display inner join/join of two tables(emp and proj) on the basis that they have common attribute(eid) having matching values for both the tables and where employee table eid is equal to1
+mysql> select * from emp inner join proj
+ -> on emp.eid=proj.eid
+ -> where emp.eid=1;
++-----+------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+------+-----+------+------+
+| 1 | Riya | 1 | 1 | erp |
+| 1 | Riya | 2 | 1 | web |
++-----+------+-----+------+------+
+2 rows in set (0.01 sec)
+
+//To display records of employee assigned a project ,also records of employee who have not being assigned a project on the basis that they have common attribute(eid) having matching values for both the tables
+mysql> select * from emp left join proj
+ -> on emp.eid=proj.eid;
++-----+--------+------+------+------+
+| eid | name | pid | eid | name |
++-----+--------+------+------+------+
+| 1 | Riya | 1 | 1 | erp |
+| 1 | Riya | 2 | 1 | web |
+| 2 | Kishan | 3 | 2 | ml |
+| 3 | Pooja | 4 | 3 | ai |
+| 4 | Ram | NULL | NULL | NULL |
++-----+--------+------+------+------+
+5 rows in set (0.00 sec)
+
+//To display records of project assigned to a employee,also records of project who have not being assigned to a employee on the basis that they have common attribute(eid) having matching values for both the tables
+mysql> select * from proj left join emp
+ -> on emp.eid=proj.eid;
++-----+------+------+------+--------+
+| pid | eid | name | eid | name |
++-----+------+------+------+--------+
+| 1 | 1 | erp | 1 | Riya |
+| 2 | 1 | web | 1 | Riya |
+| 3 | 2 | ml | 2 | Kishan |
+| 4 | 3 | ai | 3 | Pooja |
+| 5 | NULL | java | NULL | NULL |
++-----+------+------+------+--------+
+5 rows in set (0.00 sec)
+
+//To display records of employee assigned a project ,also records of employee who have not being assigned a project using 'using' as eid is common attribute if emp and proj table
+mysql> select * from emp left outer join proj
+ -> using(eid);
++-----+--------+------+------+
+| eid | name | pid | name |
++-----+--------+------+------+
+| 1 | Riya | 1 | erp |
+| 1 | Riya | 2 | web |
+| 2 | Kishan | 3 | ml |
+| 3 | Pooja | 4 | ai |
+| 4 | Ram | NULL | NULL |
++-----+--------+------+------+
+5 rows in set (0.00 sec)
+
+//To display records of project assigned to a employee,also records of project who have not being assigned to a employee using 'using' as eid iscommon attribute if emp and proj table
+mysql> select * from proj left outer join emp
+ -> using(eid);
++------+-----+------+--------+
+| eid | pid | name | name |
++------+-----+------+--------+
+| 1 | 1 | erp | Riya |
+| 1 | 2 | web | Riya |
+| 2 | 3 | ml | Kishan |
+| 3 | 4 | ai | Pooja |
+| NULL | 5 | java | NULL |
++------+-----+------+--------+
+5 rows in set (0.00 sec)
+
+//To display records of project assigned to a employee,also records of project who have not being assigned to a employee on the basis that they have common attribute(eid) having matching values for both the tables
+mysql> select * from emp right join proj
+ -> on emp.eid=proj.eid;
++------+--------+-----+------+------+
+| eid | name | pid | eid | name |
++------+--------+-----+------+------+
+| 1 | Riya | 1 | 1 | erp |
+| 1 | Riya | 2 | 1 | web |
+| 2 | Kishan | 3 | 2 | ml |
+| 3 | Pooja | 4 | 3 | ai |
+| NULL | NULL | 5 | NULL | java |
++------+--------+-----+------+------+
+5 rows in set (0.00 sec)
+
+//To display full join between emp and proj table
+mysql> select * from emp full join proj;
++-----+--------+-----+------+------+
+| eid | name | pid | eid | name |
++-----+--------+-----+------+------+
+| 4 | Ram | 1 | 1 | erp |
+| 3 | Pooja | 1 | 1 | erp |
+| 2 | Kishan | 1 | 1 | erp |
+| 1 | Riya | 1 | 1 | erp |
+| 4 | Ram | 2 | 1 | web |
+| 3 | Pooja | 2 | 1 | web |
+| 2 | Kishan | 2 | 1 | web |
+| 1 | Riya | 2 | 1 | web |
+| 4 | Ram | 3 | 2 | ml |
+| 3 | Pooja | 3 | 2 | ml |
+| 2 | Kishan | 3 | 2 | ml |
+| 1 | Riya | 3 | 2 | ml |
+| 4 | Ram | 4 | 3 | ai |
+| 3 | Pooja | 4 | 3 | ai |
+| 2 | Kishan | 4 | 3 | ai |
+| 1 | Riya | 4 | 3 | ai |
+| 4 | Ram | 5 | NULL | java |
+| 3 | Pooja | 5 | NULL | java |
+| 2 | Kishan | 5 | NULL | java |
+| 1 | Riya | 5 | NULL | java |
++-----+--------+-----+------+------+
+20 rows in set (0.00 sec)
+
+//To display full join between emp and proj table
+mysql> select * from proj full join emp;
++-----+------+------+-----+--------+
+| pid | eid | name | eid | name |
++-----+------+------+-----+--------+
+| 1 | 1 | erp | 4 | Ram |
+| 1 | 1 | erp | 3 | Pooja |
+| 1 | 1 | erp | 2 | Kishan |
+| 1 | 1 | erp | 1 | Riya |
+| 2 | 1 | web | 4 | Ram |
+| 2 | 1 | web | 3 | Pooja |
+| 2 | 1 | web | 2 | Kishan |
+| 2 | 1 | web | 1 | Riya |
+| 3 | 2 | ml | 4 | Ram |
+| 3 | 2 | ml | 3 | Pooja |
+| 3 | 2 | ml | 2 | Kishan |
+| 3 | 2 | ml | 1 | Riya |
+| 4 | 3 | ai | 4 | Ram |
+| 4 | 3 | ai | 3 | Pooja |
+| 4 | 3 | ai | 2 | Kishan |
+| 4 | 3 | ai | 1 | Riya |
+| 5 | NULL | java | 4 | Ram |
+| 5 | NULL | java | 3 | Pooja |
+| 5 | NULL | java | 2 | Kishan |
+| 5 | NULL | java | 1 | Riya |
++-----+------+------+-----+--------+
+20 rows in set (0.00 sec)
+
+//To display all records from proj table having employee working on more than one project 
+mysql> select * from proj
+ -> group by eid
+ -> having count(eid)>1;
++-----+------+------+
+| pid | eid | name |
++-----+------+------+
+| 1 | 1 | erp |
++-----+------+------+
+1 row in set (0.00 sec)
+
+//To display eid from proj table having employee working on more than one project 
+mysql> select eid from proj
+ -> group by eid
+ -> having count(eid)>1;
++------+
+| eid |
++------+
+| 1 |
++------+
+1 row in set (0.00 sec)
+
+//To display self join of proj table
+mysql> select * from proj p1,proj p2;
++-----+------+------+-----+------+------+
+| pid | eid | name | pid | eid | name |
++-----+------+------+-----+------+------+
+| 5 | NULL | java | 1 | 1 | erp |
+| 4 | 3 | ai | 1 | 1 | erp |
+| 3 | 2 | ml | 1 | 1 | erp |
+| 2 | 1 | web | 1 | 1 | erp |
+| 1 | 1 | erp | 1 | 1 | erp |
+| 5 | NULL | java | 2 | 1 | web |
+| 4 | 3 | ai | 2 | 1 | web |
+| 3 | 2 | ml | 2 | 1 | web |
+| 2 | 1 | web | 2 | 1 | web |
+| 1 | 1 | erp | 2 | 1 | web |
+| 5 | NULL | java | 3 | 2 | ml |
+| 4 | 3 | ai | 3 | 2 | ml |
+| 3 | 2 | ml | 3 | 2 | ml |
+| 2 | 1 | web | 3 | 2 | ml |
+| 1 | 1 | erp | 3 | 2 | ml |
+| 5 | NULL | java | 4 | 3 | ai |
+| 4 | 3 | ai | 4 | 3 | ai |
+| 3 | 2 | ml | 4 | 3 | ai |
+| 2 | 1 | web | 4 | 3 | ai |
+| 1 | 1 | erp | 4 | 3 | ai |
+| 5 | NULL | java | 5 | NULL | java |
+| 4 | 3 | ai | 5 | NULL | java |
+| 3 | 2 | ml | 5 | NULL | java |
+| 2 | 1 | web | 5 | NULL | java |
+| 1 | 1 | erp | 5 | NULL | java |
++-----+------+------+-----+------+------+
+25 rows in set (0.00 sec)
+
+//To display self join of proj table where eid of p1 is equal to eid of p2 and pid of p1 is not equal to pid of p2
+mysql> select * from proj p1,proj p2
+ -> where p1.eid=p2.eid and p1.pid <> p2.pid;
++-----+------+------+-----+------+------+
+| pid | eid | name | pid | eid | name |
++-----+------+------+-----+------+------+
+| 2 | 1 | web | 1 | 1 | erp |
+| 1 | 1 | erp | 2 | 1 | web |
++-----+------+------+-----+------+------+
+2 rows in set (0.00 sec)
+
+//To create an table name emp1 containing employee id,employee name,department id,manager id
+mysql> create table emp1(id int,name varchar(10),dept_id int ,manag_id
+int);
+Query OK, 0 rows affected (0.02 sec)
+
+//To describe table emp1
+mysql> desc emp1;
++----------+-------------+------+-----+---------+-------+
+| Field | Type | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| id | int | YES | | NULL | |
+| name | varchar(10) | YES | | NULL | |
+| dept_id | int | YES | | NULL | |
+| manag_id | int | YES | | NULL | |
++----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+//Inserting records in table emp1
+mysql> insert into emp1(id,name,dept_id) values(1,"a",4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp1 values(2,"b",1,1),(3,"c",2,1),(4,"d",5,2);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3 Duplicates: 0 Warnings: 0
+
+//To display all of the records from emp1 table
+mysql> select * from emp1;
++------+------+---------+----------+
+| id | name | dept_id | manag_id |
++------+------+---------+----------+
+| 1 | a | 4 | NULL |
+| 2 | b | 1 | 1 |
+| 3 | c | 2 | 1 |
+| 4 | d | 5 | 2 |
++------+------+---------+----------+
+4 rows in set (0.00 sec)
+
+//To display self join of emp1 table
+mysql> select * from emp1 e1,emp1 e2;
++------+------+---------+----------+------+------+---------+----------+
+| id | name | dept_id | manag_id | id | name | dept_id | manag_id |
++------+------+---------+----------+------+------+---------+----------+
+| 4 | d | 5 | 2 | 1 | a | 4 | NULL |
+| 3 | c | 2 | 1 | 1 | a | 4 | NULL |
+| 2 | b | 1 | 1 | 1 | a | 4 | NULL |
+| 1 | a | 4 | NULL | 1 | a | 4 | NULL |
+| 4 | d | 5 | 2 | 2 | b | 1 | 1 |
+| 3 | c | 2 | 1 | 2 | b | 1 | 1 |
+| 2 | b | 1 | 1 | 2 | b | 1 | 1 |
+| 1 | a | 4 | NULL | 2 | b | 1 | 1 |
+| 4 | d | 5 | 2 | 3 | c | 2 | 1 |
+| 3 | c | 2 | 1 | 3 | c | 2 | 1 |
+| 2 | b | 1 | 1 | 3 | c | 2 | 1 |
+| 1 | a | 4 | NULL | 3 | c | 2 | 1 |
+| 4 | d | 5 | 2 | 4 | d | 5 | 2 |
+| 3 | c | 2 | 1 | 4 | d | 5 | 2 |
+| 2 | b | 1 | 1 | 4 | d | 5 | 2 |
+| 1 | a | 4 | NULL | 4 | d | 5 | 2 |
++------+------+---------+----------+------+------+---------+----------+
+16 rows in set (0.00 sec)
+
+//To display self join of emp1 table where manager id from allies table e1 of emp1 matches to id from allies table e2 of emp1
+mysql> select * from emp1 e1,emp1 e2
+ -> where e1.manag_id=e2.id;
++------+------+---------+----------+------+------+---------+----------+
+| id | name | dept_id | manag_id | id | name | dept_id | manag_id |
++------+------+---------+----------+------+------+---------+----------+
+| 3 | c | 2 | 1 | 1 | a | 4 | NULL |
+| 2 | b | 1 | 1 | 1 | a | 4 | NULL |
+| 4 | d | 5 | 2 | 2 | b | 1 | 1 |
++------+------+---------+----------+------+------+---------+----------+
+3 rows in set (0.00 sec)
+
+//To display employee id,employee name, manager name from self joining of emp1 table where manager id from allies table e1 of emp1 matches to id from allies table e2 of emp1
+mysql> select e1.id,e1.name,e2.name from emp1 e1,emp1 e2
+ -> where e1.manag_id=e2.id;
++------+------+------+
+| id | name | name |
++------+------+------+
+| 3 | c | a |
+| 2 | b | a |
+| 4 | d | b |
++------+------+------+
+3 rows in set (0.00 sec
+
+//Creating table student
+mysql> create  table student(s_id int primary key, fname varchar(10), lname varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+//Creating table subject
+mysql> create table subject(sub_id int primary key,sub_name varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+//Creating table teacher
+mysql> create table teacher(t_id int primary key,t_name varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+//Creating table sd_base
+mysql> create table sd_base (s_id int,sub_id int,t_id int,marks int,foreign key(s_id) references student(s_id),foreign key(sub_id) references subject(sub_id),foreign key(t_id) references teacher(t_id))engine=innodb;
+Query OK, 0 rows affected (0.06 sec)
+
+//Inserting records  into student table
+mysql> insert into student values(1,"Pooja","Sharma"),(2,"Tarak","Mehta"),(3,"Survir","Suri");
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//Inserting records  into subject table
+mysql> insert into subject values(11,"OOP"),(12,"DSA"),(13,"DBMS");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//Inserting records  into teacher table
+mysql> insert into teacher values(1001,"Sarika"),(1002,"Raj"),(1003,"Anjali");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//Inserting records  into sd_base table
+mysql> insert into sd_base values(1,11,1001,94),(2,12,1002,75),(3,13,1003,84);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//Display all records from student table
+mysql> select * from student;
++------+--------+--------+
+| s_id | fname  | lname  |
++------+--------+--------+
+|    1 | Pooja  | Sharma |
+|    2 | Tarak  | Mehta  |
+|    3 | Survir | Suri   |
++------+--------+--------+
+3 rows in set (0.02 sec)
+
+//Display all records from subject table
+mysql> select * from subject;
++--------+----------+
+| sub_id | sub_name |
++--------+----------+
+|     11 | OOP      |
+|     12 | DSA      |
+|     13 | DBMS     |
++--------+----------+
+3 rows in set (0.00 sec)
+
+//Display all records from teacher table
+mysql> select * from teacher;
++------+--------+
+| t_id | t_name |
++------+--------+
+| 1001 | Sarika |
+| 1002 | Raj    |
+| 1003 | Anjali |
++------+--------+
+3 rows in set (0.00 sec)
+
+//Display all records from sd_base table
+mysql> select * from sd_base;
++------+--------+------+-------+
+| s_id | sub_id | t_id | marks |
++------+--------+------+-------+
+|    1 |     11 | 1001 |    94 |
+|    2 |     12 | 1002 |    75 |
+|    3 |     13 | 1003 |    84 |
++------+--------+------+-------+
+3 rows in set (0.00 sec)
+
+//Joining two tables sd_base and student
+mysql> select * from sd_base join student;
++------+--------+------+-------+------+--------+--------+
+| s_id | sub_id | t_id | marks | s_id | fname  | lname  |
++------+--------+------+-------+------+--------+--------+
+|    3 |     13 | 1003 |    84 |    1 | Pooja  | Sharma |
+|    2 |     12 | 1002 |    75 |    1 | Pooja  | Sharma |
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma |
+|    3 |     13 | 1003 |    84 |    2 | Tarak  | Mehta  |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  |
+|    1 |     11 | 1001 |    94 |    2 | Tarak  | Mehta  |
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   |
+|    2 |     12 | 1002 |    75 |    3 | Survir | Suri   |
+|    1 |     11 | 1001 |    94 |    3 | Survir | Suri   |
++------+--------+------+-------+------+--------+--------+
+9 rows in set (0.00 sec)
+
+//Joining two tables sd_base and student on the basis of same s_id in both tables
+mysql> select * from sd_base join student
+    -> on sd_base.s_id=student.s_id;
++------+--------+------+-------+------+--------+--------+
+| s_id | sub_id | t_id | marks | s_id | fname  | lname  |
++------+--------+------+-------+------+--------+--------+
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  |
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   |
++------+--------+------+-------+------+--------+--------+
+3 rows in set (0.00 sec)
+
+//Joining two tables sd_base and student on the basis of same s_id in both tables and show student name ,sub_id,t_id,marks.
+mysql> select student.fname,sub_id,t_id,marks from sd_base join student
+    -> on sd_base.s_id=student.s_id;
++--------+--------+------+-------+
+| fname  | sub_id | t_id | marks |
++--------+--------+------+-------+
+| Pooja  |     11 | 1001 |    94 |
+| Tarak  |     12 | 1002 |    75 |
+| Survir |     13 | 1003 |    84 |
++--------+--------+------+-------+
+3 rows in set (0.00 sec)
+
+//Joining two tables sd_base with student on the basis of same s_id in both tables and teacher table
+mysql> select * from sd_base join student on sd_base.s_id=student.s_id
+    -> join teacher;
++------+--------+------+-------+------+--------+--------+------+--------+
+| s_id | sub_id | t_id | marks | s_id | fname  | lname  | t_id | t_name |
++------+--------+------+-------+------+--------+--------+------+--------+
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   | 1001 | Sarika |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  | 1001 | Sarika |
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma | 1001 | Sarika |
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   | 1002 | Raj    |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  | 1002 | Raj    |
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma | 1002 | Raj    |
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   | 1003 | Anjali |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  | 1003 | Anjali |
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma | 1003 | Anjali |
++------+--------+------+-------+------+--------+--------+------+--------+
+9 rows in set (0.00 sec)
+
+//Joining two tables sd_base with student on the basis of same s_id in both tables ,with teacher on the basis of same t_id in both tables and show student name ,sub_name,t_name,marks.
+mysql> select student.fname,sub_id,t_name,marks from sd_base join student on sd_base.s_id=student.s_id
+    -> join teacher on sd_base.t_id=teacher.t_id;
++--------+--------+--------+-------+
+| fname  | sub_id | t_name | marks |
++--------+--------+--------+-------+
+| Pooja  |     11 | Sarika |    94 |
+| Tarak  |     12 | Raj    |    75 |
+| Survir |     13 | Anjali |    84 |
++--------+--------+--------+-------+
+3 rows in set (0.00 sec)
+
+//Joining two tables sd_base with student on the basis of same s_id in both tables ,with teacher on the basis of same t_id in both tables and subject table
+mysql> select * from sd_base join student on sd_base.s_id=student.s_id
+    -> join teacher on sd_base.t_id=teacher.t_id
+    -> join subject;
++------+--------+------+-------+------+--------+--------+------+--------+--------+----------+
+| s_id | sub_id | t_id | marks | s_id | fname  | lname  | t_id | t_name | sub_id | sub_name |
++------+--------+------+-------+------+--------+--------+------+--------+--------+----------+
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   | 1003 | Anjali |     11 | OOP      |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  | 1002 | Raj    |     11 | OOP      |
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma | 1001 | Sarika |     11 | OOP      |
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   | 1003 | Anjali |     12 | DSA      |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  | 1002 | Raj    |     12 | DSA      |
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma | 1001 | Sarika |     12 | DSA      |
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   | 1003 | Anjali |     13 | DBMS     |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  | 1002 | Raj    |     13 | DBMS     |
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma | 1001 | Sarika |     13 | DBMS     |
++------+--------+------+-------+------+--------+--------+------+--------+--------+----------+
+9 rows in set (0.00 sec)
+
+//Joining two tables sd_base with student on the basis of same s_id in both tables ,with teacher on the basis of same t_id in both tables,with subject on the basis of same sub_id in both tables and show student name ,sub_name,t_name,marks.
+mysql> select student.fname,sub_name,t_name,marks from sd_base join student on sd_base.s_id=student.s_id
+    -> join teacher on sd_base.t_id=teacher.t_id
+    -> join subject on sd_base.sub_id=subject.sub_id;
++--------+----------+--------+-------+
+| fname  | sub_name | t_name | marks |
++--------+----------+--------+-------+
+| Pooja  | OOP      | Sarika |    94 |
+| Tarak  | DSA      | Raj    |    75 |
+| Survir | DBMS     | Anjali |    84 |
++--------+----------+--------+-------+
+3 rows in set (0.00 sec)
+
+//Joining two tables sd_base with student using same s_id in both tables ,with teacher using same t_id in both tables,with subject using same sub_id in both tables and show student name ,sub_name,t_name,marks.
+mysql> select student.fname,subject.sub_name,teacher.t_name,sd_base.marks from sd_base
+    -> join student using(s_id)
+    -> join subject using(sub_id)
+    -> join teacher using(t_id);
++--------+----------+--------+-------+
+| fname  | sub_name | t_name | marks |
++--------+----------+--------+-------+
+| Pooja  | OOP      | Sarika |    94 |
+| Tarak  | DSA      | Raj    |    75 |
+| Survir | DBMS     | Anjali |    84 |
++--------+----------+--------+-------+
+3 rows in set (0.03 sec)
+
+//Naturally joining sd_base and student table
+mysql> select * from sd_base natural join student;
++------+--------+------+-------+--------+--------+
+| s_id | sub_id | t_id | marks | fname  | lname  |
++------+--------+------+-------+--------+--------+
+|    1 |     11 | 1001 |    94 | Pooja  | Sharma |
+|    2 |     12 | 1002 |    75 | Tarak  | Mehta  |
+|    3 |     13 | 1003 |    84 | Survir | Suri   |
++------+--------+------+-------+--------+--------+
+3 rows in set (0.00 sec)
+
+//Naturally joining sd_base and teacher table
+mysql> select * from sd_base natural join teacher;
++------+------+--------+-------+--------+
+| t_id | s_id | sub_id | marks | t_name |
++------+------+--------+-------+--------+
+| 1001 |    1 |     11 |    94 | Sarika |
+| 1002 |    2 |     12 |    75 | Raj    |
+| 1003 |    3 |     13 |    84 | Anjali |
++------+------+--------+-------+--------+
+3 rows in set (0.00 sec)
+
+//Naturally joining sd_base and teacher table and show s_id,t_name,sub_id,marks
+mysql> select s_id,t_name,sub_id,marks from sd_base natural join teacher;
++------+--------+--------+-------+
+| s_id | t_name | sub_id | marks |
++------+--------+--------+-------+
+|    1 | Sarika |     11 |    94 |
+|    2 | Raj    |     12 |    75 |
+|    3 | Anjali |     13 |    84 |
++------+--------+--------+-------+
+3 rows in set (0.00 sec)
+
+//Naturally joining sd_base table with student,teacher,subject.
+mysql> select * from sd_base natural join student
+    -> natural join teacher
+    -> natural join subject;
++--------+------+------+-------+--------+--------+--------+----------+
+| sub_id | t_id | s_id | marks | fname  | lname  | t_name | sub_name |
++--------+------+------+-------+--------+--------+--------+----------+
+|     11 | 1001 |    1 |    94 | Pooja  | Sharma | Sarika | OOP      |
+|     12 | 1002 |    2 |    75 | Tarak  | Mehta  | Raj    | DSA      |
+|     13 | 1003 |    3 |    84 | Survir | Suri   | Anjali | DBMS     |
++--------+------+------+-------+--------+--------+--------+----------+
+3 rows in set (0.00 sec)
+
+//Naturally joining sd_base table with student,teacher,subject and show student name ,sub_name,t_name,marks.
+mysql> select student.fname,sub_name,t_name,marks from sd_base natural join student
+    -> natural join subject
+    -> natural join teacher;
++--------+----------+--------+-------+
+| fname  | sub_name | t_name | marks |
++--------+----------+--------+-------+
+| Pooja  | OOP      | Sarika |    94 |
+| Tarak  | DSA      | Raj    |    75 |
+| Survir | DBMS     | Anjali |    84 |
++--------+----------+--------+-------+
+3 rows in set (0.00 sec)
+
+//Taking cross product of sd_base,student,teacher and subject table using where clause for condition
+mysql> select * from sd_base,student,teacher,subject
+    -> where sd_base.s_id=student.s_id and sd_base.t_id=teacher.t_id and sd_base.sub_id=subject.sub_id;
++------+--------+------+-------+------+--------+--------+------+--------+--------+----------+
+| s_id | sub_id | t_id | marks | s_id | fname  | lname  | t_id | t_name | sub_id | sub_name |
++------+--------+------+-------+------+--------+--------+------+--------+--------+----------+
+|    1 |     11 | 1001 |    94 |    1 | Pooja  | Sharma | 1001 | Sarika |     11 | OOP      |
+|    2 |     12 | 1002 |    75 |    2 | Tarak  | Mehta  | 1002 | Raj    |     12 | DSA      |
+|    3 |     13 | 1003 |    84 |    3 | Survir | Suri   | 1003 | Anjali |     13 | DBMS     |
++------+--------+------+-------+------+--------+--------+------+--------+--------+----------+
+3 rows in set (0.00 sec)
+
+//Taking cross product of sd_base,student,teacher and subject table using where clause for condition and show student name ,sub_name,t_name,marks.
+mysql> select student.fname,sub_name,t_name,marks from sd_base,student,teacher,subject
+    -> where sd_base.s_id=student.s_id and sd_base.t_id=teacher.t_id and sd_base.sub_id=subject.sub_id;
++--------+----------+--------+-------+
+| fname  | sub_name | t_name | marks |
++--------+----------+--------+-------+
+| Pooja  | OOP      | Sarika |    94 |
+| Tarak  | DSA      | Raj    |    75 |
+| Survir | DBMS     | Anjali |    84 |
++--------+----------+--------+-------+
+3 rows in set (0.00 sec)
+
+//To create a dummy table(s_id,t_id,marks) from current table, 
+mysql> create table dummy select s_id,t_id,marks from sd_base;
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//Display dummy table
+mysql> select * from dummy;
++------+------+-------+
+| s_id | t_id | marks |
++------+------+-------+
+|    1 | 1001 |    94 |
+|    2 | 1002 |    75 |
+|    3 | 1003 |    84 |
++------+------+-------+
+3 rows in set (0.00 sec)
+
+//To copy structure of current table(sd_base ) 
+mysql> create table dumb like sd_base;
+Query OK, 0 rows affected (0.06 sec)
+
+//Describing the structure of the table
+mysql> desc dumb;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| s_id   | int  | YES  | MUL | NULL    |       |
+| sub_id | int  | YES  | MUL | NULL    |       |
+| t_id   | int  | YES  | MUL | NULL    |       |
+| marks  | int  | YES  |     | NULL    |       |
++--------+------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+//using auto_increment- to automatically increment the roll no
+mysql> create table stu(rollno int auto_increment primary key,name varchar(10),city varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+//Insert record in stu table
+mysql> insert into stu (name,city) values("pooja","pune");
+Query OK, 1 row affected (0.00 sec)
+
+//Display record from stu table
+mysql> select * from stu;
++--------+-------+------+
+| rollno | name  | city |
++--------+-------+------+
+|      1 | pooja | pune |
++--------+-------+------+
+1 row in set (0.00 sec)
+
+//Insert records in stu table
+mysql> insert into stu (name,city) values("peru","nagpur"),("ravi","goa");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+//Display records from stu table
+mysql> select * from stu;
++--------+-------+--------+
+| rollno | name  | city   |
++--------+-------+--------+
+|      1 | pooja | pune   |
+|      2 | peru  | nagpur |
+|      3 | ravi  | goa    |
++--------+-------+--------+
+3 rows in set (0.00 sec)
+
+//Using alter table statement set auto_increment to 7
+mysql> alter table stu
+    -> auto_increment=7;
+Query OK, 3 rows affected (0.05 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//Insert record in stu table
+mysql> insert into stu (name,city) values ("ram","puri");
+Query OK, 1 row affected (0.00 sec)
+
+//Display records from stu table
+mysql> select * from stu;
++--------+-------+--------+
+| rollno | name  | city   |
++--------+-------+--------+
+|      1 | pooja | pune   |
+|      2 | peru  | nagpur |
+|      3 | ravi  | goa    |
+|      7 | ram   | puri   |
++--------+-------+--------+
+4 rows in set (0.00 sec)
+
+//Insert records in stu table
+mysql> insert into stu (name,city) values ("pooja","dehu"),("Roopa","Nigdi");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+//Display records from stu table
+mysql> select * from stu;
++--------+-------+--------+
+| rollno | name  | city   |
++--------+-------+--------+
+|      1 | pooja | pune   |
+|      2 | peru  | nagpur |
+|      3 | ravi  | goa    |
+|      7 | ram   | puri   |
+|      8 | pooja | dehu   |
+|      9 | Roopa | Nigdi  |
++--------+-------+--------+
+6 rows in set (0.00 sec)

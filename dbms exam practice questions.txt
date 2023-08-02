@@ -1,0 +1,356 @@
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.27 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| customer           |
+| emp                |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sale               |
+| student            |
+| sys                |
++--------------------+
+10 rows in set (0.04 sec)
+
+mysql> use student;
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_student |
++-------------------+
+| student           |
++-------------------+
+1 row in set (0.02 sec)
+
+mysql> create table tutorials(t_id int primary key,t_title varchar(10),t_author varchar(10)
+    -> ,submission_date date)engine=innodb;
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> set foreign_key_checks=1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> drop table tutorials;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table tutorials(t_id int primary key,t_title varchar(10),t_author varchar(10) primary key,
+    -> submission_date date)engine=innodb;
+ERROR 1068 (42000): Multiple primary key defined
+mysql> create table tutorials(t_id int,t_title varchar(10),t_author varchar(10),
+    -> submission_date date,primary key(t_id,t_author))engine=innodb;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc tutorials;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| t_id            | int         | NO   | PRI | NULL    |       |
+| t_title         | varchar(10) | YES  |     | NULL    |       |
+| t_author        | varchar(10) | NO   | PRI | NULL    |       |
+| submission_date | date        | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> create table tut_count(t_author varchar(10),t_count int,foreign key(t_author) refrences tutorials(t_author))engine=innodb;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refrences tutorials(t_author))engine=innodb' at line 1
+mysql> create table tut_count(t_author varchar(10),t_count int,foreign key(t_author) references tutorials(t_author))engine=innodb;
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for constraint 'tut_count_ibfk_1' in the referenced table 'tutorials'
+mysql> drop table tut_count;
+ERROR 1051 (42S02): Unknown table 'student.tut_count'
+mysql> drop table tutorials
+    -> ;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table tut_count(t_author varchar(10) primary key,t_count int)engine=innodb;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table tutorials(t_id int,t_title varchar(10),t_author varchar(10),
+    ->  submission_date date,foreign key(t_author) references tut_count(t_author) )engine=innodb;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc tutorials;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| t_id            | int         | YES  |     | NULL    |       |
+| t_title         | varchar(10) | YES  |     | NULL    |       |
+| t_author        | varchar(10) | YES  | MUL | NULL    |       |
+| submission_date | date        | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table tutorials
+    -> modify t_id int primary key;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc tutorials;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| t_id            | int         | NO   | PRI | NULL    |       |
+| t_title         | varchar(10) | YES  |     | NULL    |       |
+| t_author        | varchar(10) | YES  | MUL | NULL    |       |
+| submission_date | date        | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from tutorails join tut_count
+    -> using(t_author);
+ERROR 1146 (42S02): Table 'student.tutorails' doesn't exist
+mysql> select * from tutorials join tut_count
+    -> using(t_author);
+Empty set (0.00 sec)
+
+mysql> insert into tut_count("Chetan",3),("Bhagat",2),("Sudha",7);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"Chetan",3),("Bhagat",2),("Sudha",7)' at line 1
+mysql> insert into tut_count values("Chetan",3),("Bhagat",2),("Sudha",7);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from tut_count;
++----------+---------+
+| t_author | t_count |
++----------+---------+
+| Bhagat   |       2 |
+| Chetan   |       3 |
+| Sudha    |       7 |
++----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> insert into tutorials values(1,"Devi","Bhagat","2022-03-17"),(2,"Ikagi","Chetan","2022-03-22"),(3,"Bose","Sudha","2022-03-25");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from tutorails;
+ERROR 1146 (42S02): Table 'student.tutorails' doesn't exist
+mysql> select * from tutorials;
++------+---------+----------+-----------------+
+| t_id | t_title | t_author | submission_date |
++------+---------+----------+-----------------+
+|    1 | Devi    | Bhagat   | 2022-03-17      |
+|    2 | Ikagi   | Chetan   | 2022-03-22      |
+|    3 | Bose    | Sudha    | 2022-03-25      |
++------+---------+----------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select t_id,t_author from tutorials join tut_count
+    -> using(t_author);
++------+----------+
+| t_id | t_author |
++------+----------+
+|    1 | Bhagat   |
+|    2 | Chetan   |
+|    3 | Sudha    |
++------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select t_id,t_author,t_count from tutorials join tut_count
+    -> using(t_author);
++------+----------+---------+
+| t_id | t_author | t_count |
++------+----------+---------+
+|    1 | Bhagat   |       2 |
+|    2 | Chetan   |       3 |
+|    3 | Sudha    |       7 |
++------+----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from tutorials
+    -> order by date desc;
+ERROR 1054 (42S22): Unknown column 'date' in 'order clause'
+mysql> select * from tutorials
+    -> order by submission_date desc;
++------+---------+----------+-----------------+
+| t_id | t_title | t_author | submission_date |
++------+---------+----------+-----------------+
+|    3 | Bose    | Sudha    | 2022-03-25      |
+|    2 | Ikagi   | Chetan   | 2022-03-22      |
+|    1 | Devi    | Bhagat   | 2022-03-17      |
++------+---------+----------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table student(rollno int primary key,name varchar(10),address varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table subject(sub_code int primary key,sub_name varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table marks(rollno int,sub_code int, marks int,foreign key(rollno) references student(rollno),foreign key(sub_code) references(sub_code))engine=innodb;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(sub_code))engine=innodb' at line 1
+mysql> create table marks(rollno int,sub_code int, marks int,foreign key(rollno) references student(rollno),foreign key(sub_code) references subject(sub_code))engine=innodb;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc student;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| rollno  | int         | NO   | PRI | NULL    |       |
+| name    | varchar(10) | YES  |     | NULL    |       |
+| address | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc subject;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| sub_code | int         | NO   | PRI | NULL    |       |
+| sub_name | varchar(10) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc marks;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| rollno   | int  | YES  | MUL | NULL    |       |
+| sub_code | int  | YES  | MUL | NULL    |       |
+| marks    | int  | YES  |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student values(1,"Abhi","Pune"),(2,"Bhim","Dehu"),(3,"Caira","Nigdi");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into subject values(101,"DSA"),(102,"OOP"),(103,"BCN");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into marks values(1,101,80),(2,102,89),(3,103,96);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++--------+-------+---------+
+| rollno | name  | address |
++--------+-------+---------+
+|      1 | Abhi  | Pune    |
+|      2 | Bhim  | Dehu    |
+|      3 | Caira | Nigdi   |
++--------+-------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from subject;
++----------+----------+
+| sub_code | sub_name |
++----------+----------+
+|      101 | DSA      |
+|      102 | OOP      |
+|      103 | BCN      |
++----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from marks;
++--------+----------+-------+
+| rollno | sub_code | marks |
++--------+----------+-------+
+|      1 |      101 |    80 |
+|      2 |      102 |    89 |
+|      3 |      103 |    96 |
++--------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select student.name from student join marks
+    -> where marks=(select avg(marks) from marks);
+Empty set (0.01 sec)
+
+mysql> select student.name,avg(marks) from student join marks;
++-------+------------+
+| name  | avg(marks) |
++-------+------------+
+| Caira |    88.3333 |
++-------+------------+
+1 row in set (0.00 sec)
+
+mysql> select  student.name  from student join marks
+    -> using(rollno)
+    -> where marks=(select avg(marks) from marks);
+Empty set (0.00 sec)
+
+mysql> select  student.name,avg(marks)  from student join marks
+    -> using(rollno)
+    -> ;
++------+------------+
+| name | avg(marks) |
++------+------------+
+| Abhi |    88.3333 |
++------+------------+
+1 row in set (0.00 sec)
+
+mysql> select  avg(marks) from marks;
++------------+
+| avg(marks) |
++------------+
+|    88.3333 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select student.name ,avg(marks) avgmarks from student join marks
+    -> using (rollno);
++------+----------+
+| name | avgmarks |
++------+----------+
+| Abhi |  88.3333 |
++------+----------+
+1 row in set (0.00 sec)
+
+mysql> select rollno ,avg(marks) avgmarks from  marks group by rollno;
++--------+----------+
+| rollno | avgmarks |
++--------+----------+
+|      1 |  80.0000 |
+|      2 |  89.0000 |
+|      3 |  96.0000 |
++--------+----------+
+3 rows in set (0.00 sec)
+
+
+
+
+mysql> select student.name,avg(marks) from student natural join marks
+    -> group by rollno;
++-------+------------+
+| name  | avg(marks) |
++-------+------------+
+| Abhi  |    80.0000 |
+| Bhim  |    89.0000 |
+| Caira |    96.0000 |
++-------+------------+
+3 rows in set (0.00 sec)
+
+mysql> create table person(ssn int  primary key,name varchar(10),add varchar(10))engine=innodb;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'add varchar(10))engine=innodb' at line 1
+mysql> create table person(ssn int primary key,name varchar(10),address varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table car(license int primary key,year date,model varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table accident(date1 date,driver varchar(10),damage_amt int,primary key(date1,driver))engine=innodb;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create table owns(ssn int,license int, foreign key(ssn) references person(ssn),foreign key(license) references car(license
+    -> ))engine=innodb;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql>

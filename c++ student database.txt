@@ -1,0 +1,205 @@
+/*PROBLEM STATEMENT:-
+    	Department maintains student’s database. The file contains roll number, name, division, and address. Write a program to create a 
+		sequential file to store and maintain student data. It should allow the user to add, delete information of students. Display 
+		information of the particular student. If the record of the student does not exist an appropriate message is displayed. If a student 
+		record is found it should display the student details.
+*/
+//Source Code:-
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+//class student
+class student
+ {
+	 public:
+	 	//Data members declaration
+		int roll_no;
+		char name[12];
+		char div[20];
+		string mobile_no;
+		char address[20];
+	 	void getdata(int);
+	 	void display();
+	 	int roll();
+ };
+ 
+ //Accepting name,address and division
+void student ::getdata(int i)
+ {
+ 	int flag=0;
+    roll_no=i+1;
+    cout<<"\nRoll no:"<<roll_no;
+   	cout<<"\nEnter the Name";
+	cin>>name;
+ 	cout<<"\nEnter the Address:";
+	cin>>address;
+	cout<<"\nEnter the Division:";
+	cin>>div;
+	int f=0;
+		do {
+				cout<<"\nEnter the Mobile number:";
+				cin>>mobile_no;
+				int l =mobile_no.length();
+				if(l==10)
+				{
+					cout<<"Phone number is valid";
+					f=1;
+				}
+				else 
+				{
+					cout<<"Phone number is not valid";
+		
+				}
+			}while(f!=1);
+	
+ 
+  
+ }
+ 
+ //To perform display function
+  void student :: display()
+  {
+  	
+	cout<<"\n"<<roll_no<<"\t"<<name<<"\t"<<div<<"\t"<<address<<"\t"<<mobile_no;
+  }
+  
+  //To return roll no value
+int student :: roll()
+{
+	return roll_no;
+}
+int main()
+{
+	//object of class student
+	student s;
+	fstream file,temp;//declaring 2 files
+	int l;
+	 
+	do
+	{
+		//Accepting user choice
+	  cout<<"\nEnter the operation to be performed:\n1.Create new database\n2.Add\n3.Display\n4.Modify\n5.Delete\n6.Search\n7.Exit\n(1,2,3,4,5,6,7):";
+	  cin>>l;
+	  switch(l)
+	  {
+		  case 1:
+			  {
+				   file.open("students.doc",ios::out);//To open the file
+				   int num,i=0;
+				   cout<<"\nhow many records do you want to enter:";
+				   cin>>num;
+				   file.seekp(0,ios::end);//to put file pointer at specific location move from end to zero
+				   for(i=0;i<num;i++)
+				   {
+				   	 s.getdata(i);
+				   	 file.write((char*)&s,sizeof(s));//typecasting address and size of buffer
+				   }
+				   file.close();//To close the file
+				   break;
+			  }
+		  case 2:
+			  {
+				  //To add a record in the file
+				   file.open("students.doc",ios::in |ios::out |ios::app);
+				   int num,i=0,j;
+				   cout<<"\nHow many records do you want to enter:";
+				   cin>>num;
+				   file.seekp(0,ios::end);
+				   if(file.tellg()!=0)
+				   {
+				   		file.seekg(-(sizeof(s)),ios::end);
+				   		file.read((char*)&s,sizeof(s));
+				   		i=s.roll();
+				   }
+				   for(j=0;j<num;j++)
+				   {
+					   	s.getdata(i++);
+				  		file.write((char*)&s,sizeof(s));
+					}
+				   file.close();
+				   break;
+			  }
+		  case 3:
+			  {
+			  	//To display the record in the file
+					file.open("students.doc",ios::in);
+				   file.read((char*) &s,(sizeof(s)));
+				   while(file)
+				   {
+				    s.display();
+				    file.read((char*) &s,(sizeof(s)));
+				   }
+				   file.close();
+				   break;
+			  }
+		  case 4:
+			  {
+			  	   file.open("students.doc",ios::in|ios::out|ios :: ate);
+				   int modify;
+				   long int loc;
+				   //Acceting the rollno to be modified
+				   cout<<"\nEnter the Roll No. of Student whose record you want to Modify:";
+				   cin>>modify;
+				   loc=((modify-1)*sizeof(s));
+				   file.seekp(loc,ios::beg);
+				   s.getdata(modify-1);
+				   file.write((char*)&s,sizeof(s));
+				   cout<<"Record modified"<<endl;
+				   file.close();
+				   break;
+			  }
+		  case 5:
+			  {
+					int roll;
+					//Acceting the rollno to be deleted
+				    cout<<"\nEnter the Roll No. of Student whose record you want to Delete: ";
+				    cin>>roll;
+				    file.open("students.doc",ios::in);
+				    temp.open("temp.doc",ios::out);
+				    file.read((char *)&s,sizeof(s));
+				    while(!file.eof())
+				    {
+				        if (s.roll() != roll)
+				           temp.write((char *)&s,sizeof(s));
+				        file.read((char *)&s,sizeof(s));
+				    }
+				    cout << "The record with the roll no. " << roll << " has been deleted " << endl;
+				    file.close();
+				    temp.close();
+				    remove("students.doc");
+				    rename("temp.doc","students.doc");
+				    break;
+			  }
+			case 6:
+				{
+				
+					int ser,loc;
+					file.open("students.doc",ios::in);
+					//Acceting the rollno to be searched
+					cout<<"\nEnter the Roll No. of Student whose record you want to Search:";
+					cin>>ser;
+					file.seekp(0);
+					loc=((ser-1)*sizeof(s));
+					if(ser==s.roll())
+					{
+					   	cout<<"\nRecord found"<<endl;
+					    file.seekg(loc,ios::beg);
+					    file.read((char*)&s,sizeof(s));
+					   	s.display();
+					}
+					else
+					{
+						cout<<"Such record does not exixt in this database ";
+				    }
+					file.close();
+					break;
+				}  
+		    case 7:
+		    	{
+			   		cout<<"The end";
+		   			break;
+		   		}
+	    }
+	}while(l!=7);
+}

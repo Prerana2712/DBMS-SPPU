@@ -1,0 +1,270 @@
+///1 st  practice session my sql dbms lec   07/01/22
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.27 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> create database student;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> create database class;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> show database;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show database();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database()' at line 1
+mysql> show database
+    -> class
+    -> student;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database
+class
+student' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+6 rows in set (0.02 sec)
+
+mysql> select databases();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databases()' at line 1
+mysql> select database();
++------------+
+| database() |
++------------+
+| NULL       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> use class;
+Database changed
+mysql> select database();
++------------+
+| database() |
++------------+
+| class      |
++------------+
+1 row in set (0.00 sec)
+
+mysql> create table student(r_no int,name char(10),city varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc student;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| r_no  | int         | YES  |     | NULL    |       |
+| name  | char(10)    | YES  |     | NULL    |       |
+| city  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> insert into student values(1,"Nisha","Pune");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++------+-------+------+
+| r_no | name  | city |
++------+-------+------+
+|    1 | Nisha | Pune |
++------+-------+------+
+1 row in set (0.01 sec)
+
+mysql> insert into student values(2,"Abhay","Pune"),(3,"Rishita","Mumbai");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    1 | Nisha   | Pune   |
+|    2 | Abhay   | Pune   |
+|    3 | Rishita | Mumbai |
++------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student (name,r_no) values("Vishnu",4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from student;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    1 | Nisha   | Pune   |
+|    2 | Abhay   | Pune   |
+|    3 | Rishita | Mumbai |
+|    4 | Vishnu  | NULL   |
++------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> update student
+    -> set city="Mumbai"
+    -> where r_no=4;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from student;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    1 | Nisha   | Pune   |
+|    2 | Abhay   | Pune   |
+|    3 | Rishita | Mumbai |
+|    4 | Vishnu  | Mumbai |
++------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select r_no,name from student;
++------+---------+
+| r_no | name    |
++------+---------+
+|    1 | Nisha   |
+|    2 | Abhay   |
+|    3 | Rishita |
+|    4 | Vishnu  |
++------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * student
+    -> where city="pune";
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'student
+where city="pune"' at line 1
+mysql> select * from student
+    -> where city="Pune";
++------+-------+------+
+| r_no | name  | city |
++------+-------+------+
+|    1 | Nisha | Pune |
+|    2 | Abhay | Pune |
++------+-------+------+
+2 rows in set (0.00 sec)
+
+mysql> select r_no,name from student
+    -> where city="Mumbai";
++------+---------+
+| r_no | name    |
++------+---------+
+|    3 | Rishita |
+|    4 | Vishnu  |
++------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select distinct city from student;
++--------+
+| city   |
++--------+
+| Pune   |
+| Mumbai |
++--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into student values(4,"Vishnu","Mumbai");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from student;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    1 | Nisha   | Pune   |
+|    2 | Abhay   | Pune   |
+|    3 | Rishita | Mumbai |
+|    4 | Vishnu  | Mumbai |
+|    4 | Vishnu  | Mumbai |
++------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct * from student;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    1 | Nisha   | Pune   |
+|    2 | Abhay   | Pune   |
+|    3 | Rishita | Mumbai |
+|    4 | Vishnu  | Mumbai |
++------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student
+    -> order by name;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    2 | Abhay   | Pune   |
+|    1 | Nisha   | Pune   |
+|    3 | Rishita | Mumbai |
+|    4 | Vishnu  | Mumbai |
+|    4 | Vishnu  | Mumbai |
++------+---------+--------+
+5 rows in set (0.01 sec)
+
+mysql> select * from student
+    -> order by name desc;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    4 | Vishnu  | Mumbai |
+|    4 | Vishnu  | Mumbai |
+|    3 | Rishita | Mumbai |
+|    1 | Nisha   | Pune   |
+|    2 | Abhay   | Pune   |
++------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delete from student
+    -> where r_no=4;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select * from student;
++------+---------+--------+
+| r_no | name    | city   |
++------+---------+--------+
+|    1 | Nisha   | Pune   |
+|    2 | Abhay   | Pune   |
+|    3 | Rishita | Mumbai |
++------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> truncate table student;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from student;
+Empty set (0.00 sec)
+
+mysql> show table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show tables;
++-----------------+
+| Tables_in_class |
++-----------------+
+| student         |
++-----------------+
+1 row in set (0.01 sec)
+
+mysql> drop table student;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql>
+**********************************************************************************************************************************************************

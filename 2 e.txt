@@ -1,0 +1,310 @@
+//Name -Prerana Gajare                        Roll no-SI41                         Class-SEIT 
+
+2 e) Processing Date and Time functions in SQL
+
+SOURCE CODE:-
+
+//Create table name product
+create table product(pid int,name varchar(20),doj date,unitcost int,quantity int);
+Query OK, 0 rows affected (0.03 sec)
+
+//Inserting the data in product table
+mysql> insert into product values(1,"Mouse","2021-02-14",100,1),(1,"Mouse","2021-03-19",200,2),(1,"Mouse","2021-05-22",300,2),(2,"Keyboard","2021-02-25",50,2),(2,"Keyboard","2022-03-17",100,1),(1,"Mouse","2022-06-22",500,1);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> insert into product(pid,name,doj,unitcost,quantity) values(3,"Cpu","2022-05-04",400,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into product(pid,doj,unitcost,quantity) values(3,"2022-07-12",300,2);
+Query OK, 1 row affected (0.00 sec)
+
+//Adding a coloumn in the product table
+mysql> alter table product
+    -> add totalcost int;
+Query OK, 8 rows affected (0.05 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+//Updating the product table
+mysql> update product
+    -> set totalcost=unitcost*quantity;
+Query OK, 8 rows affected (0.01 sec)
+Rows matched: 8  Changed: 8  Warnings: 0
+
+//Display all the records
+mysql> select * from product;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
+|    3 | Cpu      | 2022-05-04 |      400 |        1 |       400 |
+|    3 | NULL     | 2022-07-12 |      300 |        2 |       600 |
++------+----------+------------+----------+----------+-----------+
+8 rows in set (0.00 sec)
+
+//To return the current date
+mysql> select curdate();
++------------+
+| curdate()  |
++------------+
+| 2022-03-19 |
++------------+
+1 row in set (0.01 sec)
+
+//To returns the current date and time
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2022-03-19 21:46:07 |
++---------------------+
+1 row in set (0.00 sec)
+
+//To returns the current date and time
+mysql> select sysdate();
++---------------------+
+| sysdate()           |
++---------------------+
+| 2022-03-19 21:46:27 |
++---------------------+
+1 row in set (0.00 sec)
+
+//To returns the current time
+mysql> select curtime();
++-----------+
+| curtime() |
++-----------+
+| 21:46:47  |
++-----------+
+1 row in set (0.00 sec)
+
+// Is used to add a specified time or date interval to a specified date and then return the date.
+mysql> select date_add('2021-03-09', interval 30 day);
++-----------------------------------------+
+| date_add('2021-03-09', interval 30 day) |
++-----------------------------------------+
+| 2021-04-08                              |
++-----------------------------------------+
+1 row in set (0.01 sec)
+
+//Display the records
+mysql> select * from product;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
+|    3 | Cpu      | 2022-05-04 |      400 |        1 |       400 |
+|    3 | NULL     | 2022-07-12 |      300 |        2 |       600 |
++------+----------+------------+----------+----------+-----------+
+8 rows in set (0.00 sec)
+
+//Is used to display pid and add a specified time or date interval to a specified date and then return the date.
+mysql> select pid,date_add(doj,interval 1 month) date from product;
++------+------------+
+| pid  | date       |
++------+------------+
+|    1 | 2021-03-14 |
+|    1 | 2021-04-19 |
+|    1 | 2021-06-22 |
+|    2 | 2021-03-25 |
+|    2 | 2022-04-17 |
+|    1 | 2022-07-22 |
+|    3 | 2022-06-04 |
+|    3 | 2022-08-12 |
++------+------------+
+8 rows in set (0.00 sec)
+
+//To display the current date
+mysql> select date(now());
++-------------+
+| date(now()) |
++-------------+
+| 2022-03-19  |
++-------------+
+1 row in set (0.01 sec)
+
+//To display the current day of the month
+mysql> select day(now());
++------------+
+| day(now()) |
++------------+
+|         19 |
++------------+
+1 row in set (0.00 sec)
+
+//To return the month from the date passed
+mysql> select month(curdate());
++------------------+
+| month(curdate()) |
++------------------+
+|                3 |
++------------------+
+1 row in set (0.01 sec)
+
+//To return the month from the date passed
+mysql> select month(now());
++--------------+
+| month(now()) |
++--------------+
+|            3 |
++--------------+
+1 row in set (0.00 sec)
+
+//To return the name of the month
+mysql> select monthname(now());
++------------------+
+| monthname(now()) |
++------------------+
+| March            |
++------------------+
+1 row in set (0.00 sec)
+
+//To return the name of the weekday
+mysql> select dayname(now());
++----------------+
+| dayname(now()) |
++----------------+
+| Saturday       |
++----------------+
+1 row in set (0.01 sec)
+
+//To subtract two dates
+mysql> select datediff(sysdate(),'2022-02-20');
++----------------------------------+
+| datediff(sysdate(),'2022-02-20') |
++----------------------------------+
+|                               27 |
++----------------------------------+
+1 row in set (0.00 sec)
+
+//To return the day of the month (0-31)
+mysql> select dayofmonth(sysdate());
++-----------------------+
+| dayofmonth(sysdate()) |
++-----------------------+
+|                    19 |
++-----------------------+
+1 row in set (0.00 sec)
+
+//To return the weekday index of the argument
+mysql> select dayofweek(sysdate());
++----------------------+
+| dayofweek(sysdate()) |
++----------------------+
+|                    7 |
++----------------------+
+1 row in set (0.00 sec)
+
+//To return the weekday index of the argument
+mysql> select dayofweek(now());
++------------------+
+| dayofweek(now()) |
++------------------+
+|                7 |
++------------------+
+1 row in set (0.00 sec)
+
+//To return the day of the year (1-366)
+mysql> select dayofyear(sysdate());
++----------------------+
+| dayofyear(sysdate()) |
++----------------------+
+|                   78 |
++----------------------+
+1 row in set (0.00 sec)
+
+//To return the week number
+mysql> select week(sysdate());
++-----------------+
+| week(sysdate()) |
++-----------------+
+|              11 |
++-----------------+
+1 row in set (0.01 sec)
+
+//To return the weekday index
+mysql> select weekday(sysdate());
++--------------------+
+| weekday(sysdate()) |
++--------------------+
+|                  5 |
++--------------------+
+1 row in set (0.00 sec)
+
+//To return the calendar week of the date (1-53)
+mysql> select weekofyear(sysdate());
++-----------------------+
+| weekofyear(sysdate()) |
++-----------------------+
+|                    11 |
++-----------------------+
+1 row in set (0.00 sec)
+
+//To return the year
+mysql> select year(sysdate());
++-----------------+
+| year(sysdate()) |
++-----------------+
+|            2022 |
++-----------------+
+1 row in set (0.00 sec)
+
+//To format date as specified
+mysql> select date_format('2022-03-19','%d-%m-%y');
++--------------------------------------+
+| date_format('2022-03-19','%d-%m-%y') |
++--------------------------------------+
+| 19-03-22                             |
++--------------------------------------+
+1 row in set (0.00 sec)
+
+//To display all the records
+mysql> select * from product;
++------+----------+------------+----------+----------+-----------+
+| pid  | name     | doj        | unitcost | quantity | totalcost |
++------+----------+------------+----------+----------+-----------+
+|    1 | Mouse    | 2021-02-14 |      100 |        1 |       100 |
+|    1 | Mouse    | 2021-03-19 |      200 |        2 |       400 |
+|    1 | Mouse    | 2021-05-22 |      300 |        2 |       600 |
+|    2 | Keyboard | 2021-02-25 |       50 |        2 |       100 |
+|    2 | Keyboard | 2022-03-17 |      100 |        1 |       100 |
+|    1 | Mouse    | 2022-06-22 |      500 |        1 |       500 |
+|    3 | Cpu      | 2022-05-04 |      400 |        1 |       400 |
+|    3 | NULL     | 2022-07-12 |      300 |        2 |       600 |
++------+----------+------------+----------+----------+-----------+
+8 rows in set (0.00 sec)
+
+//To display pid,date in the format of date as specified,unitcost and quantity
+mysql> select pid,name,date_format(doj,'%d-%m-%y') unitcost,quantity from product;
++------+----------+----------+----------+
+| pid  | name     | unitcost | quantity |
++------+----------+----------+----------+
+|    1 | Mouse    | 14-02-21 |        1 |
+|    1 | Mouse    | 19-03-21 |        2 |
+|    1 | Mouse    | 22-05-21 |        2 |
+|    2 | Keyboard | 25-02-21 |        2 |
+|    2 | Keyboard | 17-03-22 |        1 |
+|    1 | Mouse    | 22-06-22 |        1 |
+|    3 | Cpu      | 04-05-22 |        1 |
+|    3 | NULL     | 12-07-22 |        2 |
++------+----------+----------+----------+
+8 rows in set (0.01 sec)
+
+//To extract part of a date
+mysql> select extract(day from now());
++-------------------------+
+| extract(day from now()) |
++-------------------------+
+|                      20 |
++-------------------------+
+1 row in set (0.00 sec)

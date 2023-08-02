@@ -1,0 +1,1661 @@
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| customer           |
+| emp                |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sale               |
+| student            |
+| sys                |
++--------------------+
+10 rows in set (0.01 sec)
+
+mysql> use class;
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_class |
++-----------------+
+| admin           |
+| books           |
+| borrow          |
+| publisher       |
+| student         |
++-----------------+
+5 rows in set (0.01 sec)
+
+mysql> create table Worker(Customer_ID int, First_Name varchar(30), Last_Name varchar(30),
+    -> Department varchar(30), Email varchar(30), Salary int,Date_of_Joining date,primary key(Customer_ID));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc Worker;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| Customer_ID     | int         | NO   | PRI | NULL    |       |
+| First_Name      | varchar(30) | YES  |     | NULL    |       |
+| Last_Name       | varchar(30) | YES  |     | NULL    |       |
+| Department      | varchar(30) | YES  |     | NULL    |       |
+| Email           | varchar(30) | YES  |     | NULL    |       |
+| Salary          | int         | YES  |     | NULL    |       |
+| Date_of_Joining | date        | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Worker values(1,"ravi","Gupta","AI","ravigupta",10000,"2021-02-25");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Worker values(2,"Mohan","Verma","ML","mohanverma",15000,"2020-08-15");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into Worker values(3,"Kishan","sharma","Web dev","Kishansharma",10000,"2020-05-5"),(4,"Rama","Kant","AI","ramakant",20000,"2022-07-13"),(5,"Arya","Das","ML","AryaDas",15000,"2021-06-24");
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> insert into Worker values(6,"kavya","Vani","Web Dev","kavyavani",25000,"2022-08-15");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql> select First_Name as Workername from Worker;
++------------+
+| Workername |
++------------+
+| ravi       |
+| Mohan      |
+| Kishan     |
+| Rama       |
+| Arya       |
+| kavya      |
++------------+
+6 rows in set (0.00 sec)
+
+mysql> select distinct Department from Worker;
++------------+
+| Department |
++------------+
+| AI         |
+| ML         |
+| Web dev    |
++------------+
+3 rows in set (0.00 sec)
+
+
+mysql> (SELECT * FROM Worker ORDER BY Customer_ID DESC LIMIT 5)ORDER BY Customer_ID ASC;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Worker
+    -> where Customer_ID>((select count(*) Worker)-5);
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Worker
+    -> where First_Name like '___';
+Empty set (0.00 sec)
+
+mysql> select substring(First_Name,1,3) from Worker;
++---------------------------+
+| substring(First_Name,1,3) |
++---------------------------+
+| rav                       |
+| Moh                       |
+| Kis                       |
+| Ram                       |
+| Ary                       |
+| kav                       |
++---------------------------+
+6 rows in set (0.01 sec)
+
+mysql> select substring(First_Name,1,3) as First3char from Worker;
++------------+
+| First3char |
++------------+
+| rav        |
+| Moh        |
+| Kis        |
+| Ram        |
+| Ary        |
+| kav        |
++------------+
+6 rows in set (0.00 sec)
+
+mysql> select LEFT(First_Name,3) from Worker;
++--------------------+
+| LEFT(First_Name,3) |
++--------------------+
+| rav                |
+| Moh                |
+| Kis                |
+| Ram                |
+| Ary                |
+| kav                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> select Right(First_Name,3) from Worker;
++---------------------+
+| Right(First_Name,3) |
++---------------------+
+| avi                 |
+| han                 |
+| han                 |
+| ama                 |
+| rya                 |
+| vya                 |
++---------------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into Worker Values(7,"Amitabh","Bachu
+    "> ","ML","Amibachi",20000,"2021-06-24");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi     |  20000 | 2021-06-24      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+7 rows in set (0.00 sec)
+
+mysql> select instr(First_Name,binary'a') from Worker where First_Name="Amitabh";
++-----------------------------+
+| instr(First_Name,binary'a') |
++-----------------------------+
+|                           1 |
++-----------------------------+
+1 row in set, 1 warning (0.01 sec)
+
+mysql> select * from Worker group by Department;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> select Department from Worker group by Department;
++------------+
+| Department |
++------------+
+| AI         |
+| ML         |
+| Web dev    |
++------------+
+3 rows in set (0.00 sec)
+
+mysql> select max(salary) from Worker group by Department;
++-------------+
+| max(salary) |
++-------------+
+|       20000 |
+|       20000 |
+|       25000 |
++-------------+
+3 rows in set (0.01 sec)
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi     |  20000 | 2021-06-24      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Worker values(8,"Kaira","Advani","Web Dev","KAiraAdva",15000,"2014-02-15");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi     |  20000 | 2021-06-24      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva    |  15000 | 2014-02-15      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> select * from Worker
+    -> where year(Date_of_Joining)=2014 and month(Date_of_Joining)=2;
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva |  15000 | 2014-02-15      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+1 row in set (0.01 sec)
+
+mysql> select distinct Salary from Worker;
++--------+
+| Salary |
++--------+
+|  10000 |
+|  15000 |
+|  20000 |
+|  25000 |
++--------+
+4 rows in set (0.00 sec)
+
+mysql> insert into Worker values(9,"Myra","Mane","AI","myramane",90000,"2017-09-15"),(10,"kirti","Shetty","ML","kitushetu",13000,"2021-08-23");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select distinct Salary from Worker;
++--------+
+| Salary |
++--------+
+|  10000 |
+|  15000 |
+|  20000 |
+|  25000 |
+|  90000 |
+|  13000 |
++--------+
+6 rows in set (0.00 sec)
+
+mysql> select distinct Salary from Worker order by Salary desc;
++--------+
+| Salary |
++--------+
+|  90000 |
+|  25000 |
+|  20000 |
+|  15000 |
+|  13000 |
+|  10000 |
++--------+
+6 rows in set (0.00 sec)
+
+mysql> select Salary from Worker W1 where 4=(SELECT COUNT( DISTINCT ( W2.Salary )) FROM Worker W2 WHERE W2.Salary >= W1.Salary);
++--------+
+| Salary |
++--------+
+|  15000 |
+|  15000 |
+|  15000 |
++--------+
+3 rows in set (0.01 sec)
+
+mysql> select Salary from Worker W1 where 5=(SELECT COUNT( DISTINCT ( W2.Salary )) FROM Worker W2 WHERE W2.Salary >= W1.Salary);
++--------+
+| Salary |
++--------+
+|  13000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select Salary from Worker W1 where 6-1=(SELECT COUNT( DISTINCT ( W2.Salary )) FROM Worker W2 WHERE W2.Salary >= W1.Salary);
++--------+
+| Salary |
++--------+
+|  13000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select Salary from Worker W1 where 5-1=(SELECT COUNT( DISTINCT ( W2.Salary )) FROM Worker W2 WHERE W2.Salary >= W1.Salary);
++--------+
+| Salary |
++--------+
+|  15000 |
+|  15000 |
+|  15000 |
++--------+
+3 rows in set (0.00 sec)
+
+
+mysql> select * from Worker W1 where salary=(SELECT COUNT( DISTINCT ( W2.Salary )) FROM Worker W2 WHERE W2.Salary = W1.Salary);
+Empty set (0.00 sec)
+
+mysql> Select distinct W.Customer_ID, W.FIRST_NAME, W.Salary from Worker W, Worker W1 where W.Salary = W1.Salary and W.Customer_ID != W1.Customer_ID;
++-------------+------------+--------+
+| Customer_ID | FIRST_NAME | Salary |
++-------------+------------+--------+
+|           3 | Kishan     |  10000 |
+|           8 | Kaira      |  15000 |
+|           5 | Arya       |  15000 |
+|           1 | ravi       |  10000 |
+|           7 | Amitabh    |  20000 |
+|           2 | Mohan      |  15000 |
+|           4 | Rama       |  20000 |
++-------------+------------+--------+
+7 rows in set (0.01 sec)
+
+mysql> insert into Worker values(11,"Abhi","Kumar","ML","abhikumar",16000,"2015-09-15"),(12,"Dev","Prasad","Web Dev","devprasad",10000,"2015-02-23");
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi     |  20000 | 2021-06-24      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva    |  15000 | 2014-02-15      |
+|           9 | Myra       | Mane      | AI         | myramane     |  90000 | 2017-09-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu    |  13000 | 2021-08-23      |
+|          11 | Abhi       | Kumar     | ML         | abhikumar    |  16000 | 2015-09-15      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad    |  10000 | 2015-02-23      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+12 rows in set (0.01 sec)
+
+mysql> select Salary=(Salary+(Salary*10/100)) from Worker where year(Date_of_Joining)=2015;
++---------------------------------+
+| Salary=(Salary+(Salary*10/100)) |
++---------------------------------+
+|                               0 |
+|                               0 |
++---------------------------------+
+2 rows in set (0.01 sec)
+
+mysql> update Worker
+    -> set Salary=(Salary+(Salary*10/100))
+    -> where year(Date_of_Joining)=2015;
+Query OK, 2 rows affected (0.01 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email        | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta    |  10000 | 2021-02-25      |
+|           2 | Mohan      | Verma     | ML         | mohanverma   |  15000 | 2020-08-15      |
+|           3 | Kishan     | sharma    | Web dev    | Kishansharma |  10000 | 2020-05-05      |
+|           4 | Rama       | Kant      | AI         | ramakant     |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas      |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani    |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi     |  20000 | 2021-06-24      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva    |  15000 | 2014-02-15      |
+|           9 | Myra       | Mane      | AI         | myramane     |  90000 | 2017-09-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu    |  13000 | 2021-08-23      |
+|          11 | Abhi       | Kumar     | ML         | abhikumar    |  17600 | 2015-09-15      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad    |  11000 | 2015-02-23      |
++-------------+------------+-----------+------------+--------------+--------+-----------------+
+12 rows in set (0.00 sec)
+
+mysql> delete from Worker
+    -> where year(Date_of_Joining)=2020;
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta |  10000 | 2021-02-25      |
+|           4 | Rama       | Kant      | AI         | ramakant  |  20000 | 2022-07-13      |
+|           5 | Arya       | Das       | ML         | AryaDas   |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi  |  20000 | 2021-06-24      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva |  15000 | 2014-02-15      |
+|           9 | Myra       | Mane      | AI         | myramane  |  90000 | 2017-09-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu |  13000 | 2021-08-23      |
+|          11 | Abhi       | Kumar     | ML         | abhikumar |  17600 | 2015-09-15      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad |  11000 | 2015-02-23      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> update Worker
+    -> set First_Name="arya"
+    -> where Customer_ID=5;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update Worker
+    -> set First_Name="abhi"
+    -> where Customer_ID=11;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta |  10000 | 2021-02-25      |
+|           4 | Rama       | Kant      | AI         | ramakant  |  20000 | 2022-07-13      |
+|           5 | arya       | Das       | ML         | AryaDas   |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi  |  20000 | 2021-06-24      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva |  15000 | 2014-02-15      |
+|           9 | Myra       | Mane      | AI         | myramane  |  90000 | 2017-09-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu |  13000 | 2021-08-23      |
+|          11 | abhi       | Kumar     | ML         | abhikumar |  17600 | 2015-09-15      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad |  11000 | 2015-02-23      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select replace(First_Name,'a','A') from Worker;
++-----------------------------+
+| replace(First_Name,'a','A') |
++-----------------------------+
+| rAvi                        |
+| RAmA                        |
+| AryA                        |
+| kAvyA                       |
+| AmitAbh                     |
+| KAirA                       |
+| MyrA                        |
+| kirti                       |
+| Abhi                        |
+| Dev                         |
++-----------------------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Worker order by First_Name asc,Department desc;
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|          11 | abhi       | Kumar     | ML         | abhikumar |  17600 | 2015-09-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi  |  20000 | 2021-06-24      |
+|           5 | arya       | Das       | ML         | AryaDas   |  15000 | 2021-06-24      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad |  11000 | 2015-02-23      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva |  15000 | 2014-02-15      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani |  25000 | 2022-08-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu |  13000 | 2021-08-23      |
+|           9 | Myra       | Mane      | AI         | myramane  |  90000 | 2017-09-15      |
+|           4 | Rama       | Kant      | AI         | ramakant  |  20000 | 2022-07-13      |
+|           1 | ravi       | Gupta     | AI         | ravigupta |  10000 | 2021-02-25      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+10 rows in set (0.01 sec)
+
+mysql> select * from Worker order by First_Name asc;
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|          11 | abhi       | Kumar     | ML         | abhikumar |  17600 | 2015-09-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi  |  20000 | 2021-06-24      |
+|           5 | arya       | Das       | ML         | AryaDas   |  15000 | 2021-06-24      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad |  11000 | 2015-02-23      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva |  15000 | 2014-02-15      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani |  25000 | 2022-08-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu |  13000 | 2021-08-23      |
+|           9 | Myra       | Mane      | AI         | myramane  |  90000 | 2017-09-15      |
+|           4 | Rama       | Kant      | AI         | ramakant  |  20000 | 2022-07-13      |
+|           1 | ravi       | Gupta     | AI         | ravigupta |  10000 | 2021-02-25      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Worker order by Department desc;
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|           6 | kavya      | Vani      | Web Dev    | kavyavani |  25000 | 2022-08-15      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva |  15000 | 2014-02-15      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad |  11000 | 2015-02-23      |
+|           5 | arya       | Das       | ML         | AryaDas   |  15000 | 2021-06-24      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi  |  20000 | 2021-06-24      |
+|          10 | kirti      | Shetty    | ML         | kitushetu |  13000 | 2021-08-23      |
+|          11 | abhi       | Kumar     | ML         | abhikumar |  17600 | 2015-09-15      |
+|           1 | ravi       | Gupta     | AI         | ravigupta |  10000 | 2021-02-25      |
+|           4 | Rama       | Kant      | AI         | ramakant  |  20000 | 2022-07-13      |
+|           9 | Myra       | Mane      | AI         | myramane  |  90000 | 2017-09-15      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Worker where Salary=(select max(Salary) from Worker);
++-------------+------------+-----------+------------+----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email    | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+----------+--------+-----------------+
+|           9 | Myra       | Mane      | AI         | myramane |  90000 | 2017-09-15      |
++-------------+------------+-----------+------------+----------+--------+-----------------+
+1 row in set (0.01 sec)
+
+mysql> select First_Name from Worker where Salary=(select max(Salary) from Worker);
++------------+
+| First_Name |
++------------+
+| Myra       |
++------------+
+1 row in set (0.00 sec)
+
+mysql> select * from Worker where First_name !="Dev" and First_Name !="Ravi";
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|           4 | Rama       | Kant      | AI         | ramakant  |  20000 | 2022-07-13      |
+|           5 | arya       | Das       | ML         | AryaDas   |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi  |  20000 | 2021-06-24      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva |  15000 | 2014-02-15      |
+|           9 | Myra       | Mane      | AI         | myramane  |  90000 | 2017-09-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu |  13000 | 2021-08-23      |
+|          11 | abhi       | Kumar     | ML         | abhikumar |  17600 | 2015-09-15      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into Worker values (13,"Aadish","Kapoor","AI","aadishkap",25000,"2012-04-19");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Worker where First_Name like '_____h';
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email     | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+|          13 | Aadish     | Kapoor    | AI         | aadishkap |  25000 | 2012-04-19      |
++-------------+------------+-----------+------------+-----------+--------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> update Worker
+    -> set Email="aadishkapoor@gmail.com"
+    -> where Customer_ID=13;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Worker;
++-------------+------------+-----------+------------+------------------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email                  | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+------------------------+--------+-----------------+
+|           1 | ravi       | Gupta     | AI         | ravigupta              |  10000 | 2021-02-25      |
+|          13 | Aadish     | Kapoor    | AI         | aadishkapoor@gmail.com |  25000 | 2012-04-19      |
+|           4 | Rama       | Kant      | AI         | ramakant               |  20000 | 2022-07-13      |
+|           5 | arya       | Das       | ML         | AryaDas                |  15000 | 2021-06-24      |
+|           6 | kavya      | Vani      | Web Dev    | kavyavani              |  25000 | 2022-08-15      |
+|           7 | Amitabh    | Bachu
+    | ML         | Amibachi               |  20000 | 2021-06-24      |
+|           8 | Kaira      | Advani    | Web Dev    | KAiraAdva              |  15000 | 2014-02-15      |
+|           9 | Myra       | Mane      | AI         | myramane               |  90000 | 2017-09-15      |
+|          10 | kirti      | Shetty    | ML         | kitushetu              |  13000 | 2021-08-23      |
+|          11 | abhi       | Kumar     | ML         | abhikumar              |  17600 | 2015-09-15      |
+|          12 | Dev        | Prasad    | Web Dev    | devprasad              |  11000 | 2015-02-23      |
++-------------+------------+-----------+------------+------------------------+--------+-----------------+
+11 rows in set (0.00 sec)
+
+//mail validation
+mysql> select * from Worker where Email like '%@gmail.com';
++-------------+------------+-----------+------------+------------------------+--------+-----------------+
+| Customer_ID | First_Name | Last_Name | Department | Email                  | Salary | Date_of_Joining |
++-------------+------------+-----------+------------+------------------------+--------+-----------------+
+|          13 | Aadish     | Kapoor    | AI         | aadishkapoor@gmail.com |  25000 | 2012-04-19      |
++-------------+------------+-----------+------------+------------------------+--------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> create table employee(pname varchar(20) primary key,street varchar(20),city varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| pname  | varchar(20) | NO   | PRI | NULL    |       |
+| street | varchar(20) | YES  |     | NULL    |       |
+| city   | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> create table company(cname varchar(20) primary key,city varchar(20));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc company;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| cname | varchar(20) | NO   | PRI | NULL    |       |
+| city  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table works(pname varchar(20) primary key,cname varchar(20),salary int,foreign key (pname) references employee (pname) ,foreign key (cname) references company (cname));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc works;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| pname  | varchar(20) | NO   | PRI | NULL    |       |
+| cname  | varchar(20) | YES  | MUL | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table manages(pname varchar(20) primary key,maname varchar(20),foreign key (pname) references employee (pname));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc manages;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| pname  | varchar(20) | NO   | PRI | NULL    |       |
+| maname | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> insert into employee values("Abhi","pavillion","pune"),("Niyu","pcmc","Dehu"),("Dev","101th","Dighi"),("Caira","pavillion","pune"),("Ram","101th","Dighi")
+    -> ;
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------+-----------+-------+
+| pname | street    | city  |
++-------+-----------+-------+
+| Abhi  | pavillion | pune  |
+| Niyu  | pcmc      | Dehu  |
+| Dev   | 101th     | Dighi |
+| Caira | pavillion | pune  |
+| Ram   | 101th     | Dighi |
++-------+-----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> insert into company values("ABC","Pune"),("CDE","Dehu"),("FGH","Dighi");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from company;
++-------+-------+
+| cname | city  |
++-------+-------+
+| ABC   | Pune  |
+| CDE   | Dehu  |
+| FGH   | Dighi |
++-------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into works values("Abhi","ABC",10000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into works values("Niyu","FGH",15000),("Dev","ABC",20000);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> insert into works values("Caira","CDE",30000),("ram","FGH","10000);
+    "> ^C
+mysql> insert into works values("Caira","CDE",30000),("ram","FGH",10000);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from works;
++-------+-------+--------+
+| pname | cname | salary |
++-------+-------+--------+
+| Abhi  | ABC   |  10000 |
+| Niyu  | FGH   |  15000 |
+| Dev   | ABC   |  20000 |
+| Caira | CDE   |  30000 |
+| ram   | FGH   |  10000 |
++-------+-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into manages values("Abhi","Dev"),("Niyu","Ram");
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from manages;
++-------+--------+
+| pname | maname |
++-------+--------+
+| Abhi  | Dev    |
+| Niyu  | Ram    |
++-------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select Street,City from employee, manages where employee.pname = manages.maname;
++--------+-------+
+| Street | City  |
++--------+-------+
+| 101th  | Dighi |
+| 101th  | Dighi |
++--------+-------+
+2 rows in set (0.00 sec)
+
+mysql> update employee
+    -> set street="pcmc",city="Dehu"
+    -> where pname="Ram";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select pname from employee where employee.street AND employee.city IN(select Street,City from employee, manages where employee.pname = manages.maname);
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select pname from  works where cname!="ABC";
++-------+
+| pname |
++-------+
+| Caira |
+| Niyu  |
+| ram   |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select pname from works where salary > (select max(salary) from Works where cname = "ABC");
++-------+
+| pname |
++-------+
+| Caira |
++-------+
+1 row in set (0.01 sec)
+
+mysql> select pname from manages where maname="Dev";
++-------+
+| pname |
++-------+
+| Abhi  |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select street,city from employee where pname=(select pname from manages where maname="Dev");
++-----------+------+
+| street    | city |
++-----------+------+
+| pavillion | pune |
++-----------+------+
+1 row in set (0.01 sec)
+
+mysql> insert into manages values("dev","Niyu");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select maname from manages where pname=(select maname from manages where pname="dev");
++--------+
+| maname |
++--------+
+| Ram    |
++--------+
+1 row in set (0.01 sec)
+
+mysql> update works
+    -> set salary=15000
+    -> where pname ="Caira";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select salary from works where pname in (select pname from employee where city="pune");
++--------+
+| salary |
++--------+
+|  10000 |
+|  15000 |
++--------+
+2 rows in set (0.00 sec)
+
+mysql> select pname from works where salary not in (select salary from works where pname in (select pname from employee where city="pune"));
++-------+
+| pname |
++-------+
+| Dev   |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select * from works where cname="ABC";
++-------+-------+--------+
+| pname | cname | salary |
++-------+-------+--------+
+| Abhi  | ABC   |  10000 |
+| Dev   | ABC   |  20000 |
++-------+-------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select pname from works where cname="ABC";
++-------+
+| pname |
++-------+
+| Abhi  |
+| Dev   |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select pname,city from employee where pname in (select pname from works where cname="ABC");
++-------+-------+
+| pname | city  |
++-------+-------+
+| Abhi  | pune  |
+| Dev   | Dighi |
++-------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select pname,city from employee where pname in (select pname from works where cname="ABC" and salary>10000);
++-------+-------+
+| pname | city  |
++-------+-------+
+| Dev   | Dighi |
++-------+-------+
+1 row in set (0.00 sec)
+
+mysql> select pname,street,city from employee where pname in (select pname from works where cname="ABC" and salary>10000);
++-------+--------+-------+
+| pname | street | city  |
++-------+--------+-------+
+| Dev   | 101th  | Dighi |
++-------+--------+-------+
+1 row in set (0.00 sec)
+
+mysql> select pname from employee where city in (select city from company);
++-------+
+| pname |
++-------+
+| Abhi  |
+| Niyu  |
+| Dev   |
+| Caira |
+| Ram   |
++-------+
+5 rows in set (0.01 sec)
+
+mysql> select * from employee, company ;
++-------+-----------+-------+-------+-------+
+| pname | street    | city  | cname | city  |
++-------+-----------+-------+-------+-------+
+| Abhi  | pavillion | pune  | FGH   | Dighi |
+| Abhi  | pavillion | pune  | CDE   | Dehu  |
+| Abhi  | pavillion | pune  | ABC   | Pune  |
+| Niyu  | pcmc      | Dehu  | FGH   | Dighi |
+| Niyu  | pcmc      | Dehu  | CDE   | Dehu  |
+| Niyu  | pcmc      | Dehu  | ABC   | Pune  |
+| Dev   | 101th     | Dighi | FGH   | Dighi |
+| Dev   | 101th     | Dighi | CDE   | Dehu  |
+| Dev   | 101th     | Dighi | ABC   | Pune  |
+| Caira | pavillion | pune  | FGH   | Dighi |
+| Caira | pavillion | pune  | CDE   | Dehu  |
+| Caira | pavillion | pune  | ABC   | Pune  |
+| Ram   | pcmc      | Dehu  | FGH   | Dighi |
+| Ram   | pcmc      | Dehu  | CDE   | Dehu  |
+| Ram   | pcmc      | Dehu  | ABC   | Pune  |
++-------+-----------+-------+-------+-------+
+15 rows in set (0.00 sec)
+
+mysql> select pname from employee where employee.city IN(select employee.city from employee, company where employee.city = company.city);
++-------+
+| pname |
++-------+
+| Caira |
+| Abhi  |
+| Ram   |
+| Niyu  |
+| Dev   |
++-------+
+5 rows in set (0.01 sec)
+
+mysql> select employee.pname from employee, works ,company where employee.pname=works.pname and works.cname = company.cname and employee.city=company.city;
++-------+
+| pname |
++-------+
+| Abhi  |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee;
++-------+-----------+-------+
+| pname | street    | city  |
++-------+-----------+-------+
+| Abhi  | pavillion | pune  |
+| Niyu  | pcmc      | Dehu  |
+| Dev   | 101th     | Dighi |
+| Caira | pavillion | pune  |
+| Ram   | pcmc      | Dehu  |
++-------+-----------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from works
+    -> ;
++-------+-------+--------+
+| pname | cname | salary |
++-------+-------+--------+
+| Abhi  | ABC   |  10000 |
+| Niyu  | FGH   |  15000 |
+| Dev   | ABC   |  20000 |
+| Caira | CDE   |  15000 |
+| ram   | FGH   |  10000 |
++-------+-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from company;
++-------+-------+
+| cname | city  |
++-------+-------+
+| ABC   | Pune  |
+| CDE   | Dehu  |
+| FGH   | Dighi |
++-------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select cname from company where city IN (select city from company where cname ="ABC");
++-------+
+| cname |
++-------+
+| ABC   |
++-------+
+1 row in set (0.00 sec)
+
+mysql> insert into company values("ijk","Pune"),("LMn","Pune");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from company;
++-------+-------+
+| cname | city  |
++-------+-------+
+| ABC   | Pune  |
+| CDE   | Dehu  |
+| FGH   | Dighi |
+| ijk   | Pune  |
+| LMn   | Pune  |
++-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select cname from company where city IN (select city from company where cname ="ABC");
++-------+
+| cname |
++-------+
+| ABC   |
+| ijk   |
+| LMn   |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select cname from works group by cname having count( pname);
++-------+
+| cname |
++-------+
+| ABC   |
+| CDE   |
+| FGH   |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select cname from works group by cname having count( pname) >= all(select count(pname) from works group by cname);
++-------+
+| cname |
++-------+
+| ABC   |
+| FGH   |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select cname from works group by cname having min(salary) <= all(select min(salary) from works group by cname);
++-------+
+| cname |
++-------+
+| ABC   |
+| FGH   |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select cname from works group by cname having min(salary) < all(select min(salary) from works group by cname);
+Empty set (0.00 sec)
+
+mysql> update works
+    -> set salary=25000
+    -> where pname="Niyu";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update works
+    -> set salary=30000
+    -> where pname="Ram";
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from works;
++-------+-------+--------+
+| pname | cname | salary |
++-------+-------+--------+
+| Abhi  | ABC   |  10000 |
+| Niyu  | FGH   |  25000 |
+| Dev   | ABC   |  20000 |
+| Caira | CDE   |  15000 |
+| ram   | FGH   |  30000 |
++-------+-------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select cname from works group by cname having avg(salary) > (select avg(salary) from works where cname="ABC");
++-------+
+| cname |
++-------+
+| FGH   |
++-------+
+1 row in set (0.00 sec)
+
+mysql> create table member(meb_ni int primary key,name varchar(20),dob date);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc member;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| meb_ni | int         | NO   | PRI | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| dob    | date        | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> create table books(isbn int primary key,title varchar(20) ,author varchar(20),publisher varchar(20));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> desc books;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| isbn      | int         | NO   | PRI | NULL    |       |
+| title     | varchar(20) | YES  |     | NULL    |       |
+| author    | varchar(20) | YES  |     | NULL    |       |
+| publisher | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table borrowed(meb_no int,isbn int ,date date,primary key(meb_no,isbn),foreign key (meb_no) references member (meb_no),foreign key (isbn) references books(isbn));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> desc borrowed;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| meb_no | int  | NO   | PRI | NULL    |       |
+| isbn   | int  | NO   | PRI | NULL    |       |
+| date   | date | YES  |     | NULL    |       |
++--------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into member values(1,"Abhi","2002-06-15"),(2,"Bhim","2001-07-23"),(3,"Caira","1999-02-14"),(4,"DEv","2003-09-25"),(5,"Elu","2000-04-10");
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from member;
++--------+-------+------------+
+| meb_ni | name  | dob        |
++--------+-------+------------+
+|      1 | Abhi  | 2002-06-15 |
+|      2 | Bhim  | 2001-07-23 |
+|      3 | Caira | 1999-02-14 |
+|      4 | DEv   | 2003-09-25 |
+|      5 | Elu   | 2000-04-10 |
++--------+-------+------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into books values(101,"Juilet","Ram","Mcgraw"),(102,"Caesar","Kishan","Mcgraw"),(103,"Romeo","Charan","Mcgraw"),(104,"Hamlet","Sita","Mcgraw"),(105,"Bride","Draupadi","Mcgraw");
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from books;
++------+--------+----------+-----------+
+| isbn | title  | author   | publisher |
++------+--------+----------+-----------+
+|  101 | Juilet | Ram      | Mcgraw    |
+|  102 | Caesar | Kishan   | Mcgraw    |
+|  103 | Romeo  | Charan   | Mcgraw    |
+|  104 | Hamlet | Sita     | Mcgraw    |
+|  105 | Bride  | Draupadi | Mcgraw    |
++------+--------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> insert into borrowed values(1,101,"2022-02-04"),(1,102,"2022-02-06"),(1,103,"2022-05-13"),(1,104,"2022-04-13"),(1,105,"2022-05-13"),(2,103,"2022-01-25"),(3,102,"2022-03-14");
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from borrowed;
++--------+------+------------+
+| meb_no | isbn | date       |
++--------+------+------------+
+|      1 |  101 | 2022-02-04 |
+|      1 |  102 | 2022-02-06 |
+|      1 |  103 | 2022-05-13 |
+|      1 |  104 | 2022-04-13 |
+|      1 |  105 | 2022-05-13 |
+|      2 |  103 | 2022-01-25 |
+|      3 |  102 | 2022-03-14 |
++--------+------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select name from member m, books b, borrowed l where m.meb_ni = l.meb_no and l.isbn = b.isbn and b.publisher = "Mcgraw";
++-------+
+| name  |
++-------+
+| Abhi  |
+| Abhi  |
+| Caira |
+| Abhi  |
+| Bhim  |
+| Abhi  |
+| Abhi  |
++-------+
+7 rows in set (0.00 sec)
+
+mysql> select distinct name from member m, books b, borrowed l where m.meb_ni = l.meb_no and l.isbn = b.isbn and b.publisher = "Mcgraw";
++-------+
+| name  |
++-------+
+| Abhi  |
+| Caira |
+| Bhim  |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select name from member m join borrowed l on m.meb_ni=l.meb_no join (select isbn from books where publisher = "Mcgraw") x on l.isbn=x.isbn group by m.meb_ni,name having count(*)= (select count(*) from books where publisher="Mcgraw");
++------+
+| name |
++------+
+| Abhi |
++------+
+1 row in set (0.01 sec)
+
+mysql> select count(*) from books where publisher="Mcgraw"
+    -> ;
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select name from member m join borrowed l on m.meb_ni=l.meb_no join (select isbn from books where publisher = "Mcgraw") x on l.isbn=x.isbn group by m.meb_ni,name ;
++-------+
+| name  |
++-------+
+| Abhi  |
+| Caira |
+| Bhim  |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select name from member m join borrowed l on m.meb_ni=l.meb_no join (select isbn from books where publisher = "Mcgraw") x on l.isbn=x.isbn group by m.meb_ni,name having count(*);
++-------+
+| name  |
++-------+
+| Abhi  |
+| Caira |
+| Bhim  |
++-------+
+3 rows in set (0.00 sec)
+
+mysql> select name from member,borrowed where member.meb_ni=borrowed.meb_no and isbn in ( select distinct isbn from books where publisher="McGraw") group by member.meb_ni,name having count(isbn) =5;
++------+
+| name |
++------+
+| Abhi |
++------+
+1 row in set (0.00 sec)
+
+mysql>  select distinct isbn from books where publisher="McGraw"
+    -> ;
++------+
+| isbn |
++------+
+|  101 |
+|  102 |
+|  103 |
+|  104 |
+|  105 |
++------+
+5 rows in set (0.00 sec)
+
+mysql> select name from member,borrowed where member.meb_ni=borrowed.meb_no and isbn in ( select distinct isbn from books where publisher="McGraw") group by member.meb_ni,name having count(isbn) >=5;
++------+
+| name |
++------+
+| Abhi |
++------+
+1 row in set (0.00 sec)
+
+mysql> select name from member,borrowed where member.meb_ni=borrowed.meb_no and isbn in ( select distinct isbn from books where publisher="McGraw");
++-------+
+| name  |
++-------+
+| Abhi  |
+| Abhi  |
+| Caira |
+| Abhi  |
+| Bhim  |
+| Abhi  |
+| Abhi  |
++-------+
+7 rows in set (0.00 sec)
+
+mysql> select name from member,borrowed,books where member.meb_ni=borrowed.meb_no and books.isbn=borrowed.isbn  group by member.meb_ni, name,books.publisher having count(borrowed.isbn) >=5;
++------+
+| name |
++------+
+| Abhi |
++------+
+1 row in set (0.00 sec)
+
+mysql> select avg(isbn) from borrowed group by meb_no;
++-----------+
+| avg(isbn) |
++-----------+
+|  103.0000 |
+|  103.0000 |
+|  102.0000 |
++-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from borrowed group by meb_no;
++--------+------+------------+
+| meb_no | isbn | date       |
++--------+------+------------+
+|      1 |  101 | 2022-02-04 |
+|      2 |  103 | 2022-01-25 |
+|      3 |  102 | 2022-03-14 |
++--------+------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select count(*) from borrowed group by meb_no;
++----------+
+| count(*) |
++----------+
+|        5 |
+|        1 |
+|        1 |
++----------+
+3 rows in set (0.00 sec)
+
+drop table student;
+create table student(rno int ,sub1 int,sub2 int,sub3 int,per int,grade varchar(15));
+insert into student (rno,sub1,sub2,sub3) values(1,75,85,94);
+insert into student (rno,sub1,sub2,sub3) values(2,85,74,75);
+insert into student (rno,sub1,sub2,sub3) values(3,92,85,83);
+select * from student;
+
+create or replace procedure percent(rno in int,m1 in int,m2 in int,m3 in int,per out float,grade out varchar)
+is
+begin
+    per:=(((m1+m2+m3)/300)*100);
+    if(per>=75)
+    then grade:='First Class';
+    elsif(per>=50 and per<75)
+    then grade:='Second Class';
+    elsif(per>=35 and per<50)
+    then grade:='Pass';
+    else
+    grade:='Fail';
+    end if;
+end;
+declare
+cursor c_cur is select * from student;
+v_cur c_cur%rowtype;
+i int;
+begin
+    open c_cur;
+    dbms_output.put_line('Rno  | Subject1 | Subject2 | Subject3 | Percent                                     | Grade       ');
+    dbms_output.put_line('................................................................................................');
+
+    for i in 1..100 loop
+        fetch c_cur into v_cur;
+        exit when c_cur%notfound;
+        percent(v_cur.rno,v_cur.sub1,v_cur.sub2,v_cur.sub3,v_cur.per,v_cur.grade);
+        update student set per=v_cur.per,grade=v_cur.grade where rno=v_cur.rno;
+        dbms_output.put_line(v_cur.rno||'    |  '||v_cur.sub1||'      |  '||v_cur.sub2||'      |  '||v_cur.sub3||'      |  '||v_cur.per||'  | '||v_cur.grade);
+        
+    end loop;
+    dbms_output.put_line('.................................................................................................');
+    close c_cur;
+end;
+
+
+drop table logs;
+
+drop table employee_1;
+
+--create table student and insert records into it
+create table employee_1(emp_id int, emp_name varchar(10),salary float, grade varchar(20));
+insert into employee_1(emp_id,emp_name,salary,grade) values (1,'Abhi',15000,'A');
+insert into employee_1(emp_id,emp_name,salary,grade) values (2,'Bhim',15000,'B');
+insert into employee_1(emp_id,emp_name,salary,grade) values (3,'Caira',15000,'C');
+select * from employee_1;
+
+--displaying student table
+--select * from student;
+
+--create table logs 
+create table logs(old_emp_id int ,new_emp_id int,operation varchar(10),old_salary int,new_salary int,old_grade varchar(20),new_grade varchar(20) );
+
+--create trigger
+create or replace trigger updation
+after update or insert or delete on employee_1
+for each row
+declare 
+opr varchar(10);
+begin
+if inserting then
+opr:='insert';
+dbms_output.put_line('Insert operation is performed on');
+elsif updating then
+opr:='update';
+dbms_output.put_line('update operation is performed on');
+elsif deleting then
+opr:='delete';
+dbms_output.put_line('delete operation is performed on');
+end if;
+insert into logs values (:old.emp_id,:new.emp_id,opr,:old.salary,:new.salary,:old.grade,:new.grade);
+end;
+
+update employee_1 set salary=20000 where emp_id=2;
+
+insert into employee_1 (emp_id,emp_name,salary,grade) values(4,'Dev',20000,'B');
+
+delete from employee_1 where emp_id=4;
+
+select * from logs;
+
+
+declare
+    cursor c_cur is select * from  employee_1;
+    v_rec c_cur%rowtype;
+     v_sal float;
+     
+begin
+    open c_cur;
+    for i in 1..3 loop
+        fetch c_cur into v_rec;
+
+        --select emp_id,emp_name,salary,grade into v_eid,v_name,v_sal,v_grade from employee_1 where emp_id = counter;
+        
+        if (v_rec.grade = 'A')
+            then v_sal:=(v_rec.salary+(v_rec.salary*0.3));
+        elsif (v_rec.grade = 'B')
+            then v_sal:=(v_rec.salary+ (v_rec.salary*0.2));
+         
+        elsif (v_rec.grade = 'C')
+            then v_sal:=(v_rec.salary+ (v_rec.salary*0.1));
+           
+        else
+            v_sal := v_rec.salary;
+ end if;
+	 update employee_1 set salary=v_sal where emp_id=v_rec.emp_id;
+        
+    exit when c_cur%notfound;
+    end loop;
+    close c_cur;
+  open c_cur;
+    dbms_output.put_line('Employee id  | Employee name | Salary | Grade       ');
+    dbms_output.put_line('.................................................');
+
+    for i in 1..3 loop
+	 fetch c_cur into v_rec;
+	  dbms_output.put_line(v_rec.emp_id||'            | '||v_rec.emp_name||'          |  '||v_rec.salary||' | '||v_rec.grade);
+	 exit when c_cur%notfound;
+    end loop;
+    dbms_output.put_line('.................................................');
+end;
+
+
+
+drop table employee_1;
+create table employee_1(emp_id int, emp_name varchar(10),salary float, grade varchar(20));
+insert into employee_1(emp_id,emp_name,salary,grade) values (1,'Abhi',15000,'A');
+insert into employee_1(emp_id,emp_name,salary,grade) values (2,'Bhim',15000,'B');
+insert into employee_1(emp_id,emp_name,salary,grade) values (3,'Devi',15000,'C');
+select * from employee_1;
+
+declare
+    cursor c_cur is select * from  employee_1;
+    v_rec c_cur%rowtype;
+     v_sal float;
+     
+begin
+    open c_cur;
+    for i in 1..3 loop
+        fetch c_cur into v_rec;
+
+        --select emp_id,emp_name,salary,grade into v_eid,v_name,v_sal,v_grade from employee_1 where emp_id = counter;
+        
+        if (v_rec.grade = 'A')
+            then v_sal:=(v_rec.salary+(v_rec.salary*0.3));
+        elsif (v_rec.grade = 'B')
+            then v_sal:=(v_rec.salary+ (v_rec.salary*0.2));
+         
+        elsif (v_rec.grade = 'C')
+            then v_sal:=(v_rec.salary+ (v_rec.salary*0.1));
+           
+        else
+            v_sal := v_rec.salary;
+ end if;
+	 update employee_1 set salary=v_sal where emp_id=v_rec.emp_id;
+        
+    exit when c_cur%notfound;
+    end loop;
+    close c_cur;
+  open c_cur;
+    dbms_output.put_line('Employee id  | Employee name | Salary | Grade       ');
+    dbms_output.put_line('.................................................');
+
+    for i in 1..3 loop
+	 fetch c_cur into v_rec;
+	  dbms_output.put_line(v_rec.emp_id||'            | '||v_rec.emp_name||'          |  '||v_rec.salary||' | '||v_rec.grade);
+	 exit when c_cur%notfound;
+    end loop;
+    dbms_output.put_line('.................................................');
+end;
+
+
+mysql> desc cust_mstr;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cust_no | int         | YES  | UNI | NULL    |       |
+| fname   | varchar(10) | YES  |     | NULL    |       |
+| lname   | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> desc fd_cust_dtls;
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| cust_no | int  | YES  |     | NULL    |       |
+| fd_no   | int  | YES  |     | NULL    |       |
++---------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc fd_dtls;
++----------+------+------+-----+---------+-------+
+| Field    | Type | Null | Key | Default | Extra |
++----------+------+------+-----+---------+-------+
+| fd_no    | int  | YES  | UNI | NULL    |       |
+| st_date  | date | YES  |     | NULL    |       |
+| end_date | date | YES  |     | NULL    |       |
+| amt      | int  | YES  |     | NULL    |       |
++----------+------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> select * from cust_mstr;
++---------+--------+-------+
+| cust_no | fname  | lname |
++---------+--------+-------+
+|       1 | Preeti | Pawar |
+|       2 | Maitri | Patel |
+|       3 | Dev    | Shah  |
++---------+--------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select * from fd_cust_dtls;
++---------+-------+
+| cust_no | fd_no |
++---------+-------+
+|       1 |   101 |
+|       2 |   102 |
+|       3 |   103 |
++---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select * from fd_dtls;
++-------+------------+------------+-------+
+| fd_no | st_date    | end_date   | amt   |
++-------+------------+------------+-------+
+|   101 | 2022-02-01 | 2022-02-28 |  3000 |
+|   102 | 2022-02-01 | 2022-05-12 |  9000 |
+|   103 | 2021-03-17 | 2022-01-28 | 15000 |
++-------+------------+------------+-------+
+3 rows in set (0.01 sec)
+
+mysql> select fd_no from fd_dtls where amt>5000;
++-------+
+| fd_no |
++-------+
+|   102 |
+|   103 |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select cust_no from fd_cust_dtls where fd_no in (select fd_no from fd_dtls where amt>5000 );
++---------+
+| cust_no |
++---------+
+|       2 |
+|       3 |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from cust_mstr where cust_no in(select cust_no from fd_cust_dtls where fd_no in (select fd_no from fd_dtls where amt>5000 ) );
++---------+--------+-------+
+| cust_no | fname  | lname |
++---------+--------+-------+
+|       2 | Maitri | Patel |
+|       3 | Dev    | Shah  |
++---------+--------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from cust_mstr where cust_no in(select cust_no from fd_cust_dtls where fd_no in (select fd_no from fd_dtls where amt>5000 and datediff(end_date,st_date) ) );
++---------+--------+-------+
+| cust_no | fname  | lname |
++---------+--------+-------+
+|       2 | Maitri | Patel |
+|       3 | Dev    | Shah  |
++---------+--------+-------+
+2 rows in set (0.01 sec)
+
+mysql> select * from cust_mstr where cust_no in(select cust_no from fd_cust_dtls where fd_no in (select fd_no from fd_dtls where amt>5000 and datediff(st_date,end_date) ) );
++---------+--------+-------+
+| cust_no | fname  | lname |
++---------+--------+-------+
+|       2 | Maitri | Patel |
+|       3 | Dev    | Shah  |
++---------+--------+-------+
+2 rows in set (0.01 sec)
+
+mysql> insert into cust_mstr values(4,"kaira","Advani");
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from cust_mstr;
++---------+--------+--------+
+| cust_no | fname  | lname  |
++---------+--------+--------+
+|       1 | Preeti | Pawar  |
+|       2 | Maitri | Patel  |
+|       3 | Dev    | Shah   |
+|       4 | kaira  | Advani |
++---------+--------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from cust_mstr,fd_cust_dtls;
++---------+--------+--------+---------+-------+
+| cust_no | fname  | lname  | cust_no | fd_no |
++---------+--------+--------+---------+-------+
+|       1 | Preeti | Pawar  |       3 |   103 |
+|       1 | Preeti | Pawar  |       2 |   102 |
+|       1 | Preeti | Pawar  |       1 |   101 |
+|       2 | Maitri | Patel  |       3 |   103 |
+|       2 | Maitri | Patel  |       2 |   102 |
+|       2 | Maitri | Patel  |       1 |   101 |
+|       3 | Dev    | Shah   |       3 |   103 |
+|       3 | Dev    | Shah   |       2 |   102 |
+|       3 | Dev    | Shah   |       1 |   101 |
+|       4 | kaira  | Advani |       3 |   103 |
+|       4 | kaira  | Advani |       2 |   102 |
+|       4 | kaira  | Advani |       1 |   101 |
++---------+--------+--------+---------+-------+
+12 rows in set (0.00 sec)
+
+mysql> select * from cust_mstr,fd_cust_dtls where cust_mstr.cust_no=fd_cust_dtls.cust_no;
++---------+--------+-------+---------+-------+
+| cust_no | fname  | lname | cust_no | fd_no |
++---------+--------+-------+---------+-------+
+|       1 | Preeti | Pawar |       1 |   101 |
+|       2 | Maitri | Patel |       2 |   102 |
+|       3 | Dev    | Shah  |       3 |   103 |
++---------+--------+-------+---------+-------+
+3 rows in set (0.00 sec)
+
+
+mysql> select cust_mstr.cust_no,cust_mstr.fname,cust_mstr.lname from cust_mstr where cust_no not in (select cust_mstr.cust_no from cust_mstr,fd_cust_dtls where cust_mstr.cust_no=fd_cust_dtls.cust_no);
++---------+-------+--------+
+| cust_no | fname | lname  |
++---------+-------+--------+
+|       4 | kaira | Advani |
++---------+-------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from cust_mstr where cust_no in(select cust_no from fd_cust_dtls where fd_no in (select fd_no from fd_dtls where year(st_date)=2021 ) );
++---------+-------+-------+
+| cust_no | fname | lname |
++---------+-------+-------+
+|       3 | Dev   | Shah  |
++---------+-------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from cust_mstr where cust_no in(select cust_no from fd_cust_dtls where fd_no in (select fd_no from fd_dtls where amt>10000 ) );
++---------+-------+-------+
+| cust_no | fname | lname |
++---------+-------+-------+
+|       3 | Dev   | Shah  |
++---------+-------+-------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from cust_mstr where cust_no in(select cust_no from fd_cust_dtls where fd_no in (select fd_no from fd_dtls where amt>10000 ) );
++----------+
+| count(*) |
++----------+
+|        1 |
++----------+
+1 row in set (0.00 sec)
+

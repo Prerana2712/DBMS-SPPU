@@ -1,0 +1,319 @@
+/*   Roll no- SI41                        NAME-PRERANA GAJARE                            DATE-10-01-2022    */
+
+#SHOW DATABASE 
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+#CREATING THE DATABASE
+mysql> create database employee;
+Query OK, 1 row affected (0.01 sec)
+
+#SHOW DATABASE 
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+# TO USE  EMPLOYEE DATABSE
+mysql> use employee;
+Database changed
+
+#  SELECT DATABASE
+mysql> select database();
++------------+
+| database() |
++------------+
+| employee   |
++------------+
+1 row in set (0.00 sec)
+
+#CREATING TABLE
+mysql> create table employee(emp_id int,name varchar(20),city varchar(10));
+Query OK, 0 rows affected (0.01 sec)
+
+# SHOW TABLE
+mysql> show tables;
++--------------------+
+| Tables_in_employee |
++--------------------+
+| employee           |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> desc employee; # describe structure of table
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| emp_id | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| city   | varchar(10) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+# INSERT DATA INTO TABLE
+mysql>  insert into employee values(101,"Ashu","Pune");
+Query OK, 1 row affected (0.00 sec)
+
+# SELECT ALL ROWS AND COLUMNS
+mysql> select * from employee;
++--------+------+------+
+| emp_id | name | city |
++--------+------+------+
+|    101 | Ashu | Pune |
++--------+------+------+
+1 row in set (0.00 sec)
+
+# INSERT DATA INTO TABLE
+mysql> insert into employee values(103,"Cynthai","Mumbai"),(102,"Bhim","Pune"),(104,"Dev","Nashik");
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+# SELECT ALL ROWS AND COLUMNS
+mysql> select * from employee;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    101 | Ashu    | Pune   |
+|    103 | Cynthai | Mumbai |
+|    102 | Bhim    | Pune   |
+|    104 | Dev     | Nashik |
++--------+---------+--------+
+4 rows in set (0.00 sec)
+
+# INSERT DATA FOR SPECIFIC COLUMNS
+mysql> insert into employee(name,emp_id) values ("Ellen",105);
+Query OK, 1 row affected (0.00 sec)
+
+# SELECT ALL ROWS AND COLUMNS
+mysql> select * from employee;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    101 | Ashu    | Pune   |
+|    103 | Cynthai | Mumbai |
+|    102 | Bhim    | Pune   |
+|    104 | Dev     | Nashik |
+|    105 | Ellen   | NULL   |
++--------+---------+--------+
+5 rows in set (0.00 sec)
+
+#UPDATE TUPLE USING UPDATE QUERY
+mysql> update employee
+    -> set city="Mumbai"
+    -> where emp_id=105;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+# SELECT ALL ROWS AND COLUMNS
+mysql> select * from employee;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    101 | Ashu    | Pune   |
+|    103 | Cynthai | Mumbai |
+|    102 | Bhim    | Pune   |
+|    104 | Dev     | Nashik |
+|    105 | Ellen   | Mumbai |
++--------+---------+--------+
+5 rows in set (0.00 sec)
+
+# SELECT DATA FROM SPECIFIC COLUMNS
+mysql> select emp_id,name from employee;
++--------+---------+
+| emp_id | name    |
++--------+---------+
+|    101 | Ashu    |
+|    103 | Cynthai |
+|    102 | Bhim    |
+|    104 | Dev     |
+|    105 | Ellen   |
++--------+---------+
+5 rows in set (0.00 sec)
+
+# SELECT DATA FROM SPECIFIC ROWS BASED ON CONDITION
+mysql> select * from employee
+    -> where city="Pune";
++--------+------+------+
+| emp_id | name | city |
++--------+------+------+
+|    101 | Ashu | Pune |
+|    102 | Bhim | Pune |
++--------+------+------+
+2 rows in set (0.00 sec)
+
+# SELECT DATA FROM SPECIFIC ROWS AND COLUMNS
+mysql> select emp_id,name from employee
+    -> where name="Dev";
++--------+------+
+| emp_id | name |
++--------+------+
+|    104 | Dev  |
++--------+------+
+1 row in set (0.00 sec)
+
+# INSERT DATA INTO TABLE
+mysql> insert into employee values(105,"Ellen","Mumbai"),(106,"Farina","Pune");
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+# SELECT ALL ROWS AND COLUMNS
+mysql> select * from employee;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    101 | Ashu    | Pune   |
+|    103 | Cynthai | Mumbai |
+|    102 | Bhim    | Pune   |
+|    104 | Dev     | Nashik |
+|    105 | Ellen   | Mumbai |
+|    105 | Ellen   | Mumbai |
+|    106 | Farina  | Pune   |
++--------+---------+--------+
+7 rows in set (0.00 sec)
+
+# SELECT DISTINCT TUPLES FROM TABLE
+mysql> select distinct * from employee;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    101 | Ashu    | Pune   |
+|    103 | Cynthai | Mumbai |
+|    102 | Bhim    | Pune   |
+|    104 | Dev     | Nashik |
+|    105 | Ellen   | Mumbai |
+|    106 | Farina  | Pune   |
++--------+---------+--------+
+6 rows in set (0.00 sec)
+
+# SELECT DISTINCT DATA BASED ON COLUMN
+mysql> select distinct name from employee;
++---------+
+| name    |
++---------+
+| Ashu    |
+| Cynthai |
+| Bhim    |
+| Dev     |
+| Ellen   |
+| Farina  |
++---------+
+6 rows in set (0.00 sec)
+
+# INSERT DATA INTO TABLE
+mysql> insert into employee values(107,"dev","Nashik");
+Query OK, 1 row affected (0.00 sec)
+
+#SELECT DATA WHICH MATCHES DATA CASE
+mysql> select * from employee
+    -> where name=BINARY "dev";
++--------+------+--------+
+| emp_id | name | city   |
++--------+------+--------+
+|    107 | dev  | Nashik |
++--------+------+--------+
+1 row in set, 1 warning (0.00 sec)
+
+#ORDER DATA IN ASCENDING ORDER
+mysql> select * from employee
+    -> order by name;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    101 | Ashu    | Pune   |
+|    102 | Bhim    | Pune   |
+|    103 | Cynthai | Mumbai |
+|    104 | Dev     | Nashik |
+|    107 | dev     | Nashik |
+|    105 | Ellen   | Mumbai |
+|    105 | Ellen   | Mumbai |
+|    106 | Farina  | Pune   |
++--------+---------+--------+
+8 rows in set (0.00 sec)
+
+#ORDER DATA IN DESCENDING ORDER
+mysql> select * from employee
+    -> order by name desc;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    106 | Farina  | Pune   |
+|    105 | Ellen   | Mumbai |
+|    105 | Ellen   | Mumbai |
+|    104 | Dev     | Nashik |
+|    107 | dev     | Nashik |
+|    103 | Cynthai | Mumbai |
+|    102 | Bhim    | Pune   |
+|    101 | Ashu    | Pune   |
++--------+---------+--------+
+8 rows in set (0.00 sec)
+
+#DELETE DATA FROM TABLE
+mysql> delete from employee
+    -> where emp_id=107;
+Query OK, 1 row affected (0.00 sec)
+
+# SELECT ALL ROWS AND COLUMNS
+mysql> select * from employee;
++--------+---------+--------+
+| emp_id | name    | city   |
++--------+---------+--------+
+|    101 | Ashu    | Pune   |
+|    103 | Cynthai | Mumbai |
+|    102 | Bhim    | Pune   |
+|    104 | Dev     | Nashik |
+|    105 | Ellen   | Mumbai |
+|    105 | Ellen   | Mumbai |
+|    106 | Farina  | Pune   |
++--------+---------+--------+
+7 rows in set (0.00 sec)
+
+# DELETE THE CURRENT TABLE AND CREATE THE COPY OF THE TABLE WITH SAME DESCRIPTION
+mysql> truncate table employee;
+Query OK, 0 rows affected (0.01 sec)
+
+# SHOW TABLES
+mysql> show tables;
++--------------------+
+| Tables_in_employee |
++--------------------+
+| employee           |
++--------------------+
+1 row in set (0.00 sec)
+
+# DESCRIBE THE TABLE
+mysql> desc employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| emp_id | int         | YES  |     | NULL    |       |
+| name   | varchar(20) | YES  |     | NULL    |       |
+| city   | varchar(10) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+# DELETE THE TABLE FROM DATABASE
+mysql> drop table employee;
+Query OK, 0 rows affected (0.01 sec)
+
+#SHOW TABLES
+mysql> show tables;
+Empty set (0.00 sec)

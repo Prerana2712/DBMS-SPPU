@@ -1,0 +1,199 @@
+//Name -Prerana Gajare                        Roll no-SI41                         Class-SEIT
+
+mysql> create database employee;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| customer           |
+| emp                |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| student            |
+| sys                |
++--------------------+
+9 rows in set (0.00 sec)
+
+mysql> use employee;
+Database changed
+mysql> select database();
++------------+
+| database() |
++------------+
+| employee   |
++------------+
+1 row in set (0.00 sec)
+
+//Employee table
+
+mysql> create table employee(ssn int primary key,address varchar(10),salary int ,gender varchar(10),b_date date)engine=innodb;
+Query OK, 0 rows affected (0.03 sec)
+
+//Alter table 
+
+mysql> alter table employee
+    -> add column hours_proj int;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| ssn        | int         | NO   | PRI | NULL    |       |
+| address    | varchar(10) | YES  |     | NULL    |       |
+| salary     | int         | YES  |     | NULL    |       |
+| gender     | varchar(10) | YES  |     | NULL    |       |
+| b_date     | date        | YES  |     | NULL    |       |
+| hours_proj | int         | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+
+mysql> insert into employee values(1,"Pune",10000,"Female",'1997-02-24',8),(2,"Mumbai",20000,"Male",'1995-05-16',10),(3,"Goa",30000,"Female",'1998-11-24',13);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-----+---------+--------+--------+------------+------------+
+| ssn | address | salary | gender | b_date     | hours_proj |
++-----+---------+--------+--------+------------+------------+
+|   1 | Pune    |  10000 | Female | 1997-02-24 |          8 |
+|   2 | Mumbai  |  20000 | Male   | 1995-05-16 |         10 |
+|   3 | Goa     |  30000 | Female | 1998-11-24 |         13 |
++-----+---------+--------+--------+------------+------------+
+3 rows in set (0.00 sec)
+
+//Department table
+
+mysql> create table department(dept_name varchar(10) unique ,dept_id int primary key, doj date,ssn int,foreign key(ssn) references employee(ssn))engine=innodb;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> alter table department
+    -> add column location varchar(20)
+    -> ;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc department;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_name | varchar(10) | YES  | UNI | NULL    |       |
+| dept_id   | int         | NO   | PRI | NULL    |       |
+| doj       | date        | YES  |     | NULL    |       |
+| ssn       | int         | YES  | MUL | NULL    |       |
+| location  | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql>  insert into department values("Finance",101,'2003-12-27',2,"Powai"),("Trading",102,'2005-06-05',1,"Pune"),("R&D",103,'2006-02-17',3,"Nashik");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from department;
++-----------+---------+------------+------+----------+
+| dept_name | dept_id | doj        | ssn  | location |
++-----------+---------+------------+------+----------+
+| Finance   |     101 | 2003-12-27 |    2 | Powai    |
+| Trading   |     102 | 2005-06-05 |    1 | Pune     |
+| R&D       |     103 | 2006-02-17 |    3 | Nashik   |
++-----------+---------+------------+------+----------+
+3 rows in set (0.00 sec)
+
+//Project table
+
+mysql> create table project(proj_name varchar(10) unique,proj_no int primary key,loc varchar(10))engine=innodb;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into project values("loan",10,"Bandra"),("Sales",20,"Mumbai"),("techo",30,"Mumbai");
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from project;
++-----------+---------+--------+
+| proj_name | proj_no | loc    |
++-----------+---------+--------+
+| loan      |      10 | Bandra |
+| Sales     |      20 | Mumbai |
+| techo     |      30 | Mumbai |
++-----------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> alter table employee
+    -> add column dept_id int,
+    -> add column proj_id int;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+//Foreign key constraint
+
+mysql> alter table employee
+    -> add constraint fk1 foreign key(dept_id) references department(dept_id),
+    -> add constraint fk2 foreign key(proj_id) references project(proj_no);
+Query OK, 3 rows affected (0.07 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+//Update query
+
+mysql>  update employee
+    -> set dept_id=102
+    -> where address="pune";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee
+    -> set proj_id=20
+    -> where address="pune";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employee
+    -> set dept_id=101,proj_id=10
+    -> where address="mumbai";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update employee
+    -> set dept_id=103,proj_id=30
+    -> where address="goa";
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-----+---------+--------+--------+------------+------------+---------+---------+
+| ssn | address | salary | gender | b_date     | hours_proj | dept_id | proj_id |
++-----+---------+--------+--------+------------+------------+---------+---------+
+|   1 | Pune    |  10000 | Female | 1997-02-24 |          8 |     102 |      20 |
+|   2 | Mumbai  |  20000 | Male   | 1995-05-16 |         10 |     101 |      10 |
+|   3 | Goa     |  30000 | Female | 1998-11-24 |         13 |     103 |      30 |
++-----+---------+--------+--------+------------+------------+---------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from department;
++-----------+---------+------------+------+----------+
+| dept_name | dept_id | doj        | ssn  | location |
++-----------+---------+------------+------+----------+
+| Finance   |     101 | 2003-12-27 |    2 | Powai    |
+| Trading   |     102 | 2005-06-05 |    1 | Pune     |
+| R&D       |     103 | 2006-02-17 |    3 | Nashik   |
++-----------+---------+------------+------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select * from project;
++-----------+---------+--------+
+| proj_name | proj_no | loc    |
++-----------+---------+--------+
+| loan      |      10 | Bandra |
+| Sales     |      20 | Mumbai |
+| techo     |      30 | Mumbai |
++-----------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql>

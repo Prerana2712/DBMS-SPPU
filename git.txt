@@ -1,0 +1,651 @@
+
+Dell@DESKTOP-MII16GO MINGW64 ~
+$ ls
+ -1.14-windows.xml
+'3D Objects'/
+ AppData/
+'Application Data'@
+ BullseyeCoverageError.txt
+ Contacts/
+ Cookies@
+ Desktop/
+ Documents/
+ Downloads/
+ Favorites/
+ IntelGraphicsProfiles/
+ Links/
+'Local Settings'@
+ MPLABXProjects/
+ Music/
+'My Documents'@
+ NTUSER.DAT
+ NTUSER.DAT{57e8e940-371e-11ec-8a1a-89253722a7fa}.TxR.0.regtrans-ms
+ NTUSER.DAT{57e8e940-371e-11ec-8a1a-89253722a7fa}.TxR.1.regtrans-ms
+ NTUSER.DAT{57e8e940-371e-11ec-8a1a-89253722a7fa}.TxR.2.regtrans-ms
+ NTUSER.DAT{57e8e940-371e-11ec-8a1a-89253722a7fa}.TxR.blf
+ NTUSER.DAT{57e8e941-371e-11ec-8a1a-89253722a7fa}.TM.blf
+ NTUSER.DAT{57e8e941-371e-11ec-8a1a-89253722a7fa}.TMContainer00000000000000000001.regtrans-ms
+ NTUSER.DAT{57e8e941-371e-11ec-8a1a-89253722a7fa}.TMContainer00000000000000000002.regtrans-ms
+ NetHood@
+ OneDrive/
+ PrintHood@
+ PycharmProjects/
+ Recent@
+'Saved Games'/
+ Searches/
+ SendTo@
+'Start Menu'@
+ Templates@
+'Untitled Folder'/
+ Untitled.ipynb
+ Untitled1.ipynb
+ Untitled2.ipynb
+ Videos/
+ eclipse/
+ eclipse-workspace/
+ hello.py
+ ntuser.dat.LOG1
+ ntuser.dat.LOG2
+ ntuser.ini
+
+Dell@DESKTOP-MII16GO MINGW64 ~
+$ mkdir git_workshop
+
+Dell@DESKTOP-MII16GO MINGW64 ~
+$ cd git_workshop
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop
+$ touch new.html
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop
+$ touch new.py
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop
+$ git config user.name prerana
+fatal: not in a git directory
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop
+$ git init
+Initialized empty Git repository in C:/Users/Dell/git_workshop/.git/
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git config user.name prerana
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ ls -a
+./  ../  .git/  new.html  new.py
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ cd .git
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ ls
+HEAD  config  description  hooks/  info/  objects/  refs/
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ ls -a
+./  ../  HEAD  config  description  hooks/  info/  objects/  refs/
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ ls
+HEAD  config  description  hooks/  info/  objects/  refs/
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ touch new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ git status
+fatal: this operation must be run in a work tree
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ git status
+fatal: this operation must be run in a work tree
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ git status
+fatal: this operation must be run in a work tree
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ git commit new.txt
+fatal: this operation must be run in a work tree
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ git add
+fatal: this operation must be run in a work tree
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ git status
+fatal: this operation must be run in a work tree
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (GIT_DIR!)
+$ git init
+Initialized empty Git repository in C:/Users/Dell/git_workshop/.git/.git/
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ git config user.name prerana
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ git add
+Nothing specified, nothing added.
+hint: Maybe you wanted to say 'git add .'?
+hint: Turn this message off by running
+hint: "git config advice.addEmptyPathspec false"
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        HEAD
+        config
+        description
+        hooks/
+        info/
+        new.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ touch new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        HEAD
+        config
+        description
+        hooks/
+        info/
+        new.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ mkdir git_workshop
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        HEAD
+        config
+        description
+        hooks/
+        info/
+        new.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop/.git (master)
+$ cd ..
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        new.html
+        new.py
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+error: pathspec 'new.txt' did not match any file(s) known to git
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ touch new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+error: pathspec 'new.txt' did not match any file(s) known to git
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+error: pathspec 'new.txt' did not match any file(s) known to git
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git init
+Reinitialized existing Git repository in C:/Users/Dell/git_workshop/.git/
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+error: pathspec 'new.txt' did not match any file(s) known to git
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ mkdir git_workshop
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+error: pathspec 'new.txt' did not match any file(s) known to git
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        new.html
+        new.py
+        new.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git add .
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   new.html
+        new file:   new.py
+        new file:   new.txt
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address (got 'Dell@DESKTOP-MII16GO.(none)')
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git config --global user.email "preranag_t20024@students.isquareit.edu.in"
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git config --global user.name "Prerana1227"
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+Aborting commit due to empty commit message.
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit new.txt
+[master (root-commit) ce0f967] "Initial commit done"
+ 1 file changed, 1 insertion(+)
+ create mode 100644 new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git log
+commit ce0f96749de8293e86039863f04850c5b2a09859 (HEAD -> master)
+Author: prerana <preranag_t20024@students.isquareit.edu.in>
+Date:   Fri Jul 29 15:39:29 2022 +0530
+
+    "Initial commit done"
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   new.html
+        new file:   new.py
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   new.txt
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git add new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git commit -m "Second commit"
+[master 6060aea] Second commit
+ 3 files changed, 2 insertions(+), 1 deletion(-)
+ create mode 100644 new.html
+ create mode 100644 new.py
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git  log
+commit 6060aea7769169c1238182cf510bc27648351e16 (HEAD -> master)
+Author: prerana <preranag_t20024@students.isquareit.edu.in>
+Date:   Fri Jul 29 15:47:16 2022 +0530
+
+    Second commit
+
+commit ce0f96749de8293e86039863f04850c5b2a09859
+Author: prerana <preranag_t20024@students.isquareit.edu.in>
+Date:   Fri Jul 29 15:39:29 2022 +0530
+
+    "Initial commit done"
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git  checkout le^C
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master)
+$ git  checkout ce0f967
+Note: switching to 'ce0f967'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at ce0f967 "Initial commit done"
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git  checkout ce0f967 new.txt
+Updated 0 paths from 8431026
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git commit -m "third commit"
+HEAD detached at ce0f967
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   new.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git log
+commit ce0f96749de8293e86039863f04850c5b2a09859 (HEAD)
+Author: prerana <preranag_t20024@students.isquareit.edu.in>
+Date:   Fri Jul 29 15:39:29 2022 +0530
+
+    "Initial commit done"
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git  checkout ce0f967 new.txt
+Updated 1 path from 8431026
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git init
+Reinitialized existing Git repository in C:/Users/Dell/git_workshop/.git/
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git status
+HEAD detached at ce0f967
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   new.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git branch
+* (HEAD detached at ce0f967)
+  master
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git checkou -b master2
+git: 'checkou' is not a git command. See 'git --help'.
+
+The most similar command is
+        checkout
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git switch -
+error: Your local changes to the following files would be overwritten by checkout:
+        new.txt
+Please commit your changes or stash them before you switch branches.
+Aborting
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git branch
+* (HEAD detached at ce0f967)
+  master
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git checkou -b master2
+git: 'checkou' is not a git command. See 'git --help'.
+
+The most similar command is
+        checkout
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop ((ce0f967...))
+$ git checkout -b master2
+Switched to a new branch 'master2'
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git branch
+  master
+* master2
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git branch master
+fatal: a branch named 'master' already exists
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+        new.txt
+Please commit your changes or stash them before you switch branches.
+Aborting
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git checkout master
+error: Your local changes to the following files would be overwritten by checkout:
+        new.txt
+Please commit your changes or stash them before you switch branches.
+Aborting
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git branch
+  master
+* master2
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ touch .gitignore
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ mkdir folder
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ ls
+folder/  git_workshop/  new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ notepad .gitignore
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ cat .gitignore
+/Folder
+*.html
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git add .
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git status
+On branch master2
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .gitignore
+        modified:   new.txt
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ ls
+folder/  git_workshop/  new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git rm --cached new.txt
+rm 'new.txt'
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git status
+On branch master2
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   .gitignore
+        deleted:    new.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        new.txt
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git remote
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git remote add origin
+usage: git remote add [<options>] <name> <url>
+
+    -f, --fetch           fetch the remote branches
+    --tags                import all tags and associated objects when fetching
+                          or do not fetch any tag at all (--no-tags)
+    -t, --track <branch>  branch(es) to track
+    -m, --master <branch>
+                          master branch
+    --mirror[=(push|fetch)]
+                          set up remote as a mirror to push to or fetch from
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git remote add origin
+usage: git remote add [<options>] <name> <url>
+
+    -f, --fetch           fetch the remote branches
+    --tags                import all tags and associated objects when fetching
+                          or do not fetch any tag at all (--no-tags)
+    -t, --track <branch>  branch(es) to track
+    -m, --master <branch>
+                          master branch
+    --mirror[=(push|fetch)]
+                          set up remote as a mirror to push to or fetch from
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git remote add origin https://github.com/Prerana1227/gfgworkshop
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git remote
+origin
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git push origin master2
+
+
+
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git push origin master
+
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git push origin master
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (7/7), 507 bytes | 169.00 KiB/s, done.
+Total 7 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/Prerana1227/gfgworkshop/pull/new/master
+remote:
+To https://github.com/Prerana1227/gfgworkshop
+ * [new branch]      master -> master
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git clone https://github.com/777ahesh/777ahesh.git
+Cloning into '777ahesh'...
+remote: Enumerating objects: 69, done.
+remote: Counting objects: 100% (69/69), done.
+remote: Compressing objects: 100% (63/63), done.
+remote: Total 69 (delta 19), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (69/69), 215.19 KiB | 356.00 KiB/s, done.
+Resolving deltas: 100% (19/19), done.
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ ls
+777ahesh/  folder/  git_workshop/  new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ ls
+777ahesh/  folder/  git_workshop/  new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ ^C
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ touch hello.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ ls
+777ahesh/  folder/  git_workshop/  hello.txt  new.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git add .
+warning: adding embedded git repository: 777ahesh
+hint: You've added another git repository inside your current repository.
+hint: Clones of the outer repository will not contain the contents of
+hint: the embedded repository and will not know how to obtain it.
+hint: If you meant to add a submodule, use:
+hint:
+hint:   git submodule add <url> 777ahesh
+hint:
+hint: If you added this path by mistake, you can remove it from the
+hint: index with:
+hint:
+hint:   git rm --cached 777ahesh
+hint:
+hint: See "git help submodule" for more information.
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git commit -m "git add"
+[master2 96ab241] git add
+ 4 files changed, 4 insertions(+), 1 deletion(-)
+ create mode 100644 .gitignore
+ create mode 160000 777ahesh
+ create mode 100644 hello.txt
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$ git status
+On branch master2
+nothing to commit, working tree clean
+
+Dell@DESKTOP-MII16GO MINGW64 ~/git_workshop (master2)
+$

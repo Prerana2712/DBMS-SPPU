@@ -1,0 +1,208 @@
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):1
+
+how many records do you want to enter:5
+
+Roll no:1
+Enter the NameAbhi
+
+Enter the Address:Pune
+
+Enter the Division:A
+
+Enter the Mobile number:9638527415
+Phone number is valid
+Roll no:2
+Enter the NameBhim
+
+Enter the Address:Nigdi
+
+Enter the Division:B
+
+Enter the Mobile number:934055218
+Phone number is not valid
+Enter the Mobile number:9340552180
+Phone number is valid
+Roll no:3
+Enter the NameCiara
+
+Enter the Address:Dehu
+
+Enter the Division:A
+
+Enter the Mobile number:98653274851
+Phone number is not valid
+Enter the Mobile number:9636251445
+Phone number is valid
+Roll no:4
+Enter the NameDev
+
+Enter the Address:Dighi
+
+Enter the Division:C
+
+Enter the Mobile number:8805396054
+Phone number is valid
+Roll no:5
+Enter the NameKirti
+
+Enter the Address:Pimpri
+
+Enter the Division:B
+
+Enter the Mobile number:7898654514
+Phone number is valid
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):3
+
+1       Abhi    A       Pune    7898654514
+2       Bhim    B       Nigdi   7898654514
+3       Ciara   A       Dehu    7898654514
+4       Dev     C       Dighi   7898654514
+5       Kirti   B       Pimpri  7898654514
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):2
+
+How many records do you want to enter:1
+
+Roll no:6
+Enter the NameJoyce
+
+Enter the Address:Dehu
+
+Enter the Division:C
+
+Enter the Mobile number:8495624152
+Phone number is valid
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):3
+
+1       Abhi    A       Pune    8495624152
+2       Bhim    B       Nigdi   8495624152
+3       Ciara   A       Dehu    8495624152
+4       Dev     C       Dighi   8495624152
+5       Kirti   B       Pimpri  8495624152
+6       Joyce   C       Dehu    8495624152
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):4
+
+Enter the Roll No. of Student whose record you want to Modify:1
+
+Roll no:1
+Enter the NameAashi
+
+Enter the Address:Pune
+
+Enter the Division:A
+
+Enter the Mobile number:7485961425
+Phone number is validRecord modified
+
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):3
+
+1       Aashi   A       Pune    7485961425
+2       Bhim    B       Nigdi   7485961425
+3       Ciara   A       Dehu    7485961425
+4       Dev     C       Dighi   7485961425
+5       Kirti   B       Pimpri  7485961425
+6       Joyce   C       Dehu    7485961425
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):5
+
+Enter the Roll No. of Student whose record you want to Delete: 6
+The record with the roll no. 6 has been deleted
+
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):3
+
+1       Aashi   A       Pune    7485961425
+2       Bhim    B       Nigdi   7485961425
+3       Ciara   A       Dehu    7485961425
+4       Dev     C       Dighi   7485961425
+5       Kirti   B       Pimpri  7485961425
+
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):6
+
+Enter the Roll No. of Student whose record you want to Search:5
+
+Record found
+
+5       Kirti   B       Pimpri  7485961425
+Enter the operation to be performed:
+1.Create new database
+2.Add
+3.Display
+4.Modify
+5.Delete
+6.Search
+7.Exit
+(1,2,3,4,5,6,7):7
+The end
+--------------------------------
+Process exited after 363.4 seconds with return value 0
+Press any key to continue . . .

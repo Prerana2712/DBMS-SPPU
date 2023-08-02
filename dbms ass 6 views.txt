@@ -1,0 +1,671 @@
+//Name -Prerana Gajare  	Roll no-SI41  	Class-SEIT
+//Date :- 04/04/2022
+
+ 6)Views
+
+SOURCE CODE :-
+
+//To show the databases.
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| class              |
+| customer           |
+| emp                |
+| employee           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sale               |
+| student            |
+| sys                |
++--------------------+
+10 rows in set (0.08 sec)
+
+//Using student database.
+mysql> use student;
+Database changed
+
+//Creating the table instructor having attributes like instructor's id,name,address,salary.
+mysql> create table instructor(inst_id int,inst_name varchar(10),address varchar(10),salary int);
+Query OK, 0 rows affected (0.07 sec)
+
+//Describing the instructor table.
+mysql> desc instructor;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| inst_id   | int         | YES  |     | NULL    |       |
+| inst_name | varchar(10) | YES  |     | NULL    |       |
+| address   | varchar(10) | YES  |     | NULL    |       |
+| salary    | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+//Inserting the values in instructor table.
+mysql> insert into instructor values(1,"Abhi","Pune",10000),(2,"Caira","Nashik",15000),(3,"Bhim","Dehu",20000),(4,"Dev","Nigdi",10000);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+
+| inst_id | inst_name | address | salary |
++---------+-----------+---------+--------+
+|       1 | Abhi      | Pune    |  10000 |
+|       2 | Caira     | Nashik  |  15000 |
+|       3 | Bhim      | Dehu    |  20000 |
+|       4 | Dev       | Nigdi   |  10000 |
++---------+-----------+---------+--------+
+4 rows in set (0.00 sec)
+
+//Creating the view name faculty from instructor table having attributes like instructor's id,name,address.
+mysql> create view faculty as select inst_id,inst_name,address from instructor;
+Query OK, 0 rows affected (0.01 sec)
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+
+| inst_id | inst_name | address |
++---------+-----------+---------+
+|       1 | Abhi      | Pune    |
+|       2 | Caira     | Nashik  |
+|       3 | Bhim      | Dehu    |
+|       4 | Dev       | Nigdi   |
++---------+-----------+---------+
+4 rows in set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+
+| inst_id | inst_name | address | salary |
++---------+-----------+---------+--------+
+|       1 | Abhi      | Pune    |  10000 |
+|       2 | Caira     | Nashik  |  15000 |
+|       3 | Bhim      | Dehu    |  20000 |
+|       4 | Dev       | Nigdi   |  10000 |
++---------+-----------+---------+--------+
+4 rows in set (0.00 sec)
+
+//Droping the view.
+mysql> drop view faculty;
+Query OK, 0 rows affected (0.01 sec)
+
+//Adding a new coloumn using alter table query in instructor table.
+mysql> alter table instructor
+    -> add dept_name varchar(10);
+Query OK, 4 rows affected (0.06 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+//Describing the table instructor.
+mysql> desc instructor;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| inst_id   | int         | YES  |     | NULL    |       |
+| inst_name | varchar(10) | YES  |     | NULL    |       |
+| address   | varchar(10) | YES  |     | NULL    |       |
+| salary    | int         | YES  |     | NULL    |       |
+| dept_name | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+//Updating the instructor table.
+mysql> update instructor
+    -> set dept_name="IT"
+    -> where inst_id=1;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+mysql> update  instructor
+    -> set dept_name="Comp"
+    -> where inst_id=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+mysql>  update  instructor
+    -> set dept_name="IT"
+    -> where inst_id=3;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql>  update  instructor
+    ->  set dept_name="IT"
+    -> where inst_id=4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+//Creating the view name faculty from instructor table having attributes like instructor's id,name,address and department name where department  name is IT.
+mysql> create view faculty as select inst_id,inst_name,address,dept_name from instructor where dept_name="it";
+Query OK, 0 rows affected (0.01 sec)
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
++---------+-----------+---------+-----------+
+3 rows in set (0.00 sec)
+
+//Inserting the records in view  faculty.
+mysql> insert into faculty values(5,"Kisha","Pune","IT");
+Query OK, 1 row affected (0.00 sec)
+
+//Once inserted the record in view(derived table) it also gets inserserted in instructor table(base table).
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
+|       5 | Kisha     | Pune    | IT        |
++---------+-----------+---------+-----------+
+4 rows in set (0.00 sec)
+.
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       2 | Caira     | Nashik  |  15000 | Comp      |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       5 | Kisha     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+//Inserting the record with department name 'comp' in view faculty but because of where clause it won't display that record but only accept it,it will be displaying that record in instructor table.
+mysql> insert into faculty values(6,"trisha","Nigdi","comp");
+Query OK, 1 row affected (0.00 sec)
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
+|       5 | Kisha     | Pune    | IT        |
++---------+-----------+---------+-----------+
+4 rows in set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       2 | Caira     | Nashik  |  15000 | Comp      |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       5 | Kisha     | Pune    |   NULL | IT        |
+|       6 | trisha    | Nigdi   |   NULL | comp      |
++---------+-----------+---------+--------+-----------+
+6 rows in set (0.00 sec)
+
+//Droping the view name faculty.
+mysql> drop view faculty;
+Query OK, 0 rows affected (0.01 sec)
+
+//Creating the view name faculty from instructor table having attributes like instructor's id,name,address and department name where department  name is IT  using with check option.
+mysql> create view faculty as select inst_id,inst_name,address,dept_name from instructor where dept_name="it" with check option;
+Query OK, 0 rows affected (0.01 sec)
+
+//Givies an error when ever we insert an record having department name other than IT saying check option failed.
+//Inserting the record in faculty table
+mysql> insert into faculty values(8,"Isha","Nigdi","comp");
+ERROR 1369 (HY000): CHECK OPTION failed 'student.faculty'
+
+//As the with check option is violated new record inserted is not inserted in view faculty.
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
+|       5 | Kisha     | Pune    | IT        |
++---------+-----------+---------+-----------+
+4 rows in set (0.00 sec)
+
+//As the with check option is violated new record inserted is not inserted in instructor table.
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       2 | Caira     | Nashik  |  15000 | Comp      |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       5 | Kisha     | Pune    |   NULL | IT        |
+|       6 | trisha    | Nigdi   |   NULL | comp      |
++---------+-----------+---------+--------+-----------+
+6 rows in set (0.00 sec)
+
+//Inserting an record having department name IT here check option success means not getting violated.
+//Inserting the record in faculty table.
+mysql> insert into faculty values(6,"trisha","Nigdi","it");
+Query OK, 1 row affected (0.00 sec)
+
+//Therefore new record inserted is inserted in view faculty.
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
+|       5 | Kisha     | Pune    | IT        |
+|       6 | trisha    | Nigdi   | it        |
++---------+-----------+---------+-----------+
+5 rows in set (0.00 sec)
+
+//Therefore new record inserted is inserted in instructor table.
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       2 | Caira     | Nashik  |  15000 | Comp      |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | devi      | Nigdi   |  10000 | IT        |
+|       5 | Kisha     | Pune    |   NULL | IT        |
+|       6 | trisha    | Nigdi   |   NULL | comp      |
+|       6 | trisha      | Nigdi   |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+8 rows in set (0.00 sec)
+
+//Droping the view name faculty.
+mysql> drop view faculty;
+Query OK, 0 rows affected (0.01 sec)
+
+//Deleting the record from instuctor table whose instructor id is 6 and department name is IT.
+mysql> delete from instructor
+    -> where inst_id=6 && dept_name="it";
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       2 | Caira     | Nashik  |  15000 | Comp      |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | devi      | Nigdi   |  10000 | IT        |
+|       5 | Kisha     | Pune    |   NULL | IT        |
+|       6 | trisha    | Nigdi   |   NULL | comp      |
++---------+-----------+---------+--------+-----------+
+8 rows in set (0.00 sec)
+
+//Creating the view name faculty from instructor table having attributes like instructor's id,name,address and department name where department  name is IT.
+mysql> create view faculty as select inst_id,inst_name,address,dept_name from instructor where dept_name="it";
+Query OK, 0 rows affected (0.01 sec)
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
+|       5 | Kisha     | Pune    | IT        |
+|       6 | trisha    | Nigdi   | it        |
++---------+-----------+---------+-----------+
+5 rows in set (0.00 sec)
+
+//Deleting the record from view faculty whose instructor id is 6. 
+mysql> delete from faculty
+    -> where inst_id=6;
+Query OK, 2 rows affected (0.00 sec)
+
+//Therefore we can see that record with instuctor id 6 is deleted from both the tables(i.e. view faculty and instructor table).
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
+|       5 | Kisha     | Pune    | IT        |
++---------+-----------+---------+-----------+
+4 rows in set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       2 | Caira     | Nashik  |  15000 | Comp      |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       5 | Kisha     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+//Updating the record from view faculty whose instructor id is 5 and setting its name as "kavya".
+mysql> update faculty
+    -> set inst_name="kavya"
+    -> where inst_id=5;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+//Therefore we can see that record with instuctor id 5 is updated in both the tables(i.e. view faculty and instructor table) with name as "kavya".
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       1 | Abhi      | Pune    | IT        |
+|       3 | Bhim      | Dehu    | IT        |
+|       4 | Dev       | Nigdi   | IT        |
+|       5 | kavya     | Pune    | IT        |
++---------+-----------+---------+-----------+
+4 rows in set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       2 | Caira     | Nashik  |  15000 | Comp      |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       5 | kavya     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+//Droping the view name faculty.
+mysql> drop view faculty;
+Query OK, 0 rows affected (0.01 sec)
+
+//Creating the view name faculty from instructor table having attributes like instructor's id,name,address and department name where department  name is comp.
+mysql> create view faculty as select inst_id,inst_name,address,dept_name from instructor where dept_name="comp";
+Query OK, 0 rows affected (0.01 sec)
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       2 | Caira     | Nashik  | Comp      |
++---------+-----------+---------+-----------+
+1 row in set (0.00 sec)
+
+//Deleting the record from view faculty whose instructor id is 2. 
+mysql> delete from faculty
+    -> where inst_id=2;
+Query OK, 1 row affected (0.00 sec)
+
+//Therefore we can see that record with instuctor id 2 is deleted from both the tables(i.e. view faculty and instructor table). 
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
+Empty set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       5 | kavya     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+//Inserting the new record in view name faculty. 
+mysql> insert into faculty values(6,"Lila","Pune","Comp");
+Query OK, 1 row affected (0.00 sec)
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       6 | Lila      | Pune    | Comp      |
++---------+-----------+---------+-----------+
+1 row in set (0.00 sec)
+
+//New record inserted in view name faculty also visible in instructor table.
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       6 | Lila      | Pune    |   NULL | Comp      |
+|       5 | kavya     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+//Updating the record from view faculty whose instructor id is 6 and setting its name as "lalita".
+mysql> update faculty
+    -> set inst_name="lalita"
+    -> where inst_id=6;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+//Therefore we can see that record with instuctor id 6 is updated in both the tables(i.e. view faculty and instructor table) with name as "lalita".
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+
+| inst_id | inst_name | address | dept_name |
++---------+-----------+---------+-----------+
+|       6 | lalita    | Pune    | Comp      |
++---------+-----------+---------+-----------+
+1 row in set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       6 | lalita    | Pune    |   NULL | Comp      |
+|       5 | kavya     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+//Droping the view name faculty.
+mysql> drop view faculty;
+Query OK, 0 rows affected (0.01 sec)
+
+//Creating the table name dept having attributes like department name,location and specialisation.
+mysql> create table dept(dept_name  varchar(10),loc varchar(10),special varchar(10));
+Query OK, 0 rows affected (0.02 sec)
+
+//Describing the table name dept.
+mysql> desc dept;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| dept_name | varchar(10) | YES  |     | NULL    |       |
+| loc       | varchar(10) | YES  |     | NULL    |       |
+| special   | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+//Inserting the records in dept table.
+mysql> insert into dept values("IT","Pune","AI"),("COMP","Nigdi","ML"),("ENTC","Dehu","Instrument"),("IT","Dighi","Web");
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+//Displaying all the rows and coloumns of dept table.
+mysql> select * from dept;
++-----------+-------+------------+
+| dept_name | loc   | special    |
++-----------+-------+------------+
+| IT        | Pune  | AI         |
+| COMP      | Nigdi | ML         |
+| ENTC      | Dehu  | Instrument |
+| IT        | Dighi | Web        |
++-----------+-------+------------+
+4 rows in set (0.00 sec)
+
+//Creating the view name faculty having attributes like instructor's id,name,address,department name,specialisation from the join of the tables ( name instructor and dept ) where instructor table department name is equal or same as dept table department  name.
+mysql> create view faculty as select instructor.inst_id,instructor.inst_name,instructor.address,instructor.dept_name,dept.special from instructor join dept where instructor.dept_name=dept.dept_name;
+Query OK, 0 rows affected (0.01 sec)
+
+//Displaying all the rows and coloumns of view faculty created from the join of the tables ( name instructor and dept ) where instructor table department name is equal to dept table department  name.
+mysql> select * from faculty ;
++---------+-----------+---------+-----------+---------+
+| inst_id | inst_name | address | dept_name | special |
++---------+-----------+---------+-----------+---------+
+|       1 | Abhi      | Pune    | IT        | Web     |
+|       1 | Abhi      | Pune    | IT        | AI      |
+|       3 | Bhim      | Dehu    | IT        | Web     |
+|       3 | Bhim      | Dehu    | IT        | AI      |
+|       4 | Dev       | Nigdi   | IT        | Web     |
+|       4 | Dev       | Nigdi   | IT        | AI      |
+|       6 | lalita    | Pune    | Comp      | ML      |
+|       5 | kavya     | Pune    | IT        | Web     |
+|       5 | kavya     | Pune    | IT        | AI      |
++---------+-----------+---------+-----------+---------+
+9 rows in set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | Dev       | Nigdi   |  10000 | IT        |
+|       6 | lalita    | Pune    |   NULL | Comp      |
+|       5 | kavya     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+5 rows in set (0.00 sec)
+
+//Displaying all the rows and coloumns of dept table.
+mysql> select * from dept;
++-----------+-------+------------+
+| dept_name | loc   | special    |
++-----------+-------+------------+
+| IT        | Pune  | AI         |
+| COMP      | Nigdi | ML         |
+| ENTC      | Dehu  | Instrument |
+| IT        | Dighi | Web        |
++-----------+-------+------------+
+4 rows in set (0.00 sec)
+
+//Deleting the record from view faculty whose instructor id is 3.
+//It is not allowing us to delete a record from view name faculty as it is created by the joining of two tables(multiple tables).
+mysql> delete from faculty
+    -> where inst_id=3;
+ERROR 1395 (HY000): Can not delete from join view 'student.faculty'
+
+//Updating the record from view faculty whose instructor id is 4 and setting its name as "devi".
+mysql> update faculty
+    -> set inst_name="devi"
+    -> where inst_id=4;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+//Therefore we can see that record with instuctor id 4 is updated in both the tables(i.e. view faculty and instructor table) with name as "devi".
+//And we can also say that in a view created from joining of two tables we can update a record but not delete it.
+
+//Displaying all the rows and coloumns of view faculty.
+mysql> select * from faculty;
++---------+-----------+---------+-----------+---------+
+| inst_id | inst_name | address | dept_name | special |
++---------+-----------+---------+-----------+---------+
+|       1 | Abhi      | Pune    | IT        | Web     |
+|       1 | Abhi      | Pune    | IT        | AI      |
+|       3 | Bhim      | Dehu    | IT        | Web     |
+|       3 | Bhim      | Dehu    | IT        | AI      |
+|       4 | devi      | Nigdi   | IT        | Web     |
+|       4 | devi      | Nigdi   | IT        | AI      |
+|       6 | lalita    | Pune    | Comp      | ML      |
+|       5 | kavya     | Pune    | IT        | Web     |
+|       5 | kavya     | Pune    | IT        | AI      |
++---------+-----------+---------+-----------+---------+
+9 rows in set (0.00 sec)
+
+//Displaying all the rows and coloumns of instructor table.
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | devi      | Nigdi   |  10000 | IT        |
+|       6 | lalita    | Pune    |   NULL | Comp      |
+|       5 | kavya     | Pune    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+6 rows in set (0.02 sec)
+
+//Inserting the record in view name faculty.
+//As the view is created  by joining of two tables we can't insert the data of all the attributed together which are belonging to different table hence it gives an error.
+mysql> insert into faculty (inst_id,inst_name,address,dept_name,special) values(7,"Trayi","Bhor","IT","Web");
+ERROR 1393 (HY000): Can not modify more than one base table through a join view 'student.faculty'
+
+//Inserting the record in view name faculty.
+//So we have to insert the record in the view name faculty with respect to the attributes belonging to each table at a time ( therefore instructor table's attributes data will be inserted seperate and dept table's attribute data will be inserted seperate for each tuple ).
+mysql> insert into faculty (inst_id,inst_name,address,dept_name) values(7,"Trayi","Bhor","IT");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into faculty (special) values("Web");
+Query OK, 1 row affected (0.00 sec)
+
+//Therefore we can see that record with instuctor id 7 is inserted in both the tables(i.e. view faculty and instructor table).
+
+//Displaying all the rows and coloumns of view faculty
+mysql> select * from faculty;
++---------+-----------+---------+-----------+---------+
+| inst_id | inst_name | address | dept_name | special |
++---------+-----------+---------+-----------+---------+
+|       1 | Abhi      | Pune    | IT        | Web     |
+|       1 | Abhi      | Pune    | IT        | AI      |
+|       3 | Bhim      | Dehu    | IT        | Web     |
+|       3 | Bhim      | Dehu    | IT        | AI      |
+|       4 | devi      | Nigdi   | IT        | Web     |
+|       4 | devi      | Nigdi   | IT        | AI      |
+|       6 | lalita    | Pune    | Comp      | ML      |
+|       5 | kavya     | Pune    | IT        | Web     |
+|       5 | kavya     | Pune    | IT        | AI      |
+|       7 | Trayi     | Bhor    | IT        | Web     |
+|       7 | Trayi     | Bhor    | IT        | AI      |
++---------+-----------+---------+-----------+---------+
+11 rows in set (0.01 sec)
+
+//Displaying all the rows and coloumns of instructor table
+mysql> select * from instructor;
++---------+-----------+---------+--------+-----------+
+| inst_id | inst_name | address | salary | dept_name |
++---------+-----------+---------+--------+-----------+
+|       1 | Abhi      | Pune    |  10000 | IT        |
+|       3 | Bhim      | Dehu    |  20000 | IT        |
+|       4 | devi      | Nigdi   |  10000 | IT        |
+|       6 | lalita    | Pune    |   NULL | Comp      |
+|       5 | kavya     | Pune    |   NULL | IT        |
+|       7 | Trayi     | Bhor    |   NULL | IT        |
++---------+-----------+---------+--------+-----------+
+7 rows in set (0.00 sec)
+
